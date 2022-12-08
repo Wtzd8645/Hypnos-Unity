@@ -1,0 +1,6 @@
+.unity-text-field__label {
+    width: auto;
+    max-width: none;
+    min-width: 60px;
+    -unity-font-style: bold;
+}
