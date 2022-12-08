@@ -1,5 +1,5 @@
 {
-    "name": "Morpheus.Test",
+    "name": "Morpheus.Tests",
     "rootNamespace": "Morpheus",
     "references": [
         "UnityEngine.TestRunner",
