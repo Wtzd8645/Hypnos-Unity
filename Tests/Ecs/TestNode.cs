@@ -1,6 +1,6 @@
 using Morpheus.Ecs;
 
-namespace Morpheus.Test.Ecs
+namespace Morpheus.Tests.Ecs
 {
     public class TestNode : EcsNode
     {
