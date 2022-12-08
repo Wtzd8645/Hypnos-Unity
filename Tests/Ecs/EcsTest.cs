@@ -2,7 +2,7 @@ using Morpheus.Ecs;
 using NUnit.Framework;
 using System;
 
-namespace Morpheus.Test.Ecs
+namespace Morpheus.Tests.Ecs
 {
     public class EcsTest
     {

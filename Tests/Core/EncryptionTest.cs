@@ -1,7 +1,7 @@
 using Morpheus.Core.Encryption;
 using NUnit.Framework;
 
-namespace Morpheus.Test
+namespace Morpheus.Tests
 {
     public class EncryptionTest
     {
