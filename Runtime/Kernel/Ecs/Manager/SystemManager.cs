@@ -4,18 +4,11 @@ using System.Collections.Generic;
 
 namespace Morpheus.Ecs
 {
-    public struct SystemConfig
+    public interface ISystemConfig
     {
-        public Type[] UpdateSystems;
-        public Type[] LateUpdateSystems;
-        public Type[] FixedUpdateSystems;
-
-        public SystemConfig(Type[] updateSystems = null, Type[] lateUpdateSystems = null, Type[] fixedUpdateSystems = null)
-        {
-            UpdateSystems = updateSystems;
-            LateUpdateSystems = lateUpdateSystems;
-            FixedUpdateSystems = fixedUpdateSystems;
-        }
+        Type[] UpdateSystems {get;}
+        Type[] LateUpdateSystems {get;}
+        Type[] FixedUpdateSystems {get;}
     }
 
     public class SystemManager : Singleton<SystemManager>
@@ -25,7 +18,7 @@ namespace Morpheus.Ecs
         private OrderedSet<EcsSystem> lateUpdateSystems = new OrderedSet<EcsSystem>();
         private OrderedSet<EcsSystem> fixedUpdateSystems = new OrderedSet<EcsSystem>();
 
-        public void Init(SystemConfig config)
+        public void Initialize(ISystemConfig config)
         {
             void setSystems(Type[] systemTypes, OrderedSet<EcsSystem> systems)
             {

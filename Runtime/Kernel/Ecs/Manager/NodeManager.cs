@@ -5,9 +5,9 @@ using System.Numerics;
 
 namespace Morpheus.Ecs
 {
-    public partial class NodeManager : IDisposable
+    public partial class NodeManager
     {
-        private ComonentsInNodesSet nodeSet;
+        private ComonentTypeInNodeDic componentTypeDic;
         private OrderedDictionary<Type, HashSet<Type>> nodeToComponentDict = new OrderedDictionary<Type, HashSet<Type>>();
         private Dictionary<Type, BigInteger> nodeHashes = new Dictionary<Type, BigInteger>();
         private Dictionary<Type, BigInteger> componentHashes = new Dictionary<Type, BigInteger>();
@@ -15,7 +15,7 @@ namespace Morpheus.Ecs
 
         public NodeManager()
         {
-            nodeSet = ComonentsInNodesSet.GetInstance();
+            componentTypeDic = ComonentTypeInNodeDic.GetInstanceByAssembly();
             refreshMaps();
         }
 
@@ -25,7 +25,7 @@ namespace Morpheus.Ecs
             componentHashes.Clear();
             nodeHashes.Clear();
 
-            foreach (KeyValuePair<Type, HashSet<Type>> eseentials in nodeSet.ComponentsOfNode)
+            foreach (KeyValuePair<Type, HashSet<Type>> eseentials in componentTypeDic)
             {
                 foreach (Type com in eseentials.Value)
                 {
@@ -45,7 +45,7 @@ namespace Morpheus.Ecs
                 i <<= 1;
             }
 
-            foreach (KeyValuePair<Type, HashSet<Type>> eseentials in nodeSet.ComponentsOfNode)
+            foreach (KeyValuePair<Type, HashSet<Type>> eseentials in componentTypeDic)
             {
                 nodeHashes.Add(eseentials.Key, 0);
                 foreach (Type com in eseentials.Value)
@@ -55,15 +55,9 @@ namespace Morpheus.Ecs
             }
         }
 
-        public void Dispose()
+        public void AddComponentSet(ComonentTypeInNodeDic set)
         {
-            ComponentManager.Instance.OnComponentAdd -= OnComponentAdd;
-            ComponentManager.Instance.OnComponentRemove -= OnComponentRemove;
-        }
-
-        public void AddComponentSet(ComonentsInNodesSet set)
-        {
-            nodeSet += set;
+            componentTypeDic += set;
             refreshMaps();
         }
 
@@ -73,8 +67,11 @@ namespace Morpheus.Ecs
             {
                 entityHashes.Add(component.EntityID, 0);
             }
+            
+            if (!componentHashes.TryGetValue(component.GetType(), out var componentHash)) return;
+
             BigInteger oldValue = entityHashes[component.EntityID];
-            BigInteger newValue = entityHashes[component.EntityID] |= componentHashes[component.GetType()];
+            BigInteger newValue = entityHashes[component.EntityID] |= componentHash;
 
             foreach (Type nodeType in nodeToComponentDict[component.GetType()])
             {
@@ -93,8 +90,11 @@ namespace Morpheus.Ecs
                 throw new Exception($"Entity {component.EntityID} doesn't exist.");
             }
 
+            // Could be optional component.
+            if (!componentHashes.TryGetValue(component.GetType(), out var componentHash)) return;
+
             BigInteger oldValue = entityHashes[component.EntityID];
-            BigInteger newValue = entityHashes[component.EntityID] &= ~componentHashes[component.GetType()];
+            BigInteger newValue = entityHashes[component.EntityID] &= ~componentHash;
 
             foreach (Type nodeType in nodeToComponentDict[component.GetType()])
             {

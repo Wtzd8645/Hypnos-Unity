@@ -20,6 +20,8 @@ namespace Morpheus.Ecs
                 entityNodeDict[entityID] = nodeDict = new Dictionary<Type, EcsNode>();
             }
             nodeDict.Add(type, node);
+
+            DebugLogger.TraceLog($"Entity {entityID} Add Node {type}");
         }
 
         private void RemoveNodeFromSystem(Type type, ulong entityID)
@@ -33,9 +35,8 @@ namespace Morpheus.Ecs
             {
                 throw new Exception($"Entity {entityID} doesn't have the Type {type}.");
             }
-
-            node.Dispose();
             SystemManager.Instance.RemoveNode(node);
+            node.Dispose();
             RecycleNode(type, node);
 
             nodeDict.Remove(type);
@@ -43,6 +44,7 @@ namespace Morpheus.Ecs
             {
                 entityNodeDict.Remove(entityID);
             }
+            DebugLogger.TraceLog($"Entity {entityID} Remove Node {type}");
         }
 
         private EcsNode GetNode(Type type)

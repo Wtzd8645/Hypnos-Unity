@@ -59,17 +59,20 @@ namespace Morpheus
 
         private void FixedUpdate()
         {
+            Ecs.SystemManager.Instance.FixedUpdate();
             GameTimeManager.Instance.FixedUpdate();
         }
 
         private void Update()
         {
+            Ecs.SystemManager.Instance.Update();
             GameTimeManager.Instance.Update();
             NetworkManager.Instance.Update();
         }
 
         private void LateUpdate()
         {
+            Ecs.SystemManager.Instance.LateUpdate();
             InputManager.Instance.CheckPhysicalInput();
             InputManager.Instance.ProcessInput();
         }

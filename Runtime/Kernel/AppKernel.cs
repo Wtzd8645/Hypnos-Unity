@@ -23,6 +23,9 @@ namespace Morpheus
             GameTimeManager.CreateInstance();
             GameStateManager.CreateInstance();
             InputManager.CreateInstance();
+            Ecs.ComponentManager.CreateInstance();
+            Ecs.SystemManager.CreateInstance();
+            Ecs.EntityManager.CreateInstance();
         }
 
         private void ReleaseServices()
@@ -33,6 +36,9 @@ namespace Morpheus
             GameTimeManager.ReleaseInstance();
             GameStateManager.ReleaseInstance();
             InputManager.ReleaseInstance();
+            Ecs.ComponentManager.ReleaseInstance();
+            Ecs.SystemManager.ReleaseInstance();
+            Ecs.EntityManager.ReleaseInstance();
         }
     }
 }
