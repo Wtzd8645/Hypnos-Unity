@@ -82,7 +82,7 @@ namespace Morpheus.Resource
                 }
                 default:
                 {
-                    DebugLogger.LogError($"[ResourceManager] The ResourceLoader type is not supported. {config.resourceLoader}");
+                    Kernel.LogError($"[ResourceManager] The ResourceLoader type is not supported. {config.resourceLoader}");
                     break;
                 }
             }
@@ -99,7 +99,7 @@ namespace Morpheus.Resource
             dataArchiverMap.TryGetValue(archiverId, out DataArchiver archiver);
             if (archiver == null)
             {
-                DebugLogger.LogError($"[ResourceManager] DataArchiver is null. Id: {archiverId}");
+                Kernel.LogError($"[ResourceManager] DataArchiver is null. Id: {archiverId}");
                 return;
             }
 
@@ -112,7 +112,7 @@ namespace Morpheus.Resource
             }
             catch (Exception e)
             {
-                DebugLogger.LogError($"[ResourceManager] Save file failed. Exception: {e.Message}");
+                Kernel.LogError($"[ResourceManager] Save file failed. Exception: {e.Message}");
                 RestoreArchive(filePath);
             }
         }
@@ -130,7 +130,7 @@ namespace Morpheus.Resource
             }
             catch (Exception e)
             {
-                DebugLogger.LogError($"[ResourceManager] Back up file failed. Exception: {e.Message}");
+                Kernel.LogError($"[ResourceManager] Back up file failed. Exception: {e.Message}");
             }
         }
 
@@ -142,7 +142,7 @@ namespace Morpheus.Resource
             }
             catch (Exception e)
             {
-                DebugLogger.LogError($"[ResourceManager] Restore file failed. Exception: {e.Message}");
+                Kernel.LogError($"[ResourceManager] Restore file failed. Exception: {e.Message}");
             }
         }
 
@@ -151,7 +151,7 @@ namespace Morpheus.Resource
             dataArchiverMap.TryGetValue(archiverId, out DataArchiver archiver);
             if (archiver == null)
             {
-                DebugLogger.LogError($"[ResourceManager] DataArchiver is null. Id: {archiverId}");
+                Kernel.LogError($"[ResourceManager] DataArchiver is null. Id: {archiverId}");
                 return default;
             }
 
@@ -162,7 +162,7 @@ namespace Morpheus.Resource
             }
             catch (Exception e)
             {
-                DebugLogger.LogError($"[ResourceManager] Load file failed, use backup instead. Exception: {e.Message}");
+                Kernel.LogError($"[ResourceManager] Load file failed, use backup instead. Exception: {e.Message}");
                 return LoadBackupArchive<T>(archiver, filePath);
             }
         }
@@ -175,7 +175,7 @@ namespace Morpheus.Resource
             }
             catch (Exception e)
             {
-                DebugLogger.LogError($"[ResourceManager] Load backup file failed. Exception: {e.Message}");
+                Kernel.LogError($"[ResourceManager] Load backup file failed. Exception: {e.Message}");
                 return default;
             }
         }
@@ -194,7 +194,7 @@ namespace Morpheus.Resource
             }
             catch (Exception e)
             {
-                DebugLogger.LogError($"[ResourceManager] Can't load AssetConfig. Exception: {e.Message}");
+                Kernel.LogError($"[ResourceManager] Can't load AssetConfig. Exception: {e.Message}");
             }
         }
 
@@ -210,7 +210,7 @@ namespace Morpheus.Resource
 
         public void LoadAssetAsync<T>(string assetId, ResourceAoHandler<T> completeCb = null) where T : UnityEngine.Object
         {
-            AppKernel.ExecuteCoroutine(resourceLoader.LoadAssetRoutine(assetId, completeCb));
+            Kernel.ExecuteCoroutine(resourceLoader.LoadAssetRoutine(assetId, completeCb));
         }
 
         public void UnloadAsset(string assetId)

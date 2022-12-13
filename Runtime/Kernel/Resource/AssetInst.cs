@@ -17,7 +17,7 @@
 
             if (refCount < 0)
             {
-                DebugLogger.LogError($"[AssetInst] Reference count is abnormal. AssetId: {assetId}");
+                Kernel.LogError($"[AssetInst] Reference count is abnormal. AssetId: {assetId}");
                 asset = null;
                 refCount = 0;
                 return false;

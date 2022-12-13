@@ -49,13 +49,13 @@ namespace Morpheus.GameTime
             tailNode = null;
         }
 
-        internal void FixedUpdate()
+        public void FixedUpdate()
         {
             timeInfo.fixedDeltaTime = Time.fixedDeltaTime;
         }
 
         // NOTE: This update MUST BE before other scripts.
-        internal void Update()
+        public void Update()
         {
             // NOTE: Access Time.deltaTime in loop is slower.
             timeInfo.realTimeSinceStartup = Time.realtimeSinceStartup;

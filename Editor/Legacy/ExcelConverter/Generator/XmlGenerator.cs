@@ -42,7 +42,7 @@ namespace Morpheus.Editor
             rootElement.SetAttribute("Length", sheetInfo.totalValueRowCount.ToString());
 
             xmlDoc.Save(outputPath + "/" + sheetInfo.sheetName + XmlExtension);
-            DebugLogger.Log("[XmlGenerator] Generate XML successfully.");
+            Kernel.Log("[XmlGenerator] Generate XML successfully.");
         }
     }
 }

@@ -36,7 +36,7 @@ namespace Morpheus.UI
         {
             if (DisplayState != UiDisplayState.Hide)
             {
-                DebugLogger.LogWarning($"[InteractableUiBase] Show UI at wrong state. Name: {gameObject.name}, State: {DisplayState}");
+                Kernel.LogWarning($"[InteractableUiBase] Show UI at wrong state. Name: {gameObject.name}, State: {DisplayState}");
                 showCompleteCb?.Invoke(this);
                 return;
             }
@@ -58,7 +58,7 @@ namespace Morpheus.UI
         {
             if (DisplayState != UiDisplayState.Hide)
             {
-                DebugLogger.LogWarning($"[InteractableUiBase] Show UI at wrong state. Name: {gameObject.name}, State: {DisplayState}");
+                Kernel.LogWarning($"[InteractableUiBase] Show UI at wrong state. Name: {gameObject.name}, State: {DisplayState}");
                 return;
             }
 
@@ -78,7 +78,7 @@ namespace Morpheus.UI
         {
             if (DisplayState != UiDisplayState.Show)
             {
-                DebugLogger.LogWarning($"[InteractableUiBase] Hide UI at wrong state. Name: {gameObject.name}, State: {DisplayState}");
+                Kernel.LogWarning($"[InteractableUiBase] Hide UI at wrong state. Name: {gameObject.name}, State: {DisplayState}");
                 hideCompleteCb?.Invoke(this);
                 return;
             }
@@ -99,7 +99,7 @@ namespace Morpheus.UI
         {
             if (DisplayState != UiDisplayState.Show)
             {
-                DebugLogger.LogWarning($"[InteractableUiBase] Hide UI at wrong state. Name: {gameObject.name}, State: {DisplayState}");
+                Kernel.LogWarning($"[InteractableUiBase] Hide UI at wrong state. Name: {gameObject.name}, State: {DisplayState}");
                 return;
             }
 

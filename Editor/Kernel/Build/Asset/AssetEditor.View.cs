@@ -54,14 +54,14 @@ namespace Morpheus.Editor.Build
         {
             if (editionConfig == null)
             {
-                DebugLogger.LogError("[AssetEditor] EditionConfig is null.");
+                Kernel.LogError("[AssetEditor] EditionConfig is null.");
                 return null;
             }
 
             AssetEditorConfig editorConfig = new AssetEditorConfig();
             if (!int.TryParse(versionField.value, out editorConfig.version))
             {
-                DebugLogger.LogError("[AssetEditor] AssetEditorConfig version can only be an integer.");
+                Kernel.LogError("[AssetEditor] AssetEditorConfig version can only be an integer.");
             }
             editorConfig.groupDatas = assetGroupTreeView.FetchData();
             return editorConfig;
@@ -173,7 +173,7 @@ namespace Morpheus.Editor.Build
         {
             if (editionConfig == null)
             {
-                DebugLogger.LogError("[AssetEditor] The editionData is null, please reopen the window.");
+                Kernel.LogError("[AssetEditor] The editionData is null, please reopen the window.");
                 return;
             }
 
@@ -203,7 +203,7 @@ namespace Morpheus.Editor.Build
             AssetEditorConfig editorConfig = new AssetEditorConfig();
             if (!int.TryParse(versionField.value, out editorConfig.version))
             {
-                DebugLogger.LogError("[AssetEditor] AssetEditorConfig version can only be an integer.");
+                Kernel.LogError("[AssetEditor] AssetEditorConfig version can only be an integer.");
                 return;
             }
 
@@ -224,7 +224,7 @@ namespace Morpheus.Editor.Build
             AssetEditorConfig editorConfig = new AssetEditorConfig();
             if (!int.TryParse(versionField.value, out editorConfig.version))
             {
-                DebugLogger.LogError("[AssetEditor] AssetEditorConfig version can only be an integer.");
+                Kernel.LogError("[AssetEditor] AssetEditorConfig version can only be an integer.");
                 return;
             }
 

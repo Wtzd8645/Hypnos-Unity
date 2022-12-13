@@ -1,8 +1,23 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace Morpheus
 {
-    public static class DebugLogger
+    [Flags]
+    public enum LogChannel
+    {
+        None = 0,
+        GameTime = 1,
+        Resource = GameTime << 1,
+        Input = Resource << 1,
+        Network = Input << 1,
+        GameState = Network << 1,
+        Audio = GameState << 1,
+        UI = Audio << 1,
+        All = -1
+    }
+
+    public static partial class Kernel
     {
         public const int AllLogChannel = -1;
         public const string TraceLogCondition = "TRACE_LOG";

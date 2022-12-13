@@ -75,7 +75,7 @@ namespace Morpheus.Environment
             }
 
             Screen.SetResolution((int)width, (int)height, true);
-            DebugLogger.Log($"[EnvironmentManager] Screen resolution is set: W: {Screen.width}, H: {Screen.height}");
+            Kernel.Log($"[EnvironmentManager] Screen resolution is set: W: {Screen.width}, H: {Screen.height}");
         }
     }
 }
