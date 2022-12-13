@@ -9,13 +9,17 @@ namespace Morpheus.Ecs
         public abstract void RemoveNode(object _node);
     }
 
+    /// Node系統是個環型系統，為了方便增減
     public abstract class EcsSystem<T> : EcsSystem where T : EcsNode
     {
         private T headNode;
 
         public override void Update()
         {
-            updateNode(headNode);
+            if (headNode != null)
+            {
+                updateNode(headNode);
+            }
         }
 
         public override void AddNode(object _node)
@@ -25,18 +29,22 @@ namespace Morpheus.Ecs
             if (headNode == null)
             {
                 headNode = node;
+                headNode.PrevNode = headNode.NextNode = headNode;
             }
-            else if (headNode.LastNode == null)
+            else if (headNode.PrevNode == headNode)
             {
                 // if there's no headNode.LastNode
-                headNode.LastNode = headNode.NextNode = node;
+                headNode.PrevNode = headNode.NextNode = node;
+                node.PrevNode = node.NextNode = headNode;
             }
             else
             {
                 // Add to last
-                node.LastNode = headNode.LastNode;
-                headNode.LastNode.NextNode = node;
-                headNode.LastNode = node;
+                node.PrevNode = headNode.PrevNode;
+                node.NextNode = headNode;
+
+                headNode.PrevNode.NextNode = node;
+                headNode.PrevNode = node;
             }
         }
 
@@ -46,29 +54,31 @@ namespace Morpheus.Ecs
 
             // if node.LastNode is null, which means it's the only one.
             // And it's the headNode.
-            if (node.LastNode == null)
+            if (node == headNode)
             {
-                if (node != headNode)
+                if (node.NextNode == headNode)
                 {
-                    throw new Exception($"Node has no lastNode and isn't the headNode.");
+                    headNode = null;
+                    return;
                 }
-                headNode = null;
+                else
+                {
+                    headNode = (T)node.NextNode;
+                }
             }
-            else
-            {
-                node.LastNode.NextNode = node.NextNode;
-            }
+
+            node.PrevNode.NextNode = node.NextNode;
+            node.NextNode.PrevNode = node.PrevNode;
         }
 
         private void updateNode(T node)
         {
-            if (node == null)
-            {
-                return;
-            }
-
             Process(node);
-            updateNode((T)node.NextNode);
+
+            if (node.NextNode != headNode)
+            {
+                updateNode((T)node.NextNode);
+            }
         }
 
         protected abstract void Process(T node);

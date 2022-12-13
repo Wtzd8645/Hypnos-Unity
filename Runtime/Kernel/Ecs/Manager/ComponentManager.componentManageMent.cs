@@ -8,7 +8,7 @@ namespace Morpheus.Ecs
     {
         private Dictionary<Type, ObjectPool<EcsComponent>> componentPools = new Dictionary<Type, ObjectPool<EcsComponent>>();
 
-        private T GetComponent<T>() where T : EcsComponent
+        private T getComponent<T>() where T : EcsComponent
         {
             Type type = typeof(T);
             if (!componentPools.TryGetValue(type, out ObjectPool<EcsComponent> objectPool))
@@ -18,10 +18,10 @@ namespace Morpheus.Ecs
             }
             return (T)objectPool.ForcePop();
         }
-
-        private void RecycleComponent<T>(T component) where T : EcsComponent
+        
+        private void recycleComponent(EcsComponent component)
         {
-            Type type = typeof(T);
+            Type type = component.GetType();
             if (componentPools.TryGetValue(type, out ObjectPool<EcsComponent> objectPool))
             {
                 objectPool.ForcePush(component);
