@@ -41,7 +41,7 @@ namespace Morpheus.Editor.GameData
             rootElement.SetAttribute("Length", metadata.rowValues.Count.ToString());
 
             xmlDoc.Save(setting.bytesOutputPath + "/" + metadata.sheetName + XmlExtension);
-            DebugLogger.Log("[MetaGameDataToXml] Generate XML successfully.");
+            Kernel.Log("[MetaGameDataToXml] Generate XML successfully.");
         }
     }
 }

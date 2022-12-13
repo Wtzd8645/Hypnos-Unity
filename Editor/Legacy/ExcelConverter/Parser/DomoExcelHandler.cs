@@ -58,7 +58,7 @@ namespace Morpheus.Editor
 
             if (mainSheet == null)
             {
-                DebugLogger.LogError("[ExcelHandler] Can't find main sheet.");
+                Kernel.LogError("[ExcelHandler] Can't find main sheet.");
                 return false;
             }
 
@@ -103,13 +103,13 @@ namespace Morpheus.Editor
 
             if ((varTypeList.Count != varNameList.Count) || (varTypeList.Count == 0) || (varNameList.Count == 0))
             {
-                DebugLogger.LogError("[ExcelHandler] Column num not valid. Type: " + varTypeList.Count + " Name: " + varNameList.Count);
+                Kernel.LogError("[ExcelHandler] Column num not valid. Type: " + varTypeList.Count + " Name: " + varNameList.Count);
                 return false;
             }
 
             if (rowCount > lastRowNumber)
             {
-                DebugLogger.LogError("[ExcelHandler] No data row to parse. LastRowNum: " + lastRowNumber);
+                Kernel.LogError("[ExcelHandler] No data row to parse. LastRowNum: " + lastRowNumber);
                 return false;
             }
 
@@ -128,21 +128,21 @@ namespace Morpheus.Editor
                 ICell cell = iRow.GetCell(i);
                 if (cell == null)
                 {
-                    DebugLogger.Log("[ExcelHandler] Type row has " + (i - 1) + " column.");
+                    Kernel.Log("[ExcelHandler] Type row has " + (i - 1) + " column.");
                     return;
                 }
 
                 str = GetCellString(cell);
                 if (string.IsNullOrEmpty(str))
                 {
-                    DebugLogger.Log("[ExcelHandler] Type row has " + (i - 1) + " column.");
+                    Kernel.Log("[ExcelHandler] Type row has " + (i - 1) + " column.");
                     return;
                 }
 
                 Type type = Type.GetType("System." + str);
                 if (type == null)
                 {
-                    DebugLogger.LogError("[ExcelHandler] Can't find type at column " + (i - 1));
+                    Kernel.LogError("[ExcelHandler] Can't find type at column " + (i - 1));
                     return;
                 }
 
@@ -161,20 +161,20 @@ namespace Morpheus.Editor
                 ICell cell = iRow.GetCell(i);
                 if (cell == null)
                 {
-                    DebugLogger.Log("[ExcelHandler] Name row has " + (i - 1) + " column.");
+                    Kernel.Log("[ExcelHandler] Name row has " + (i - 1) + " column.");
                     return;
                 }
 
                 str = GetCellString(cell);
                 if (string.IsNullOrEmpty(str))
                 {
-                    DebugLogger.Log("[ExcelHandler] Name row has " + (i - 1) + " column.");
+                    Kernel.Log("[ExcelHandler] Name row has " + (i - 1) + " column.");
                     return;
                 }
 
                 if (varNameList.Contains(str))
                 {
-                    DebugLogger.LogError("[ExcelHandler] Name is duplicate at " + (i - 1) + " column.");
+                    Kernel.LogError("[ExcelHandler] Name is duplicate at " + (i - 1) + " column.");
                     return;
                 }
 
@@ -186,13 +186,13 @@ namespace Morpheus.Editor
         {
             if ((varTypeList.Count != varNameList.Count) || (varTypeList.Count == 0) || (varNameList.Count == 0))
             {
-                DebugLogger.LogError("[ExcelHandler] Column num not valid. Type: " + varTypeList.Count + " Name: " + varNameList.Count);
+                Kernel.LogError("[ExcelHandler] Column num not valid. Type: " + varTypeList.Count + " Name: " + varNameList.Count);
                 return;
             }
 
             if (firstValueRow > lastRowNumber)
             {
-                DebugLogger.LogError("[ExcelHandler] No data row to parse. LastRowNum: " + lastRowNumber);
+                Kernel.LogError("[ExcelHandler] No data row to parse. LastRowNum: " + lastRowNumber);
                 return;
             }
 
@@ -238,7 +238,7 @@ namespace Morpheus.Editor
 
                 if (!VerificateValue(KeyType, key))
                 {
-                    DebugLogger.LogError("[ExcelHandler] Verificate value failed. [" + rowCount + ", " + 0 + "]");
+                    Kernel.LogError("[ExcelHandler] Verificate value failed. [" + rowCount + ", " + 0 + "]");
                     return;
                 }
 
@@ -264,7 +264,7 @@ namespace Morpheus.Editor
                     }
                     else
                     {
-                        DebugLogger.LogError("[ExcelHandler] Verificate value failed at [" + rowCount + ", " + i + "]");
+                        Kernel.LogError("[ExcelHandler] Verificate value failed at [" + rowCount + ", " + i + "]");
                         return;
                     }
                 }
@@ -365,12 +365,12 @@ namespace Morpheus.Editor
                     using FileStream fs = new FileStream(EditorKernel.Config.bytesOutputPath + "/" + mainSheet.SheetName + ".bytes", FileMode.Create);
                     //EncryptionUtil.EncodeByAES(fs, ms);
                 }
-                DebugLogger.Log("[ExcelHandler] Generate encrypted XML successfully.");
+                Kernel.Log("[ExcelHandler] Generate encrypted XML successfully.");
             }
             else
             {
                 iXMLDoc.Save(EditorKernel.Config.bytesOutputPath + "/" + mainSheet.SheetName + ".xml");
-                DebugLogger.Log("[ExcelHandler] Generate XML successfully.");
+                Kernel.Log("[ExcelHandler] Generate XML successfully.");
             }
         }
 
@@ -552,7 +552,7 @@ namespace Morpheus.Editor
                 using StreamWriter sw = new StreamWriter(fs);
                 provider.GenerateCodeFromCompileUnit(compileUnit, sw, options);
             }
-            DebugLogger.Log("[ExcelHandler] Generate C# code successfully.");
+            Kernel.Log("[ExcelHandler] Generate C# code successfully.");
         }
     }
 }

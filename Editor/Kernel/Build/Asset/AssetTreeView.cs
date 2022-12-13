@@ -208,7 +208,7 @@ namespace Morpheus.Editor.Build
 
                 if (!groupIdSet.Add(args.newName))
                 {
-                    DebugLogger.LogError($"[AssetTreeView] GroupId can't be duplicate. GroupId: {args.newName}");
+                    Kernel.LogError($"[AssetTreeView] GroupId can't be duplicate. GroupId: {args.newName}");
                     return;
                 }
 
@@ -226,7 +226,7 @@ namespace Morpheus.Editor.Build
 
                 if (!assetIdSet.Add(args.newName))
                 {
-                    DebugLogger.LogError($"[AssetTreeView] AssetId can't be duplicate. AssetId: {args.newName}");
+                    Kernel.LogError($"[AssetTreeView] AssetId can't be duplicate. AssetId: {args.newName}");
                     return;
                 }
 
@@ -337,7 +337,7 @@ namespace Morpheus.Editor.Build
         {
             if (!groupIdSet.Add(data.groupId))
             {
-                DebugLogger.LogError($"Duplicate group id are not allowed. GroupId: {data.groupId}");
+                Kernel.LogError($"Duplicate group id are not allowed. GroupId: {data.groupId}");
                 return;
             }
 
@@ -373,7 +373,7 @@ namespace Morpheus.Editor.Build
         {
             if (!assetPathSet.Add(assetPath))
             {
-                DebugLogger.LogWarning($"Duplicate asset path are not allowed. AssetPath: {assetPath}");
+                Kernel.LogWarning($"Duplicate asset path are not allowed. AssetPath: {assetPath}");
                 return;
             }
 
@@ -394,7 +394,7 @@ namespace Morpheus.Editor.Build
 
             if (!assetPathSet.Add(assetPath))
             {
-                DebugLogger.LogWarning($"Duplicate assets are not allowed. AssetPath: {assetPath}");
+                Kernel.LogWarning($"Duplicate assets are not allowed. AssetPath: {assetPath}");
                 return;
             }
 
@@ -429,7 +429,7 @@ namespace Morpheus.Editor.Build
         {
             if (!assetPathSet.Add(data.assetPath))
             {
-                DebugLogger.LogError($"Duplicate assets are not allowed. AssetPath: {data.assetPath}");
+                Kernel.LogError($"Duplicate assets are not allowed. AssetPath: {data.assetPath}");
                 return;
             }
 

@@ -193,7 +193,7 @@ namespace Morpheus.Editor.GameData
                 provider.GenerateCodeFromCompileUnit(compileUnit, sw, options);
             }
 
-            DebugLogger.Log("[ExcelHandler] Generate C# code successfully.");
+            Kernel.Log("[ExcelHandler] Generate C# code successfully.");
         }
     }
 }

@@ -47,13 +47,13 @@ namespace Morpheus.Editor
         {
             if (string.IsNullOrEmpty(className))
             {
-                DebugLogger.LogError($"[SheetInfo] Class name is not valid. Sheet: {sheetName}");
+                Kernel.LogError($"[SheetInfo] Class name is not valid. Sheet: {sheetName}");
                 return false;
             }
 
             if (fieldInfos.Count == 0)
             {
-                DebugLogger.LogError($"[SheetInfo] Field info is not valid. Sheet: {sheetName}");
+                Kernel.LogError($"[SheetInfo] Field info is not valid. Sheet: {sheetName}");
                 return false;
             }
 
@@ -65,7 +65,7 @@ namespace Morpheus.Editor
         {
             if (firstValueRowIndex > LastRowIndex)
             {
-                DebugLogger.LogError($"[SheetInfo] {sheetName} No data row to parse. LastRowNum: {LastRowIndex}");
+                Kernel.LogError($"[SheetInfo] {sheetName} No data row to parse. LastRowNum: {LastRowIndex}");
                 return false;
             }
             return true;

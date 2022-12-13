@@ -113,7 +113,7 @@ namespace Morpheus.Editor.GameData
             {
                 int index = setting.bytesOutputPath.IndexOf("/Assets");
                 string str = setting.bytesOutputPath.Substring(index, setting.bytesOutputPath.Length - index);
-                DebugLogger.Log(str);
+                Kernel.Log(str);
                 GetInfoFromFiles();
             }
             EditorGUILayout.EndHorizontal();
@@ -170,7 +170,7 @@ namespace Morpheus.Editor.GameData
         {
             if (setting == null)
             {
-                DebugLogger.LogError("[GameDataConverterWindow] GameDataConverterSetting is null.");
+                Kernel.LogError("[GameDataConverterWindow] GameDataConverterSetting is null.");
                 return;
             }
 
@@ -182,7 +182,7 @@ namespace Morpheus.Editor.GameData
             }
             catch (Exception e)
             {
-                DebugLogger.LogError($"[GameDataConverterWindow] {e.Message}");
+                Kernel.LogError($"[GameDataConverterWindow] {e.Message}");
                 return;
             }
 
@@ -196,7 +196,7 @@ namespace Morpheus.Editor.GameData
         {
             if (setting == null)
             {
-                DebugLogger.LogError("[GameDataConverterWindow] GameDataConverterSetting is null.");
+                Kernel.LogError("[GameDataConverterWindow] GameDataConverterSetting is null.");
                 return;
             }
 

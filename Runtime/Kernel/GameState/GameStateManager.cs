@@ -42,13 +42,13 @@ namespace Morpheus.GameState
                 ClassIdentityAttribute attr = Attribute.GetCustomAttribute(state.GetType(), attrType) as ClassIdentityAttribute;
                 if (attr == null)
                 {
-                    DebugLogger.LogError($"[GameStateManager] GameState has no attribute. Class: {state}");
+                    Kernel.LogError($"[GameStateManager] GameState has no attribute. Class: {state}");
                     continue;
                 }
 
                 if (stateMap.ContainsKey(attr.Id))
                 {
-                    DebugLogger.LogError($"[GameStateManager] Duplicated GameState Id: {attr.Id}");
+                    Kernel.LogError($"[GameStateManager] Duplicated GameState Id: {attr.Id}");
                     continue;
                 }
 
@@ -62,11 +62,11 @@ namespace Morpheus.GameState
         {
             if (currentState != null)
             {
-                DebugLogger.LogError($"[GameStateManager] GameStateManager has started.");
+                Kernel.LogError($"[GameStateManager] GameStateManager has started.");
                 return;
             }
 
-            AppKernel.ExecuteCoroutine(StartRoutine());
+            Kernel.ExecuteCoroutine(StartRoutine());
         }
 
         private IEnumerator StartRoutine()
@@ -83,18 +83,18 @@ namespace Morpheus.GameState
         {
             if (isTransiting)
             {
-                DebugLogger.LogError($"[GameStateManager] GameState is transiting. TargetState: {stateId}");
+                Kernel.LogError($"[GameStateManager] GameState is transiting. TargetState: {stateId}");
                 return;
             }
 
-            AppKernel.ExecuteCoroutine(TransitRoutine(stateId));
+            Kernel.ExecuteCoroutine(TransitRoutine(stateId));
         }
 
         private IEnumerator TransitRoutine(int nextStateId)
         {
             isTransiting = true;
             currentState.enabled = false;
-            yield return AppKernel.WaitForEndOfFrame; // NOTE: Wait for the update of the current frame to complete.
+            yield return Kernel.WaitForEndOfFrame; // NOTE: Wait for the update of the current frame to complete.
 
             int prevStateId = currentState.Id;
             yield return currentState.OnExit(nextStateId);
@@ -107,7 +107,7 @@ namespace Morpheus.GameState
             currentState.enabled = isPlaying;
         }
 
-        internal void Play()
+        public void Play()
         {
             isPlaying = true;
             if (isTransiting || currentState == null)
@@ -118,7 +118,7 @@ namespace Morpheus.GameState
             currentState.enabled = true;
         }
 
-        internal void Pause()
+        public void Pause()
         {
             isPlaying = false;
             if (isTransiting || currentState == null)

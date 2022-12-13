@@ -57,14 +57,14 @@ namespace Morpheus.Editor.GameData
                         workbook = new XSSFWorkbook(fs);
                         break;
                     default:
-                        DebugLogger.LogError($"[ExcelToMetaGameData] The file is not xls or xlsx format. File: {fileName}");
+                        Kernel.LogError($"[ExcelToMetaGameData] The file is not xls or xlsx format. File: {fileName}");
                         break;
                 }
             }
 
             if (workbook == null)
             {
-                DebugLogger.Log("[ExcelToMetaGameData] Workbook is null.");
+                Kernel.Log("[ExcelToMetaGameData] Workbook is null.");
                 return;
             }
 
