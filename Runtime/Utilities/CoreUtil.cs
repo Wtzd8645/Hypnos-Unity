@@ -46,7 +46,7 @@ namespace Morpheus
                 }
                 default:
                 {
-                    DebugLogger.LogError($"[Utility] Serializer not implemented. Type: {type}");
+                    Kernel.LogError($"[Utility] Serializer not implemented. Type: {type}");
                     return null;
                 }
             }
@@ -62,7 +62,7 @@ namespace Morpheus
                 }
                 default:
                 {
-                    DebugLogger.LogError($"[Utility] Compressor not implemented. Type: {type}");
+                    Kernel.LogError($"[Utility] Compressor not implemented. Type: {type}");
                     return null;
                 }
             }
@@ -78,7 +78,7 @@ namespace Morpheus
                 }
                 default:
                 {
-                    DebugLogger.LogError($"[Utility] Encryptor not implemented. Type: {type}");
+                    Kernel.LogError($"[Utility] Encryptor not implemented. Type: {type}");
                     return null;
                 }
             }

@@ -23,13 +23,13 @@ namespace Morpheus.Editor
             config = EditorGUIUtility.Load(DefaultEditorKernelConfigPath) as EditorKernelConfig;
             if (config == null)
             {
-                DebugLogger.LogError("[EditorKernel] Can't load EditorKernelConfig.");
+                Kernel.LogError("[EditorKernel] Can't load EditorKernelConfig.");
             }
 
             //CSharpAssembly = Assembly.Load(AppKernel.CSharpAssembly);
             //CSharpEditorAssembly = Assembly.Load(CSharpEditorAssemblyName);
             //DreamFrameworkAssembly = Assembly.Load(AppKernel.KernelAssembly);
-            DebugLogger.Log("[EditorKernel] Initialized");
+            Kernel.Log("[EditorKernel] Initialized");
         }
 
         // There will have gap when priority have difference of 11.

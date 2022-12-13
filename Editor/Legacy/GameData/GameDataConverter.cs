@@ -61,7 +61,7 @@ namespace Morpheus.Editor.GameData
                     parser = new ExcelToMetaGameData(fileName, ExcelToMetaGameData.XlsxExtension);
                     break;
                 default:
-                    DebugLogger.LogWarning($"[GameDataConverter] The file format can't be parse. File: {fileName}");
+                    Kernel.LogWarning($"[GameDataConverter] The file format can't be parse. File: {fileName}");
                     return;
             }
 

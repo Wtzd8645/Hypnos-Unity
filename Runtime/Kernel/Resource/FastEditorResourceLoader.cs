@@ -37,7 +37,7 @@ namespace Morpheus.Resource
             assetInstMap.TryGetValue(assetId, out AssetInst assetInst);
             if (assetInst == null)
             {
-                DebugLogger.LogError($"[FastEditorResourceLoader] Can't find AssetInst. AssetId: {assetId}");
+                Kernel.LogError($"[FastEditorResourceLoader] Can't find AssetInst. AssetId: {assetId}");
                 return null;
             }
 
@@ -55,7 +55,7 @@ namespace Morpheus.Resource
             assetInstMap.TryGetValue(assetId, out AssetInst assetInst);
             if (assetInst == null)
             {
-                DebugLogger.LogError($"[FastEditorResourceLoader] Can't find AssetInst. AssetId: {assetId}");
+                Kernel.LogError($"[FastEditorResourceLoader] Can't find AssetInst. AssetId: {assetId}");
                 completeCb?.Invoke(null);
                 yield break;
             }
@@ -75,7 +75,7 @@ namespace Morpheus.Resource
             assetInstMap.TryGetValue(assetId, out AssetInst assetInst);
             if (assetInst == null)
             {
-                DebugLogger.LogError($"[FastEditorResourceLoader] AssetInst is in an error state. AssetId: {assetId}");
+                Kernel.LogError($"[FastEditorResourceLoader] AssetInst is in an error state. AssetId: {assetId}");
                 return;
             }
 

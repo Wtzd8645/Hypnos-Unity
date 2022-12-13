@@ -48,7 +48,7 @@ namespace Morpheus.Network
             }
         }
 
-        internal void Update()
+        public void Update()
         {
             while (socketEventArgs.TryDequeue(out SocketEventArgs arg))
             {
@@ -61,7 +61,7 @@ namespace Morpheus.Network
                 responseHandlerMap.TryGetValue(response.Id, out Action<IResponse> responseHandler);
                 if (responseHandler == null)
                 {
-                    DebugLogger.LogWarning($"[NetworkManager] Response handler is null. MsgId: {response.Id}");
+                    Kernel.LogWarning($"[NetworkManager] Response handler is null. MsgId: {response.Id}");
                     continue;
                 }
                 responseHandler(response);
@@ -86,7 +86,7 @@ namespace Morpheus.Network
         {
             if (socketMap.ContainsKey(config.id))
             {
-                DebugLogger.LogError($"[NetworkManager] Socket is duplicate. SocketId: {config.id}");
+                Kernel.LogError($"[NetworkManager] Socket is duplicate. SocketId: {config.id}");
                 return;
             }
 
@@ -123,7 +123,7 @@ namespace Morpheus.Network
                 }
                 default:
                 {
-                    DebugLogger.LogError($"[NetworkManager] Protocol not implemented. SocketId: {config.id}, Protocol: {connConfig.protocol}");
+                    Kernel.LogError($"[NetworkManager] Protocol not implemented. SocketId: {config.id}, Protocol: {connConfig.protocol}");
                     break;
                 }
             }
@@ -146,7 +146,7 @@ namespace Morpheus.Network
             socketMap.TryGetValue(socketId, out ISocket socket);
             if (socket == null)
             {
-                DebugLogger.Log($"[NetworkManager] Can't find socket to connect. SocketId: {socketId}", (int)DebugLogChannel.Network);
+                Kernel.Log($"[NetworkManager] Can't find socket to connect. SocketId: {socketId}", (int)LogChannel.Network);
                 return;
             }
 
@@ -158,7 +158,7 @@ namespace Morpheus.Network
             socketMap.TryGetValue(socketId, out ISocket socket);
             if (socket == null)
             {
-                DebugLogger.Log($"[NetworkManager] Can't find socket to disconnect. SocketId: {socketId}", (int)DebugLogChannel.Network);
+                Kernel.Log($"[NetworkManager] Can't find socket to disconnect. SocketId: {socketId}", (int)LogChannel.Network);
                 return;
             }
 
@@ -170,7 +170,7 @@ namespace Morpheus.Network
             socketMap.TryGetValue(socketId, out ISocket socket);
             if (socket == null)
             {
-                DebugLogger.Log($"[NetworkManager] Can't find socket to send request. SocketId: {socketId}", (int)DebugLogChannel.Network);
+                Kernel.Log($"[NetworkManager] Can't find socket to send request. SocketId: {socketId}", (int)LogChannel.Network);
                 return;
             }
 
@@ -185,7 +185,7 @@ namespace Morpheus.Network
         // NOTE: May be called by multiple threads.
         private void OnSocketAoComplete(SocketBase socket, SocketAsyncOperation operation, SocketError socketError)
         {
-            DebugLogger.Log($"[NetworkManager] OnStreamSocketAoComplete. SocketId: {socket.id}, Operation: {operation}, Error: {socketError}", (int)DebugLogChannel.Network);
+            Kernel.Log($"[NetworkManager] OnStreamSocketAoComplete. SocketId: {socket.id}, Operation: {operation}, Error: {socketError}", (int)LogChannel.Network);
             SocketEventArgs args = new SocketEventArgs()
             {
                 socket = socket,

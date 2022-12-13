@@ -165,7 +165,7 @@ namespace Morpheus.UI
             BindingResourceAttribute attr = GetBindingResourceAttribute(uiType);
             if (attr == null)
             {
-                DebugLogger.LogError($"[UiManager] The type does not have BindingResourceAttribute. Type: {uiType}");
+                Kernel.LogError($"[UiManager] The type does not have BindingResourceAttribute. Type: {uiType}");
                 loadedCb(null);
                 return;
             }
@@ -204,7 +204,7 @@ namespace Morpheus.UI
             BindingResourceAttribute attr = GetBindingResourceAttribute(uiType);
             if (attr == null)
             {
-                DebugLogger.LogError($"[UiManager] The type does not have BindingResourceAttribute. Type: {uiType}");
+                Kernel.LogError($"[UiManager] The type does not have BindingResourceAttribute. Type: {uiType}");
                 completeCb(null);
                 return;
             }
@@ -243,7 +243,7 @@ namespace Morpheus.UI
                 canvasSize.x * safeAreaRatio.width,
                 canvasSize.y * safeAreaRatio.height);
 
-            DebugLogger.Log($"[UiManager] CanvasSafeArea: {CanvasSafeArea}", (int)DebugLogChannel.UI);
+            Kernel.Log($"[UiManager] CanvasSafeArea: {CanvasSafeArea}", (int)LogChannel.UI);
         }
     }
 }
