@@ -36,9 +36,9 @@ namespace Morpheus.GameState
         public void Initialize(GameStateConfig config)
         {
             Type attrType = typeof(ClassIdentityAttribute);
-            for (int i = 0; i < config.gameStates.Length; ++i)
+            for (int i = 0; i < config.GameStates.Length; ++i)
             {
-                GameStateBase state = config.gameStates[i];
+                GameStateBase state = config.GameStates[i];
                 ClassIdentityAttribute attr = Attribute.GetCustomAttribute(state.GetType(), attrType) as ClassIdentityAttribute;
                 if (attr == null)
                 {
@@ -55,7 +55,7 @@ namespace Morpheus.GameState
                 state.Id = attr.Id;
                 stateMap.Add(attr.Id, state);
             }
-            startStateId = config.startGameState;
+            startStateId = config.StartGameState;
         }
 
         public void Start()

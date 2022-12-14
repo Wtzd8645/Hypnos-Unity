@@ -2,9 +2,9 @@
 {
     public abstract class GameTimerBase
     {
-        internal GameTimerBase nextNode;
+        internal GameTimerBase NextNode;
 
-        protected float interval;
+        protected float Interval;
 
         public bool IsStop { get; protected set; } = true;
 

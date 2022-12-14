@@ -4,18 +4,11 @@ using System.Collections.Generic;
 
 namespace Morpheus.Ecs
 {
-    public struct SystemConfig
+    public interface ISystemConfig
     {
-        public Type[] UpdateSystems;
-        public Type[] LateUpdateSystems;
-        public Type[] FixedUpdateSystems;
-
-        public SystemConfig(Type[] updateSystems = null, Type[] lateUpdateSystems = null, Type[] fixedUpdateSystems = null)
-        {
-            UpdateSystems = updateSystems;
-            LateUpdateSystems = lateUpdateSystems;
-            FixedUpdateSystems = fixedUpdateSystems;
-        }
+        Type[] UpdateSystems {get;}
+        Type[] LateUpdateSystems {get;}
+        Type[] FixedUpdateSystems {get;}
     }
 
     public class SystemManager : Singleton<SystemManager>
@@ -25,9 +18,9 @@ namespace Morpheus.Ecs
         private OrderedSet<EcsSystem> lateUpdateSystems = new OrderedSet<EcsSystem>();
         private OrderedSet<EcsSystem> fixedUpdateSystems = new OrderedSet<EcsSystem>();
 
-        public void Init(SystemConfig config)
+        public void Initialize(ISystemConfig config)
         {
-            void setSystems(Type[] systemTypes, OrderedSet<EcsSystem> systems)
+            void SetSystems(Type[] systemTypes, OrderedSet<EcsSystem> systems)
             {
                 if (systemTypes == null || systemTypes.Length == 0)
                 {
@@ -59,9 +52,9 @@ namespace Morpheus.Ecs
             }
 
             systemWithBelongNodeDict.Clear();
-            setSystems(config.UpdateSystems, updateSystems);
-            setSystems(config.LateUpdateSystems, lateUpdateSystems);
-            setSystems(config.FixedUpdateSystems, fixedUpdateSystems);
+            SetSystems(config.UpdateSystems, updateSystems);
+            SetSystems(config.LateUpdateSystems, lateUpdateSystems);
+            SetSystems(config.FixedUpdateSystems, fixedUpdateSystems);
         }
 
         public void Update()

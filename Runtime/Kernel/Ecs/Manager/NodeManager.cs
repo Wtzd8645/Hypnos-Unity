@@ -5,9 +5,9 @@ using System.Numerics;
 
 namespace Morpheus.Ecs
 {
-    public partial class NodeManager : IDisposable
+    public partial class NodeManager
     {
-        private ComonentsInNodesSet nodeSet;
+        private ComponentTypeInNodeDic componentTypeDic;
         private OrderedDictionary<Type, HashSet<Type>> nodeToComponentDict = new OrderedDictionary<Type, HashSet<Type>>();
         private Dictionary<Type, BigInteger> nodeHashes = new Dictionary<Type, BigInteger>();
         private Dictionary<Type, BigInteger> componentHashes = new Dictionary<Type, BigInteger>();
@@ -15,17 +15,17 @@ namespace Morpheus.Ecs
 
         public NodeManager()
         {
-            nodeSet = ComonentsInNodesSet.GetInstance();
-            refreshMaps();
+            componentTypeDic = ComponentTypeInNodeDic.GetInstanceByAssembly();
+            RefreshMaps();
         }
 
-        private void refreshMaps()
+        private void RefreshMaps()
         {
             nodeToComponentDict.Clear();
             componentHashes.Clear();
             nodeHashes.Clear();
 
-            foreach (KeyValuePair<Type, HashSet<Type>> eseentials in nodeSet.ComponentsOfNode)
+            foreach (KeyValuePair<Type, HashSet<Type>> eseentials in componentTypeDic)
             {
                 foreach (Type com in eseentials.Value)
                 {
@@ -45,7 +45,7 @@ namespace Morpheus.Ecs
                 i <<= 1;
             }
 
-            foreach (KeyValuePair<Type, HashSet<Type>> eseentials in nodeSet.ComponentsOfNode)
+            foreach (KeyValuePair<Type, HashSet<Type>> eseentials in componentTypeDic)
             {
                 nodeHashes.Add(eseentials.Key, 0);
                 foreach (Type com in eseentials.Value)
@@ -55,53 +55,53 @@ namespace Morpheus.Ecs
             }
         }
 
-        public void Dispose()
+        public void AddComponentSet(ComponentTypeInNodeDic set)
         {
-            ComponentManager.Instance.OnComponentAdd -= OnComponentAdd;
-            ComponentManager.Instance.OnComponentRemove -= OnComponentRemove;
-        }
-
-        public void AddComponentSet(ComonentsInNodesSet set)
-        {
-            nodeSet += set;
-            refreshMaps();
+            componentTypeDic += set;
+            RefreshMaps();
         }
 
         public void OnComponentAdd(EcsComponent component)
         {
-            if (!entityHashes.ContainsKey(component.EntityID))
+            if (!entityHashes.ContainsKey(component.EntityId))
             {
-                entityHashes.Add(component.EntityID, 0);
+                entityHashes.Add(component.EntityId, 0);
             }
-            BigInteger oldValue = entityHashes[component.EntityID];
-            BigInteger newValue = entityHashes[component.EntityID] |= componentHashes[component.GetType()];
+            
+            if (!componentHashes.TryGetValue(component.GetType(), out var componentHash)) return;
+
+            BigInteger oldValue = entityHashes[component.EntityId];
+            BigInteger newValue = entityHashes[component.EntityId] |= componentHash;
 
             foreach (Type nodeType in nodeToComponentDict[component.GetType()])
             {
                 if ((nodeHashes[nodeType] & oldValue) != nodeHashes[nodeType]
                     && (nodeHashes[nodeType] & newValue) == nodeHashes[nodeType])
                 {
-                    AddNode2System(nodeType, component.EntityID);
+                    AddNode2System(nodeType, component.EntityId);
                 }
             }
         }
 
         public void OnComponentRemove(EcsComponent component)
         {
-            if (!entityHashes.ContainsKey(component.EntityID))
+            if (!entityHashes.ContainsKey(component.EntityId))
             {
-                throw new Exception($"Entity {component.EntityID} doesn't exist.");
+                throw new Exception($"Entity {component.EntityId} doesn't exist.");
             }
 
-            BigInteger oldValue = entityHashes[component.EntityID];
-            BigInteger newValue = entityHashes[component.EntityID] &= ~componentHashes[component.GetType()];
+            // Could be optional component.
+            if (!componentHashes.TryGetValue(component.GetType(), out var componentHash)) return;
+
+            BigInteger oldValue = entityHashes[component.EntityId];
+            BigInteger newValue = entityHashes[component.EntityId] &= ~componentHash;
 
             foreach (Type nodeType in nodeToComponentDict[component.GetType()])
             {
                 if ((nodeHashes[nodeType] & oldValue) == nodeHashes[nodeType]
                     && (nodeHashes[nodeType] & newValue) != nodeHashes[nodeType])
                 {
-                    RemoveNodeFromSystem(nodeType, component.EntityID);
+                    RemoveNodeFromSystem(nodeType, component.EntityId);
                 }
             }
         }

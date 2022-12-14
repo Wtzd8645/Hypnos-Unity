@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Morpheus.Ecs
 {
-    public partial class ComponentManager : Singleton<ComponentManager>
+    public partial class ComponentManager
     {
         private Dictionary<Type, ObjectPool<EcsComponent>> componentPools = new Dictionary<Type, ObjectPool<EcsComponent>>();
 
@@ -18,10 +18,10 @@ namespace Morpheus.Ecs
             }
             return (T)objectPool.ForcePop();
         }
-
-        private void RecycleComponent<T>(T component) where T : EcsComponent
+        
+        private void RecycleComponent(EcsComponent component)
         {
-            Type type = typeof(T);
+            Type type = component.GetType();
             if (componentPools.TryGetValue(type, out ObjectPool<EcsComponent> objectPool))
             {
                 objectPool.ForcePush(component);

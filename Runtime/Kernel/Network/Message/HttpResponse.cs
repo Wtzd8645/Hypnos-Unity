@@ -6,20 +6,20 @@ namespace Morpheus.Network
 {
     public class HttpResponse : IResponse
     {
-        public ushort id;
-        public HttpStatusCode statusCode;
-        public Stream stream;
+        public ushort ResponseId;
+        public HttpStatusCode StatusCode;
+        public Stream Stream;
 
         public ushort Id
         {
-            get => id;
-            set => id = value;
+            get => ResponseId;
+            set => ResponseId = value;
         }
 
         public HttpResponse(HttpResponseMessage resp)
         {
-            statusCode = resp.StatusCode;
-            stream = resp.Content.ReadAsStreamAsync().Result;
+            StatusCode = resp.StatusCode;
+            Stream = resp.Content.ReadAsStreamAsync().Result;
         }
 
         public void Unpack(PacketBuffer source)

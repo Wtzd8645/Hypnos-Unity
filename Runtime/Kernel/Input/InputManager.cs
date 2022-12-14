@@ -25,7 +25,7 @@ namespace Morpheus.IO
         }
         #endregion
 
-        private static readonly InputModuleBase idleModule = new IdleInputModule();
+        private static readonly InputModuleBase IdleModule = new IdleInputModule();
         private readonly Dictionary<int, InputModuleBase> moduleMap = new Dictionary<int, InputModuleBase>(7);
 
         private InputModuleBase lastModule;
@@ -36,8 +36,8 @@ namespace Morpheus.IO
         public void Initialize(InputConfig config)
         {
             //InputSystem.onDeviceChange
-            lastModule = idleModule;
-            currentModule = idleModule;
+            lastModule = IdleModule;
+            currentModule = IdleModule;
         }
 
         [Conditional("CHECK_PHYSICAL_INPUT")]
@@ -53,17 +53,17 @@ namespace Morpheus.IO
 
         public void SetActive(bool isActive)
         {
-            if (isActive && currentModule == idleModule)
+            if (isActive && currentModule == IdleModule)
             {
                 currentModule = lastModule;
                 return;
             }
 
-            if (!isActive && currentModule != idleModule)
+            if (!isActive && currentModule != IdleModule)
             {
                 currentModule.Reset();
                 lastModule = currentModule;
-                currentModule = idleModule;
+                currentModule = IdleModule;
             }
         }
 
@@ -81,7 +81,7 @@ namespace Morpheus.IO
         {
             currentModule.Reset();
             moduleMap.TryGetValue(id, out currentModule);
-            currentModule ??= idleModule;
+            currentModule ??= IdleModule;
         }
     }
 }

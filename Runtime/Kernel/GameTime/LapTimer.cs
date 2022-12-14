@@ -4,8 +4,8 @@ namespace Morpheus.GameTime
 {
     public class LapTimer : GameTimerBase
     {
-        protected Action<LapTimer> onLapTimeUp;
-        protected Action<LapTimer> onTimeUp;
+        protected Action<LapTimer> OnLapTimeUp;
+        protected Action<LapTimer> OnTimeUp;
 
         private float scaledInterval;
         private float lapLeftTime;
@@ -15,47 +15,47 @@ namespace Morpheus.GameTime
         public void Set(float time, int laps, Action<LapTimer> onLapTimeUpCb, Action<LapTimer> onTimeUpCb)
         {
             LeftTime = time * laps;
-            interval = time;
+            Interval = time;
             scaledInterval = time;
             lapLeftTime = time;
             totalLap = laps;
             leftLap = laps;
-            onLapTimeUp = onLapTimeUpCb;
-            onTimeUp = onTimeUpCb;
+            OnLapTimeUp = onLapTimeUpCb;
+            OnTimeUp = onTimeUpCb;
         }
 
         public override void Reset()
         {
             IsStop = true;
-            onLapTimeUp = null;
-            onTimeUp = null;
+            OnLapTimeUp = null;
+            OnTimeUp = null;
         }
 
         public override void Restart()
         {
             IsStop = false;
-            LeftTime = interval * totalLap;
-            scaledInterval = interval;
-            lapLeftTime = interval;
+            LeftTime = Interval * totalLap;
+            scaledInterval = Interval;
+            lapLeftTime = Interval;
             leftLap = totalLap;
         }
 
         internal override void Tick(GameTimeInfo timeInfo)
         {
-            LeftTime -= timeInfo.deltaTime;
-            lapLeftTime -= timeInfo.deltaTime;
+            LeftTime -= timeInfo.DeltaTime;
+            lapLeftTime -= timeInfo.DeltaTime;
             if (lapLeftTime > 0f)
             {
                 return;
             }
 
             lapLeftTime += scaledInterval;
-            onLapTimeUp?.Invoke(this);
+            OnLapTimeUp?.Invoke(this);
 
             if (--leftLap < 1)
             {
                 IsStop = true;
-                onTimeUp?.Invoke(this);
+                OnTimeUp?.Invoke(this);
             }
         }
 

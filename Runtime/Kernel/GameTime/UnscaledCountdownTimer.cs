@@ -4,14 +4,14 @@
     {
         internal override void Tick(GameTimeInfo timeInfo)
         {
-            LeftTime -= timeInfo.unscaledDeltaTime;
+            LeftTime -= timeInfo.UnscaledDeltaTime;
             if (LeftTime > 0f)
             {
                 return;
             }
 
             IsStop = true;
-            onTimeUp?.Invoke(this);
+            OnTimeUp?.Invoke(this);
         }
     }
 }

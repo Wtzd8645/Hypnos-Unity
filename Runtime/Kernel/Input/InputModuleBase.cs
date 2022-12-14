@@ -4,8 +4,8 @@ namespace Morpheus.IO
 {
     public abstract class InputModuleBase
     {
-        protected AxisKeyPair[] axisKeyPairs = new AxisKeyPair[0];
-        protected ButtonKeyPair[] buttonKeyPairs = new ButtonKeyPair[0];
+        protected AxisKeyPair[] AxisKeyPairs = new AxisKeyPair[0];
+        protected ButtonKeyPair[] ButtonKeyPairs = new ButtonKeyPair[0];
 
         public abstract void Reset();
 
@@ -25,40 +25,40 @@ namespace Morpheus.IO
 
         protected virtual void CheckAxisInput()
         {
-            for (int i = 0; i < axisKeyPairs.Length; ++i)
+            for (int i = 0; i < AxisKeyPairs.Length; ++i)
             {
-                OnAxisInputReceive(axisKeyPairs[i].id, Input.GetAxis(axisKeyPairs[i].axisX), Input.GetAxis(axisKeyPairs[i].axisY));
+                OnAxisInputReceive(AxisKeyPairs[i].Id, Input.GetAxis(AxisKeyPairs[i].AxisX), Input.GetAxis(AxisKeyPairs[i].AxisY));
             }
         }
 
         protected virtual void CheckKeyboardInput()
         {
-            for (int i = 0; i < buttonKeyPairs.Length; ++i)
+            for (int i = 0; i < ButtonKeyPairs.Length; ++i)
             {
-                if (Input.GetKeyDown(buttonKeyPairs[i].keyboardKey))
+                if (Input.GetKeyDown(ButtonKeyPairs[i].KeyboardKey))
                 {
-                    OnButtonInputReceive(buttonKeyPairs[i].id, true);
+                    OnButtonInputReceive(ButtonKeyPairs[i].Id, true);
                 }
 
-                if (Input.GetKeyUp(buttonKeyPairs[i].keyboardKey))
+                if (Input.GetKeyUp(ButtonKeyPairs[i].KeyboardKey))
                 {
-                    OnButtonInputReceive(buttonKeyPairs[i].id, false);
+                    OnButtonInputReceive(ButtonKeyPairs[i].Id, false);
                 }
             }
         }
 
         protected virtual void CheckJoystickInput()
         {
-            for (int i = 0; i < buttonKeyPairs.Length; ++i)
+            for (int i = 0; i < ButtonKeyPairs.Length; ++i)
             {
-                if (Input.GetKeyDown(buttonKeyPairs[i].joystickKey))
+                if (Input.GetKeyDown(ButtonKeyPairs[i].JoystickKey))
                 {
-                    OnButtonInputReceive(buttonKeyPairs[i].id, true);
+                    OnButtonInputReceive(ButtonKeyPairs[i].Id, true);
                 }
 
-                if (Input.GetKeyUp(buttonKeyPairs[i].joystickKey))
+                if (Input.GetKeyUp(ButtonKeyPairs[i].JoystickKey))
                 {
-                    OnButtonInputReceive(buttonKeyPairs[i].id, false);
+                    OnButtonInputReceive(ButtonKeyPairs[i].Id, false);
                 }
             }
         }

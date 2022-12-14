@@ -9,40 +9,42 @@ namespace Morpheus.Ecs
         private Dictionary<Type, ObjectPool<EcsNode>> nodePools = new Dictionary<Type, ObjectPool<EcsNode>>();
         private Dictionary<ulong, Dictionary<Type, EcsNode>> entityNodeDict = new Dictionary<ulong, Dictionary<Type, EcsNode>>();
 
-        private void AddNode2System(Type type, ulong entityID)
+        private void AddNode2System(Type type, ulong entityId)
         {
             EcsNode node = GetNode(type);
-            node.Init(entityID);
+            node.Init(entityId);
             SystemManager.Instance.AddNode(node);
 
-            if (!entityNodeDict.TryGetValue(entityID, out Dictionary<Type, EcsNode> nodeDict))
+            if (!entityNodeDict.TryGetValue(entityId, out Dictionary<Type, EcsNode> nodeDict))
             {
-                entityNodeDict[entityID] = nodeDict = new Dictionary<Type, EcsNode>();
+                entityNodeDict[entityId] = nodeDict = new Dictionary<Type, EcsNode>();
             }
             nodeDict.Add(type, node);
+
+            Kernel.TraceLog($"Entity {entityId} Add Node {type}");
         }
 
-        private void RemoveNodeFromSystem(Type type, ulong entityID)
+        private void RemoveNodeFromSystem(Type type, ulong entityId)
         {
-            if (!entityNodeDict.TryGetValue(entityID, out Dictionary<Type, EcsNode> nodeDict))
+            if (!entityNodeDict.TryGetValue(entityId, out Dictionary<Type, EcsNode> nodeDict))
             {
-                throw new Exception($"entityNodeDict doesn't contain the Entity {entityID}.");
+                throw new Exception($"entityNodeDict doesn't contain the Entity {entityId}.");
             }
 
             if (!nodeDict.TryGetValue(type, out EcsNode node))
             {
-                throw new Exception($"Entity {entityID} doesn't have the Type {type}.");
+                throw new Exception($"Entity {entityId} doesn't have the Type {type}.");
             }
-
-            node.Dispose();
             SystemManager.Instance.RemoveNode(node);
+            node.Dispose();
             RecycleNode(type, node);
 
             nodeDict.Remove(type);
             if (nodeDict.Count == 0)
             {
-                entityNodeDict.Remove(entityID);
+                entityNodeDict.Remove(entityId);
             }
+            Kernel.TraceLog($"Entity {entityId} Remove Node {type}");
         }
 
         private EcsNode GetNode(Type type)

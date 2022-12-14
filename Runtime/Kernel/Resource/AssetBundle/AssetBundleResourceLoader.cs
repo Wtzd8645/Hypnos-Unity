@@ -17,30 +17,30 @@ namespace Morpheus.Resource
 
         public override void SetAssetConfig(AssetConfig config)
         {
-            AssetGroupData[] groupDatas = config.assetGroupManifest.assetGroupDatas;
+            AssetGroupData[] groupDatas = config.AssetGroupManifest.AssetGroupDatas;
             assetGroupInstMap = new Dictionary<string, AssetGroupInst>(groupDatas.Length);
             foreach (AssetGroupData data in groupDatas)
             {
                 AssetGroupInst groupInst = new AssetGroupInst
                 {
-                    groupId = data.groupId,
-                    filePath = Path.Combine(resourcePath, data.fileName),
-                    fileOffset = data.fileOffset,
-                    dependencies = data.dependencies
+                    GroupId = data.GroupId,
+                    FilePath = Path.Combine(resourcePath, data.FileName),
+                    FileOffset = data.FileOffset,
+                    Dependencies = data.Dependencies
                 };
-                assetGroupInstMap.Add(data.groupId, groupInst);
+                assetGroupInstMap.Add(data.GroupId, groupInst);
             }
 
-            AssetData[] assetDatas = config.assetManifest.assetDatas;
+            AssetData[] assetDatas = config.AssetManifest.AssetDatas;
             assetInstMap = new Dictionary<string, AssetInst>(assetDatas.Length);
             foreach (AssetData data in assetDatas)
             {
                 AssetInst assetInst = new AssetInst
                 {
-                    assetId = data.assetId,
-                    groupId = data.groupId
+                    AssetId = data.AssetId,
+                    GroupId = data.GroupId
                 };
-                assetInstMap.Add(data.assetId, assetInst);
+                assetInstMap.Add(data.AssetId, assetInst);
             }
         }
 
@@ -53,14 +53,14 @@ namespace Morpheus.Resource
                 return false;
             }
 
-            assetGroupInstMap.TryGetValue(assetInst.groupId, out AssetGroupInst groupInst);
+            assetGroupInstMap.TryGetValue(assetInst.GroupId, out AssetGroupInst groupInst);
             if (groupInst == null)
             {
-                Kernel.LogError($"[AssetBundleResourceLoader] Can't find AssetGroupInst. GroupId: {assetInst.groupId}, AssetId: {assetId}");
+                Kernel.LogError($"[AssetBundleResourceLoader] Can't find AssetGroupInst. GroupId: {assetInst.GroupId}, AssetId: {assetId}");
                 return false;
             }
 
-            return File.Exists(groupInst.filePath);
+            return File.Exists(groupInst.FilePath);
         }
 
         public override T LoadAsset<T>(string assetId)
@@ -72,40 +72,40 @@ namespace Morpheus.Resource
                 return null;
             }
 
-            if (assetInst.asset == null)
+            if (assetInst.Asset == null)
             {
-                assetGroupInstMap.TryGetValue(assetInst.groupId, out AssetGroupInst groupInst);
+                assetGroupInstMap.TryGetValue(assetInst.GroupId, out AssetGroupInst groupInst);
                 if (groupInst == null)
                 {
-                    Kernel.LogError($"[AssetBundleResourceLoader] Can't find AssetGroupInst. GroupId: {assetInst.groupId}, AssetId: {assetId}");
+                    Kernel.LogError($"[AssetBundleResourceLoader] Can't find AssetGroupInst. GroupId: {assetInst.GroupId}, AssetId: {assetId}");
                     return null;
                 }
 
-                if (groupInst.bundle == null && groupInst.refCount == 0)
+                if (groupInst.Bundle == null && groupInst.RefCount == 0)
                 {
                     // Load dependencies
-                    foreach (string depGroupId in groupInst.dependencies)
+                    foreach (string depGroupId in groupInst.Dependencies)
                     {
                         assetGroupInstMap.TryGetValue(depGroupId, out AssetGroupInst depGroupInst);
                         if (depGroupInst == null)
                         {
-                            Kernel.LogError($"[AssetBundleResourceLoader] Can't find dependent AssetGroupInst. GroupId: {assetInst.groupId}, DependenctGroupId: {depGroupId}");
+                            Kernel.LogError($"[AssetBundleResourceLoader] Can't find dependent AssetGroupInst. GroupId: {assetInst.GroupId}, DependenctGroupId: {depGroupId}");
                             continue;
                         }
 
-                        ++depGroupInst.refCount;
+                        ++depGroupInst.RefCount;
                         depGroupInst.Load();
                     }
 
-                    ++groupInst.refCount;
+                    ++groupInst.RefCount;
                     groupInst.Load();
                 }
 
                 groupInst.LoadAsset<T>(assetInst);
             }
 
-            ++assetInst.refCount;
-            return assetInst.asset as T;
+            ++assetInst.RefCount;
+            return assetInst.Asset as T;
         }
 
         public override IEnumerator LoadAssetRoutine<T>(string assetId, ResourceAoHandler<T> completeCb)
@@ -118,40 +118,40 @@ namespace Morpheus.Resource
                 yield break;
             }
 
-            if (assetInst.asset == null)
+            if (assetInst.Asset == null)
             {
-                assetGroupInstMap.TryGetValue(assetInst.groupId, out AssetGroupInst groupInst);
+                assetGroupInstMap.TryGetValue(assetInst.GroupId, out AssetGroupInst groupInst);
                 if (groupInst == null)
                 {
-                    Kernel.LogError($"[AssetBundleResourceLoader] Can't find AssetGroupInst. GroupId: {assetInst.groupId}, AssetId: {assetId}");
+                    Kernel.LogError($"[AssetBundleResourceLoader] Can't find AssetGroupInst. GroupId: {assetInst.GroupId}, AssetId: {assetId}");
                     yield break;
                 }
 
-                if (groupInst.bundle == null && groupInst.refCount == 0)
+                if (groupInst.Bundle == null && groupInst.RefCount == 0)
                 {
                     // Load dependencies
-                    foreach (string depGroupId in groupInst.dependencies)
+                    foreach (string depGroupId in groupInst.Dependencies)
                     {
                         assetGroupInstMap.TryGetValue(depGroupId, out AssetGroupInst depGroupInst);
                         if (depGroupInst == null)
                         {
-                            Kernel.LogError($"[AssetBundleResourceLoader] Can't find dependent AssetGroupInst. GroupId: {assetInst.groupId}, DependenctGroupId: {depGroupId}");
+                            Kernel.LogError($"[AssetBundleResourceLoader] Can't find dependent AssetGroupInst. GroupId: {assetInst.GroupId}, DependenctGroupId: {depGroupId}");
                             continue;
                         }
 
-                        ++depGroupInst.refCount;
+                        ++depGroupInst.RefCount;
                         yield return depGroupInst.LoadRoutine();
                     }
 
-                    ++groupInst.refCount;
+                    ++groupInst.RefCount;
                     yield return groupInst.LoadRoutine();
                 }
 
                 yield return groupInst.LoadAssetRoutine<T>(assetInst);
             }
 
-            ++assetInst.refCount;
-            completeCb?.Invoke(assetInst.asset as T);
+            ++assetInst.RefCount;
+            completeCb?.Invoke(assetInst.Asset as T);
         }
 
         public override void UnloadAsset(string assetId)
@@ -168,7 +168,7 @@ namespace Morpheus.Resource
                 return;
             }
 
-            DereferenceAssetGroupInst(assetInst.groupId);
+            DereferenceAssetGroupInst(assetInst.GroupId);
         }
 
         private void DereferenceAssetGroupInst(string groupId)
@@ -186,7 +186,7 @@ namespace Morpheus.Resource
             }
 
             // Unload dependencies
-            foreach (string depGroupId in groupInst.dependencies)
+            foreach (string depGroupId in groupInst.Dependencies)
             {
                 assetGroupInstMap.TryGetValue(depGroupId, out AssetGroupInst depGroupInst);
                 if (depGroupInst == null)
@@ -207,8 +207,8 @@ namespace Morpheus.Resource
 
             foreach (AssetInst assetInst in assetInstMap.Values)
             {
-                assetInst.asset = null;
-                assetInst.refCount = 0;
+                assetInst.Asset = null;
+                assetInst.RefCount = 0;
             }
 
             foreach (AssetGroupInst groupInst in assetGroupInstMap.Values)

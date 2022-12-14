@@ -27,8 +27,8 @@ namespace Morpheus.Network
         public HttpSocket(int id, SocketHandlerConfig handlerConfig)
         {
             Id = id;
-            responseProducer = handlerConfig.responseProducer;
-            onResponseComplete = handlerConfig.onResponseCompleteHandler;
+            responseProducer = handlerConfig.ResponseProducer;
+            onResponseComplete = handlerConfig.OnResponseCompleteHandler;
         }
 
         public void Dispose()
@@ -57,16 +57,16 @@ namespace Morpheus.Network
             {
                 HttpRequest request = state as HttpRequest;
                 HttpResponseMessage response;
-                switch (request.method)
+                switch (request.Method)
                 {
                     case HttpMethod.Get:
                     {
-                        response = await client.GetAsync(request.uri);
+                        response = await client.GetAsync(request.Uri);
                         break;
                     }
                     case HttpMethod.Post:
                     {
-                        response = await client.PostAsync(request.uri, request.content);
+                        response = await client.PostAsync(request.Uri, request.Content);
                         break;
                     }
                     default:

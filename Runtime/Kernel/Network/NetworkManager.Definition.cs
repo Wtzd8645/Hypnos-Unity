@@ -22,10 +22,10 @@ namespace Morpheus.Network
     public enum TransportProtocol
     {
         LocalSimulation,
-        TCP,
-        UDP,
-        RUDP,
-        HTTP
+        Tcp,
+        Udp,
+        Rudp,
+        Http
     }
 
     public enum NetworkEvent
@@ -51,35 +51,35 @@ namespace Morpheus.Network
 
     internal class SocketEventArgs
     {
-        public SocketBase socket;
-        public int socketVersion;
-        public SocketAsyncOperation operation;
-        public SocketError result; // Note: https://docs.microsoft.com/zh-tw/windows/win32/winsock/windows-sockets-error-codes-2
+        public SocketBase Socket;
+        public int SocketVersion;
+        public SocketAsyncOperation Operation;
+        public SocketError Result; // Note: https://docs.microsoft.com/zh-tw/windows/win32/winsock/windows-sockets-error-codes-2
     }
 
     public class PacketBuffer
     {
-        public int offset;
-        public byte[] final;
-        public byte[] compress;
-        public byte[] encrypt;
+        public int Offset;
+        public byte[] Final;
+        public byte[] Compress;
+        public byte[] Encrypt;
     }
 
     internal class PacketReadState
     {
-        public bool isWaitingPacketSize;
-        public int waitingBytes;
-        public int pendingBytes;
-        public int processedBytes;
-        public PacketBuffer packetBuf;
+        public bool IsWaitingPacketSize;
+        public int WaitingBytes;
+        public int PendingBytes;
+        public int ProcessedBytes;
+        public PacketBuffer PacketBuf;
     }
 
     internal class PacketSendState
     {
-        public bool isSending;
-        public int pendingBytes;
-        public int processedBytes;
-        public byte[] sendBuf;
-        public PacketBuffer packetBuf;
+        public bool IsSending;
+        public int PendingBytes;
+        public int ProcessedBytes;
+        public byte[] SendBuf;
+        public PacketBuffer PacketBuf;
     }
 }

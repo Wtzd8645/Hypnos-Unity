@@ -129,20 +129,20 @@ namespace Morpheus.Core
 
         public static float EaseInBack(float k)
         {
-            const float s = 1.70158f;
-            return k * k * ((s + 1f) * k - s);
+            const float S = 1.70158f;
+            return k * k * ((S + 1f) * k - S);
         }
 
         public static float EaseOutBack(float k)
         {
-            const float s = 1.70158f;
-            return (k -= 1f) * k * ((s + 1f) * k + s) + 1f;
+            const float S = 1.70158f;
+            return (k -= 1f) * k * ((S + 1f) * k + S) + 1f;
         }
 
         public static float EaseInOutBack(float k)
         {
-            const float s2 = 2.5949095f;
-            return (k *= 2f) < 1f ? 0.5f * (k * k * ((s2 + 1f) * k - s2)) : 0.5f * ((k -= 2f) * k * ((s2 + 1f) * k + s2) + 2f);
+            const float S = 2.5949095f;
+            return (k *= 2f) < 1f ? 0.5f * (k * k * ((S + 1f) * k - S)) : 0.5f * ((k -= 2f) * k * ((S + 1f) * k + S) + 2f);
         }
 
         public static float EaseInBounce(float k)

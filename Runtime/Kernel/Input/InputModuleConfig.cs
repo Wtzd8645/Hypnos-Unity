@@ -6,22 +6,22 @@ namespace Morpheus.IO
     [Serializable]
     public struct AxisKeyPair
     {
-        public int id;
-        public string axisX;
-        public string axisY;
+        public int Id;
+        public string AxisX;
+        public string AxisY;
     }
 
     [Serializable]
     public struct ButtonKeyPair
     {
-        public int id;
-        public KeyCode keyboardKey;
-        public KeyCode joystickKey;
+        public int Id;
+        public KeyCode KeyboardKey;
+        public KeyCode JoystickKey;
     }
 
     public class InputModuleConfig : ScriptableObject
     {
-        public AxisKeyPair[] axisKeyPairs = new AxisKeyPair[0];
-        public ButtonKeyPair[] buttonKeyPairs = new ButtonKeyPair[0];
+        public AxisKeyPair[] AxisKeyPairs = new AxisKeyPair[0];
+        public ButtonKeyPair[] ButtonKeyPairs = new ButtonKeyPair[0];
     }
 }
