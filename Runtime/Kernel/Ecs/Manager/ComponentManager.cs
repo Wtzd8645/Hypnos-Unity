@@ -27,17 +27,17 @@ namespace Morpheus.Ecs
             OnComponentRemove -= nodeManager.OnComponentRemove;
         }
 
-        public T GetComponent<T>(ulong entityID) where T : EcsComponent
+        public T GetComponent<T>(ulong entityId) where T : EcsComponent
         {
-            return !entityToComponentsDict.TryGetValue(entityID, out Dictionary<Type, EcsComponent> componentDict)
+            return !entityToComponentsDict.TryGetValue(entityId, out Dictionary<Type, EcsComponent> componentDict)
                 || !componentDict.TryGetValue(typeof(T), out EcsComponent result)
                 ? null
                 : result as T;
         }
 
-        internal IEnumerable<EcsComponent> GetAllComponents(ulong entityID)
+        internal IEnumerable<EcsComponent> GetAllComponents(ulong entityId)
         {
-            if (!entityToComponentsDict.TryGetValue(entityID, out Dictionary<Type, EcsComponent> componentDict))
+            if (!entityToComponentsDict.TryGetValue(entityId, out Dictionary<Type, EcsComponent> componentDict))
             {
                 return null;
             }
@@ -45,18 +45,18 @@ namespace Morpheus.Ecs
             return componentDict.Values.ToArray();
         }
 
-        public void AddComponent<T>(ulong entityID,
+        public void AddComponent<T>(ulong entityId,
             IComponentConfig config = null,
             Action<T> onComplete = null) where T : EcsComponent
         {
-            T component = getComponent<T>();
-            if (entityToComponentsDict.TryGetValue(entityID, out Dictionary<Type, EcsComponent> components))
+            T component = GetComponent<T>();
+            if (entityToComponentsDict.TryGetValue(entityId, out Dictionary<Type, EcsComponent> components))
             {
                 components.Add(component.GetType(), component);
             }
             else
             {
-                entityToComponentsDict[entityID] = new Dictionary<Type, EcsComponent>()
+                entityToComponentsDict[entityId] = new Dictionary<Type, EcsComponent>()
                 {
                     {component.GetType(), component}
                 };
@@ -64,55 +64,55 @@ namespace Morpheus.Ecs
             
             config?.Apply(component);
             component.Use(
-                entityID,
+                entityId,
                 ()=>
                 {
-                    DebugLogger.TraceLog($"Entity {entityID} Added Component {typeof(T)}");
+                    DebugLogger.TraceLog($"Entity {entityId} Added Component {typeof(T)}");
 
                     OnComponentAdd.Invoke(component);
                     onComplete?.Invoke(component);
                 });
         }
         
-        public void RemoveComponent(ulong entityID, EcsComponent c)
+        public void RemoveComponent(ulong entityId, EcsComponent c)
         {
-            if (entityToComponentsDict.TryGetValue(entityID, out Dictionary<Type, EcsComponent> components))
+            if (entityToComponentsDict.TryGetValue(entityId, out Dictionary<Type, EcsComponent> components))
             {
                 components.Remove(c.GetType());
             }
 
-            DebugLogger.TraceLog($"Entity {entityID} Removed Component {c.GetType()}");
+            DebugLogger.TraceLog($"Entity {entityId} Removed Component {c.GetType()}");
 
             OnComponentRemove.Invoke(c);
 
             c.Dispose();
-            recycleComponent(c);
+            RecycleComponent(c);
 
             if (components.Count == 0)
             {
-                entityToComponentsDict.Remove(entityID);
+                entityToComponentsDict.Remove(entityId);
             }
         }
 
-        public void RemoveComponent<T>(ulong entityID) where T : EcsComponent
+        public void RemoveComponent<T>(ulong entityId) where T : EcsComponent
         {
             T component = null;
-            if (entityToComponentsDict.TryGetValue(entityID, out Dictionary<Type, EcsComponent> components))
+            if (entityToComponentsDict.TryGetValue(entityId, out Dictionary<Type, EcsComponent> components))
             {
                 component = (T)components[typeof(T)];
                 components.Remove(typeof(T));
             }
 
-            DebugLogger.TraceLog($"Entity {entityID} Remove Component {typeof(T)}");
+            DebugLogger.TraceLog($"Entity {entityId} Remove Component {typeof(T)}");
 
             OnComponentRemove.Invoke(component);
 
             component.Dispose();
-            recycleComponent(component);
+            RecycleComponent(component);
 
             if (components.Count == 0)
             {
-                entityToComponentsDict.Remove(entityID);
+                entityToComponentsDict.Remove(entityId);
             }
         }
     }

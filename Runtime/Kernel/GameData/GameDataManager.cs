@@ -133,14 +133,14 @@ namespace Morpheus.GameData
 
     public unsafe struct NArray<T> where T : unmanaged
     {
-        public readonly int length;
+        public readonly int Length;
         private readonly T* pointer;
 
         public T this[int index]
         {
             get
             {
-                return pointer == null || index < 0 || index >= length
+                return pointer == null || index < 0 || index >= Length
                     ? throw new AccessViolationException()
                     : *(pointer + index);
             }
@@ -149,13 +149,13 @@ namespace Morpheus.GameData
         public NArray(T* ptr, int len)
         {
             pointer = ptr;
-            length = len;
+            Length = len;
         }
     }
 
     public unsafe struct NStructArray<T> where T : struct, IGameData
     {
-        public readonly int length;
+        public readonly int Length;
         private readonly byte* pointer;
         private readonly int structSize;
 
@@ -163,7 +163,7 @@ namespace Morpheus.GameData
         {
             get
             {
-                if (pointer == null || index < 0 || index >= length)
+                if (pointer == null || index < 0 || index >= Length)
                 {
                     throw new AccessViolationException();
                 }
@@ -178,20 +178,20 @@ namespace Morpheus.GameData
         {
             pointer = ptr;
             structSize = size;
-            length = len;
+            Length = len;
         }
     }
 
     public unsafe struct NStringArray
     {
-        public readonly int length;
+        public readonly int Length;
         private readonly int* pointer;
 
         public string this[int index]
         {
             get
             {
-                return pointer == null || index < 0 || index >= length
+                return pointer == null || index < 0 || index >= Length
                     ? throw new AccessViolationException()
                     : GameDataManager.Instance.GetString(*(pointer + index));
             }
@@ -200,20 +200,20 @@ namespace Morpheus.GameData
         public NStringArray(int* ptr, int len)
         {
             pointer = ptr;
-            length = len;
+            Length = len;
         }
     }
 
     public unsafe struct NReferenceArray<T> where T : struct, IGameData
     {
-        public readonly int length;
+        public readonly int Length;
         private readonly int* pointer;
 
         public T this[int index]
         {
             get
             {
-                if (pointer == null || index < 0 || index >= length)
+                if (pointer == null || index < 0 || index >= Length)
                 {
                     throw new AccessViolationException();
                 }
@@ -227,7 +227,7 @@ namespace Morpheus.GameData
         public NReferenceArray(int* ptr, int len)
         {
             pointer = ptr;
-            length = len;
+            Length = len;
         }
     }
 }

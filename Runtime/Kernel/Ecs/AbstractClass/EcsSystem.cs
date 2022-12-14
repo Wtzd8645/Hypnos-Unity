@@ -18,7 +18,7 @@ namespace Morpheus.Ecs
         {
             if (headNode != null)
             {
-                updateNode(headNode);
+                UpdateNode(headNode);
             }
         }
 
@@ -71,13 +71,13 @@ namespace Morpheus.Ecs
             node.NextNode.PrevNode = node.PrevNode;
         }
 
-        private void updateNode(T node)
+        private void UpdateNode(T node)
         {
             Process(node);
 
             if (node.NextNode != headNode)
             {
-                updateNode((T)node.NextNode);
+                UpdateNode((T)node.NextNode);
             }
         }
 

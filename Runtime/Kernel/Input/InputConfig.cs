@@ -5,6 +5,6 @@ namespace Morpheus.IO
 {
     public class InputConfig : MonoBehaviour
     {
-        public PlayerInput handler;
+        public PlayerInput Handler;
     }
 }

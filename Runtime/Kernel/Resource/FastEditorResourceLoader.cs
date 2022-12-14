@@ -12,18 +12,18 @@ namespace Morpheus.Resource
 
         public override void SetAssetConfig(AssetConfig config)
         {
-            AssetData[] assetDatas = config.assetManifest.assetDatas;
+            AssetData[] assetDatas = config.AssetManifest.AssetDatas;
             assetInstMap = new Dictionary<string, AssetInst>(assetDatas.Length);
             assetPathMap = new Dictionary<string, string>(assetDatas.Length);
             foreach (AssetData data in assetDatas)
             {
                 AssetInst assetInst = new AssetInst()
                 {
-                    assetId = data.assetId,
-                    groupId = data.groupId,
+                    AssetId = data.AssetId,
+                    GroupId = data.GroupId,
                 };
-                assetInstMap.Add(data.assetId, assetInst);
-                assetPathMap.Add(data.assetId, data.assetPath);
+                assetInstMap.Add(data.AssetId, assetInst);
+                assetPathMap.Add(data.AssetId, data.AssetPath);
             }
         }
 
@@ -41,13 +41,13 @@ namespace Morpheus.Resource
                 return null;
             }
 
-            if (assetInst.asset == null)
+            if (assetInst.Asset == null)
             {
-                assetInst.asset = AssetDatabase.LoadAssetAtPath<T>(assetPathMap[assetInst.assetId]);
+                assetInst.Asset = AssetDatabase.LoadAssetAtPath<T>(assetPathMap[assetInst.AssetId]);
             }
 
-            ++assetInst.refCount;
-            return assetInst.asset as T;
+            ++assetInst.RefCount;
+            return assetInst.Asset as T;
         }
 
         public override IEnumerator LoadAssetRoutine<T>(string assetId, ResourceAoHandler<T> completeCb)
@@ -60,14 +60,14 @@ namespace Morpheus.Resource
                 yield break;
             }
 
-            if (assetInst.asset == null)
+            if (assetInst.Asset == null)
             {
-                assetInst.asset = AssetDatabase.LoadAssetAtPath<T>(assetPathMap[assetInst.assetId]);
+                assetInst.Asset = AssetDatabase.LoadAssetAtPath<T>(assetPathMap[assetInst.AssetId]);
                 yield return null; // Simulate asynchronous loading
             }
 
-            ++assetInst.refCount;
-            completeCb?.Invoke(assetInst.asset as T);
+            ++assetInst.RefCount;
+            completeCb?.Invoke(assetInst.Asset as T);
         }
 
         public override void UnloadAsset(string assetId)
@@ -91,8 +91,8 @@ namespace Morpheus.Resource
 
             foreach (AssetInst assetInst in assetInstMap.Values)
             {
-                assetInst.asset = null;
-                assetInst.refCount = 0;
+                assetInst.Asset = null;
+                assetInst.RefCount = 0;
             }
         }
     }

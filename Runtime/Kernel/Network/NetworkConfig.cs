@@ -5,26 +5,26 @@ namespace Morpheus.Network
 {
     public class NetworkConfig : ScriptableObject
     {
-        [NonSerialized] public IResponseProducer[] responseProducer;
+        [NonSerialized] public IResponseProducer[] ResponseProducer;
 
-        public SocketConfig[] socketConfigs;
+        public SocketConfig[] SocketConfigs;
 
         private void Awake()
         {
-            if (socketConfigs != null && socketConfigs.Length != 0)
+            if (SocketConfigs != null && SocketConfigs.Length != 0)
             {
                 return;
             }
 
             SocketConfig config = new SocketConfig
             {
-                connectionConfig = new SocketConnectionConfig
+                ConnectionConfig = new SocketConnectionConfig
                 {
-                    ipAdderss = NetworkUtil.GetLocalPrivateIp(),
-                    port = NetworkManager.DefalutPort
+                    IpAdderss = NetworkUtil.GetLocalPrivateIp(),
+                    Port = NetworkManager.DefalutPort
                 }
             };
-            socketConfigs = new SocketConfig[] { config };
+            SocketConfigs = new SocketConfig[] { config };
         }
     }
 }

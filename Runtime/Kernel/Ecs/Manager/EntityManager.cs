@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Morpheus.Ecs
 {
-    //TODO Performence analyze
+    //TODO Performance analyze
     //TODO: 平行化
     public class EntityManager : Singleton<EntityManager>
     {
@@ -18,7 +18,7 @@ namespace Morpheus.Ecs
         private MethodInfo addComponentInfo;
         private Delegate componentAddedDelegate;
 
-        private ulong nowEntityID = 0;
+        private ulong nowEntityId = 0;
         private IEntityConfig nowConfig = null;
         private Action<ulong> onComplete = null;
         private IEnumerator<IComponentConfig> configEnumerator = null;
@@ -27,49 +27,49 @@ namespace Morpheus.Ecs
         {
             addComponentInfo = typeof(ComponentManager).GetMethod("AddComponent");
 
-            var mi1 = typeof(EntityManager).GetMethod("onComponentAdded",
+            var mi1 = typeof(EntityManager).GetMethod("OnComponentAdded",
                 BindingFlags.NonPublic | BindingFlags.Instance);
             componentAddedDelegate = Delegate.CreateDelegate(typeof(Action<EcsComponent>), this, mi1, false);
         }
 
-        private void onComponentAdded(EcsComponent c)
+        private void OnComponentAdded(EcsComponent c)
         {
-            spawnEntity();
+            SpawnEntity();
         }
 
-        private void spawnEntity()
+        private void SpawnEntity()
         {
             if(configEnumerator.MoveNext())
             {
-                var gm = addComponentInfo.MakeGenericMethod(configEnumerator.Current.type);
+                var gm = addComponentInfo.MakeGenericMethod(configEnumerator.Current.Type);
                 gm.Invoke(
                     ComponentManager.Instance,
-                    new object[] {nowEntityID, configEnumerator.Current, componentAddedDelegate});
+                    new object[] {nowEntityId, configEnumerator.Current, componentAddedDelegate});
             }
             else
             {
-                OnEntityAdd?.Invoke(nowEntityID);
-                onComplete?.Invoke(nowEntityID);
+                OnEntityAdd?.Invoke(nowEntityId);
+                onComplete?.Invoke(nowEntityId);
             }
         }
 
         public void SpawnEntity(IEntityConfig _config, Action<ulong> _onComplete = null)
         {
-            nowEntityID = IDGenerator.Get();
+            nowEntityId = IdGenerator.Get();
             nowConfig = _config;
             onComplete = _onComplete;
             configEnumerator = _config.ComponentTypes.GetEnumerator();
-            spawnEntity();
+            SpawnEntity();
         }
 
-        public void DestroyEntity(ulong entityID)
+        public void DestroyEntity(ulong entityId)
         {
-            var allComponent = ComponentManager.Instance.GetAllComponents(entityID);
+            var allComponent = ComponentManager.Instance.GetAllComponents(entityId);
             foreach(var c in allComponent)
             {
-                ComponentManager.Instance.RemoveComponent(entityID, c);
+                ComponentManager.Instance.RemoveComponent(entityId, c);
             }
-            OnEntityRemove.Invoke(entityID);
+            OnEntityRemove.Invoke(entityId);
         }
     }
 }

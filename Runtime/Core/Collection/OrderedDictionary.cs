@@ -19,7 +19,7 @@ namespace Morpheus.Core.Collection
 
         #region Fields/Properties
 
-        private KeyedCollection2<TKey, KeyValuePair<TKey, TValue>> _keyedCollection;
+        private KeyedCollection2<TKey, KeyValuePair<TKey, TValue>> keyedCollection;
 
         /// <summary>
         /// Gets or sets the value associated with the specified key.
@@ -55,14 +55,14 @@ namespace Morpheus.Core.Collection
 
         public int Count
         {
-            get { return _keyedCollection.Count; }
+            get { return keyedCollection.Count; }
         }
 
         public ICollection<TKey> Keys
         {
             get
             {
-                return _keyedCollection.Select(x => x.Key).ToList();
+                return keyedCollection.Select(x => x.Key).ToList();
             }
         }
 
@@ -70,7 +70,7 @@ namespace Morpheus.Core.Collection
         {
             get
             {
-                return _keyedCollection.Select(x => x.Value).ToList();
+                return keyedCollection.Select(x => x.Value).ToList();
             }
         }
 
@@ -99,7 +99,7 @@ namespace Morpheus.Core.Collection
             Initialize();
             foreach (KeyValuePair<TKey, TValue> pair in dictionary)
             {
-                _keyedCollection.Add(pair);
+                keyedCollection.Add(pair);
             }
         }
 
@@ -108,7 +108,7 @@ namespace Morpheus.Core.Collection
             Initialize(comparer);
             foreach (KeyValuePair<TKey, TValue> pair in dictionary)
             {
-                _keyedCollection.Add(pair);
+                keyedCollection.Add(pair);
             }
         }
 
@@ -119,29 +119,29 @@ namespace Morpheus.Core.Collection
         private void Initialize(IEqualityComparer<TKey> comparer = null)
         {
             Comparer = comparer;
-            _keyedCollection = comparer != null
+            keyedCollection = comparer != null
                 ? new KeyedCollection2<TKey, KeyValuePair<TKey, TValue>>(x => x.Key, comparer)
                 : new KeyedCollection2<TKey, KeyValuePair<TKey, TValue>>(x => x.Key);
         }
 
         public void Add(TKey key, TValue value)
         {
-            _keyedCollection.Add(new KeyValuePair<TKey, TValue>(key, value));
+            keyedCollection.Add(new KeyValuePair<TKey, TValue>(key, value));
         }
 
         public void Clear()
         {
-            _keyedCollection.Clear();
+            keyedCollection.Clear();
         }
 
         public void Insert(int index, TKey key, TValue value)
         {
-            _keyedCollection.Insert(index, new KeyValuePair<TKey, TValue>(key, value));
+            keyedCollection.Insert(index, new KeyValuePair<TKey, TValue>(key, value));
         }
 
         public int IndexOf(TKey key)
         {
-            return _keyedCollection.Contains(key) ? _keyedCollection.IndexOf(_keyedCollection[key]) : -1;
+            return keyedCollection.Contains(key) ? keyedCollection.IndexOf(keyedCollection[key]) : -1;
         }
 
         public bool ContainsValue(TValue value)
@@ -156,14 +156,14 @@ namespace Morpheus.Core.Collection
 
         public bool ContainsKey(TKey key)
         {
-            return _keyedCollection.Contains(key);
+            return keyedCollection.Contains(key);
         }
 
         public KeyValuePair<TKey, TValue> GetItem(int index)
         {
-            return index < 0 || index >= _keyedCollection.Count
+            return index < 0 || index >= keyedCollection.Count
                 ? throw new ArgumentException(String.Format("The index was outside the bounds of the dictionary: {0}", index))
-                : _keyedCollection[index];
+                : keyedCollection[index];
         }
 
         /// <summary>
@@ -176,31 +176,31 @@ namespace Morpheus.Core.Collection
         /// </exception>
         public void SetItem(int index, TValue value)
         {
-            if (index < 0 || index >= _keyedCollection.Count)
+            if (index < 0 || index >= keyedCollection.Count)
             {
                 throw new ArgumentException($"The index is outside the bounds of the dictionary: {index}");
             }
-            KeyValuePair<TKey, TValue> kvp = new KeyValuePair<TKey, TValue>(_keyedCollection[index].Key, value);
-            _keyedCollection[index] = kvp;
+            KeyValuePair<TKey, TValue> kvp = new KeyValuePair<TKey, TValue>(keyedCollection[index].Key, value);
+            keyedCollection[index] = kvp;
         }
 
         public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
         {
-            return _keyedCollection.GetEnumerator();
+            return keyedCollection.GetEnumerator();
         }
 
         public bool Remove(TKey key)
         {
-            return _keyedCollection.Remove(key);
+            return keyedCollection.Remove(key);
         }
 
         public void RemoveAt(int index)
         {
-            if (index < 0 || index >= _keyedCollection.Count)
+            if (index < 0 || index >= keyedCollection.Count)
             {
                 throw new ArgumentException(String.Format("The index was outside the bounds of the dictionary: {0}", index));
             }
-            _keyedCollection.RemoveAt(index);
+            keyedCollection.RemoveAt(index);
         }
 
         /// <summary>
@@ -209,11 +209,11 @@ namespace Morpheus.Core.Collection
         /// <param name="key">The key associated with the value to get.</param>
         public TValue GetValue(TKey key)
         {
-            if (_keyedCollection.Contains(key) == false)
+            if (keyedCollection.Contains(key) == false)
             {
                 throw new ArgumentException($"The given key is not present in the dictionary: {key}");
             }
-            KeyValuePair<TKey, TValue> kvp = _keyedCollection[key];
+            KeyValuePair<TKey, TValue> kvp = keyedCollection[key];
             return kvp.Value;
         }
 
@@ -228,19 +228,19 @@ namespace Morpheus.Core.Collection
             int idx = IndexOf(key);
             if (idx > -1)
             {
-                _keyedCollection[idx] = kvp;
+                keyedCollection[idx] = kvp;
             }
             else
             {
-                _keyedCollection.Add(kvp);
+                keyedCollection.Add(kvp);
             }
         }
 
         public bool TryGetValue(TKey key, out TValue value)
         {
-            if (_keyedCollection.Contains(key))
+            if (keyedCollection.Contains(key))
             {
-                value = _keyedCollection[key].Value;
+                value = keyedCollection[key].Value;
                 return true;
             }
             else
@@ -255,17 +255,17 @@ namespace Morpheus.Core.Collection
         #region sorting
         public void SortKeys()
         {
-            _keyedCollection.SortByKeys();
+            keyedCollection.SortByKeys();
         }
 
         public void SortKeys(IComparer<TKey> comparer)
         {
-            _keyedCollection.SortByKeys(comparer);
+            keyedCollection.SortByKeys(comparer);
         }
 
         public void SortKeys(Comparison<TKey> comparison)
         {
-            _keyedCollection.SortByKeys(comparison);
+            keyedCollection.SortByKeys(comparison);
         }
 
         public void SortValues()
@@ -276,12 +276,12 @@ namespace Morpheus.Core.Collection
 
         public void SortValues(IComparer<TValue> comparer)
         {
-            _keyedCollection.Sort((x, y) => comparer.Compare(x.Value, y.Value));
+            keyedCollection.Sort((x, y) => comparer.Compare(x.Value, y.Value));
         }
 
         public void SortValues(Comparison<TValue> comparison)
         {
-            _keyedCollection.Sort((x, y) => comparison(x.Value, y.Value));
+            keyedCollection.Sort((x, y) => comparison(x.Value, y.Value));
         }
         #endregion
 
@@ -335,27 +335,27 @@ namespace Morpheus.Core.Collection
 
         void ICollection<KeyValuePair<TKey, TValue>>.Add(KeyValuePair<TKey, TValue> item)
         {
-            _keyedCollection.Add(item);
+            keyedCollection.Add(item);
         }
 
         void ICollection<KeyValuePair<TKey, TValue>>.Clear()
         {
-            _keyedCollection.Clear();
+            keyedCollection.Clear();
         }
 
         bool ICollection<KeyValuePair<TKey, TValue>>.Contains(KeyValuePair<TKey, TValue> item)
         {
-            return _keyedCollection.Contains(item);
+            return keyedCollection.Contains(item);
         }
 
         void ICollection<KeyValuePair<TKey, TValue>>.CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
         {
-            _keyedCollection.CopyTo(array, arrayIndex);
+            keyedCollection.CopyTo(array, arrayIndex);
         }
 
         int ICollection<KeyValuePair<TKey, TValue>>.Count
         {
-            get { return _keyedCollection.Count; }
+            get { return keyedCollection.Count; }
         }
 
         bool ICollection<KeyValuePair<TKey, TValue>>.IsReadOnly
@@ -365,7 +365,7 @@ namespace Morpheus.Core.Collection
 
         bool ICollection<KeyValuePair<TKey, TValue>>.Remove(KeyValuePair<TKey, TValue> item)
         {
-            return _keyedCollection.Remove(item);
+            return keyedCollection.Remove(item);
         }
 
         #endregion
@@ -433,7 +433,7 @@ namespace Morpheus.Core.Collection
 
         bool IDictionary.Contains(object key)
         {
-            return _keyedCollection.Contains((TKey)key);
+            return keyedCollection.Contains((TKey)key);
         }
 
         IDictionaryEnumerator IDictionary.GetEnumerator()
@@ -484,22 +484,22 @@ namespace Morpheus.Core.Collection
 
         void ICollection.CopyTo(Array array, int index)
         {
-            ((ICollection)_keyedCollection).CopyTo(array, index);
+            ((ICollection)keyedCollection).CopyTo(array, index);
         }
 
         int ICollection.Count
         {
-            get { return ((ICollection)_keyedCollection).Count; }
+            get { return ((ICollection)keyedCollection).Count; }
         }
 
         bool ICollection.IsSynchronized
         {
-            get { return ((ICollection)_keyedCollection).IsSynchronized; }
+            get { return ((ICollection)keyedCollection).IsSynchronized; }
         }
 
         object ICollection.SyncRoot
         {
-            get { return ((ICollection)_keyedCollection).SyncRoot; }
+            get { return ((ICollection)keyedCollection).SyncRoot; }
         }
 
         #endregion
@@ -508,7 +508,7 @@ namespace Morpheus.Core.Collection
     public class KeyedCollection2<TKey, TItem> : KeyedCollection<TKey, TItem>
     {
         private const string DelegateNullExceptionMessage = "Delegate passed cannot be null";
-        private Func<TItem, TKey> _getKeyForItemDelegate;
+        private Func<TItem, TKey> getKeyForItemDelegate;
 
         public KeyedCollection2(Func<TItem, TKey> getKeyForItemDelegate)
             : base()
@@ -518,7 +518,7 @@ namespace Morpheus.Core.Collection
                 throw new ArgumentNullException(DelegateNullExceptionMessage);
             }
 
-            _getKeyForItemDelegate = getKeyForItemDelegate;
+            this.getKeyForItemDelegate = getKeyForItemDelegate;
         }
 
         public KeyedCollection2(Func<TItem, TKey> getKeyForItemDelegate, IEqualityComparer<TKey> comparer)
@@ -529,12 +529,12 @@ namespace Morpheus.Core.Collection
                 throw new ArgumentNullException(DelegateNullExceptionMessage);
             }
 
-            _getKeyForItemDelegate = getKeyForItemDelegate;
+            this.getKeyForItemDelegate = getKeyForItemDelegate;
         }
 
         protected override TKey GetKeyForItem(TItem item)
         {
-            return _getKeyForItemDelegate(item);
+            return getKeyForItemDelegate(item);
         }
 
         public void SortByKeys()
@@ -579,8 +579,8 @@ namespace Morpheus.Core.Collection
 
     public class Comparer2<T> : Comparer<T>
     {
-        //private readonly Func<T, T, int> _compareFunction;
-        private readonly Comparison<T> _compareFunction;
+        //private readonly Func<T, T, int> compareFunction;
+        private readonly Comparison<T> compareFunction;
 
         #region Constructors
 
@@ -591,14 +591,14 @@ namespace Morpheus.Core.Collection
                 throw new ArgumentNullException("comparison");
             }
 
-            _compareFunction = comparison;
+            compareFunction = comparison;
         }
 
         #endregion
 
         public override int Compare(T arg1, T arg2)
         {
-            return _compareFunction(arg1, arg2);
+            return compareFunction(arg1, arg2);
         }
     }
 
@@ -620,8 +620,8 @@ namespace Morpheus.Core.Collection
                 return new DictionaryEntry(pair.Key, pair.Value);
             }
         }
-        public object Key { get { return impl.Current.Key; } }
-        public object Value { get { return impl.Current.Value; } }
-        public object Current { get { return Entry; } }
+        public object Key => impl.Current.Key;
+        public object Value => impl.Current.Value;
+        public object Current => Entry;
     }
 }

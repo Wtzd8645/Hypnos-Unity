@@ -5,107 +5,107 @@ namespace Morpheus.Resource
 {
     internal class AssetGroupInst
     {
-        public string groupId;
-        public string filePath;
-        public ulong fileOffset;
-        public string[] dependencies;
+        public string GroupId;
+        public string FilePath;
+        public ulong FileOffset;
+        public string[] Dependencies;
 
-        public AssetBundle bundle;
-        public bool isLoading;
-        public int refCount;
+        public AssetBundle Bundle;
+        public bool IsLoading;
+        public int RefCount;
 
         public void Load()
         {
-            if (bundle != null)
+            if (Bundle != null)
             {
                 return;
             }
 
-            if (isLoading)
+            if (IsLoading)
             {
-                DebugLogger.LogError($"[AssetGroupInst] AssetBundle is already loading asynchronously. GroupId: {groupId}");
+                DebugLogger.LogError($"[AssetGroupInst] AssetBundle is already loading asynchronously. GroupId: {GroupId}");
                 return;
             }
 
-            bundle = AssetBundle.LoadFromFile(filePath, 0u, fileOffset);
-            if (bundle == null)
+            Bundle = AssetBundle.LoadFromFile(FilePath, 0u, FileOffset);
+            if (Bundle == null)
             {
-                DebugLogger.LogError($"[AssetGroupInst] Can't load AssetBundle from file. GroupId: {groupId}, FilePath: {filePath}, FileOffset: {fileOffset}");
+                DebugLogger.LogError($"[AssetGroupInst] Can't load AssetBundle from file. GroupId: {GroupId}, FilePath: {FilePath}, FileOffset: {FileOffset}");
             }
         }
 
         public IEnumerator LoadRoutine()
         {
-            if (bundle != null)
+            if (Bundle != null)
             {
                 yield break;
             }
 
-            while (isLoading)
+            while (IsLoading)
             {
                 yield return null;
             }
 
-            isLoading = true;
-            AssetBundleCreateRequest bundleLoadAo = AssetBundle.LoadFromFileAsync(filePath, 0u, fileOffset);
+            IsLoading = true;
+            AssetBundleCreateRequest bundleLoadAo = AssetBundle.LoadFromFileAsync(FilePath, 0u, FileOffset);
             yield return bundleLoadAo;
 
-            isLoading = false;
-            bundle = bundleLoadAo.assetBundle;
-            if (bundle == null)
+            IsLoading = false;
+            Bundle = bundleLoadAo.assetBundle;
+            if (Bundle == null)
             {
-                DebugLogger.LogError($"[AssetGroupInst] Can't load AssetBundle from file. GroupId: {groupId}, FilePath: {filePath}, FileOffset: {fileOffset}");
+                DebugLogger.LogError($"[AssetGroupInst] Can't load AssetBundle from file. GroupId: {GroupId}, FilePath: {FilePath}, FileOffset: {FileOffset}");
             }
         }
 
         public void Unload()
         {
-            if (bundle != null)
+            if (Bundle != null)
             {
-                bundle.Unload(true);
-                bundle = null;
+                Bundle.Unload(true);
+                Bundle = null;
             }
-            refCount = 0;
+            RefCount = 0;
         }
 
         public void LoadAsset<T>(AssetInst assetInst) where T : UnityEngine.Object
         {
-            if (bundle == null)
+            if (Bundle == null)
             {
                 return;
             }
 
-            assetInst.asset = bundle.LoadAsset<T>(assetInst.assetId);
+            assetInst.Asset = Bundle.LoadAsset<T>(assetInst.AssetId);
         }
 
         public IEnumerator LoadAssetRoutine<T>(AssetInst assetInst) where T : UnityEngine.Object
         {
-            if (bundle == null)
+            if (Bundle == null)
             {
                 yield break;
             }
 
-            AssetBundleRequest assetLoadAo = bundle.LoadAssetAsync(assetInst.assetId);
+            AssetBundleRequest assetLoadAo = Bundle.LoadAssetAsync(assetInst.AssetId);
             yield return assetLoadAo;
 
-            assetInst.asset = assetLoadAo.asset;
+            assetInst.Asset = assetLoadAo.asset;
         }
 
         public bool Dereference()
         {
-            if (isLoading)
+            if (IsLoading)
             {
-                DebugLogger.LogError($"[AssetGroupInst] Can't dereference when bundle is loading. GroupId: {groupId}");
+                DebugLogger.LogError($"[AssetGroupInst] Can't dereference when bundle is loading. GroupId: {GroupId}");
             }
 
-            if (--refCount > 0)
+            if (--RefCount > 0)
             {
                 return false;
             }
 
-            if (refCount < 0)
+            if (RefCount < 0)
             {
-                DebugLogger.LogError($"[AssetGroupInst] Reference count is abnormal. GroupId: {groupId}");
+                DebugLogger.LogError($"[AssetGroupInst] Reference count is abnormal. GroupId: {GroupId}");
             }
 
             Unload();

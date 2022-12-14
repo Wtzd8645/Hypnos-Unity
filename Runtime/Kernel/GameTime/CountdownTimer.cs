@@ -4,37 +4,37 @@ namespace Morpheus.GameTime
 {
     public class CountdownTimer : GameTimerBase
     {
-        protected Action<CountdownTimer> onTimeUp;
+        protected Action<CountdownTimer> OnTimeUp;
 
         public void Set(float time, Action<CountdownTimer> onTimeUpCb)
         {
-            interval = time;
+            Interval = time;
             LeftTime = time;
-            onTimeUp = onTimeUpCb;
+            OnTimeUp = onTimeUpCb;
         }
 
         public override void Reset()
         {
             IsStop = true;
-            onTimeUp = null;
+            OnTimeUp = null;
         }
 
         public override void Restart()
         {
             IsStop = false;
-            LeftTime = interval;
+            LeftTime = Interval;
         }
 
         internal override void Tick(GameTimeInfo timeInfo)
         {
-            LeftTime -= timeInfo.deltaTime;
+            LeftTime -= timeInfo.DeltaTime;
             if (LeftTime > 0f)
             {
                 return;
             }
 
             IsStop = true;
-            onTimeUp?.Invoke(this);
+            OnTimeUp?.Invoke(this);
         }
 
         public void Add(float deltaTime)

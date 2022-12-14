@@ -7,50 +7,50 @@ namespace Morpheus.Network
     {
         public UdpSocket(int id, SocketConnectionConfig connConfig, SocketHandlerConfig handlerConfig) : base(id, connConfig, handlerConfig)
         {
-            socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            receiveEventArgs.RemoteEndPoint = bindingEndPoint;
-            sendEventArgs.RemoteEndPoint = bindingEndPoint;
+            Socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            ReceiveEventArgs.RemoteEndPoint = BindingEndPoint;
+            SendEventArgs.RemoteEndPoint = BindingEndPoint;
         }
 
         private void CreateSocket()
         {
-            socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            ++version;
+            Socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            ++Version;
         }
 
         public override void Dispose()
         {
-            socket.Close();
+            Socket.Close();
         }
 
         public override void Reset()
         {
-            DebugLogger.Log($"[UdpSocket] Reset. Id: {id}", (int)DebugLogChannel.Network);
-            socket.Close();
+            DebugLogger.Log($"[UdpSocket] Reset. Id: {Id}", (int)DebugLogChannel.Network);
+            Socket.Close();
             CreateSocket();
             CreateReceiveEventArgs();
             CreateSendEventArgs();
-            receiveEventArgs.RemoteEndPoint = bindingEndPoint;
-            sendEventArgs.RemoteEndPoint = bindingEndPoint;
+            ReceiveEventArgs.RemoteEndPoint = BindingEndPoint;
+            SendEventArgs.RemoteEndPoint = BindingEndPoint;
         }
 
         public override void ConnectAsync()
         {
-            onSocketAoComplete(this, SocketAsyncOperation.Connect, SocketError.Success);
+            OnSocketAoComplete(this, SocketAsyncOperation.Connect, SocketError.Success);
         }
 
         public override void DisconnectAsync()
         {
-            onSocketAoComplete(this, SocketAsyncOperation.Disconnect, SocketError.Success);
+            OnSocketAoComplete(this, SocketAsyncOperation.Disconnect, SocketError.Success);
         }
 
         protected override void OnConnectAsyncComplete(object sender, SocketAsyncEventArgs evtArgs) { }
 
         public override void ReceiveAsync()
         {
-            DebugLogger.Log($"[UdpSocket] ReceiveAsync. Id: {id}", (int)DebugLogChannel.Network);
-            receiveEventArgs.SetBuffer(0, receiveBufferSize);
-            ReceiveInternalAsync(socket, receiveEventArgs);
+            DebugLogger.Log($"[UdpSocket] ReceiveAsync. Id: {Id}", (int)DebugLogChannel.Network);
+            ReceiveEventArgs.SetBuffer(0, ReceiveBufferSize);
+            ReceiveInternalAsync(Socket, ReceiveEventArgs);
         }
 
         private void ReceiveInternalAsync(Socket connSocket, SocketAsyncEventArgs evtArgs)
@@ -64,8 +64,8 @@ namespace Morpheus.Network
             }
             catch (Exception e)
             {
-                DebugLogger.LogError($"[UdpSocket] ReceiveAsync failed. Id: {id}, Exception: {e.Message}");
-                onSocketAoComplete(this, SocketAsyncOperation.Receive, evtArgs.SocketError);
+                DebugLogger.LogError($"[UdpSocket] ReceiveAsync failed. Id: {Id}, Exception: {e.Message}");
+                OnSocketAoComplete(this, SocketAsyncOperation.Receive, evtArgs.SocketError);
             }
         }
 
@@ -73,69 +73,69 @@ namespace Morpheus.Network
         {
             if (evtArgs.SocketError != SocketError.Success) // Abnormal shutdown.
             {
-                onSocketAoComplete(this, SocketAsyncOperation.Receive, evtArgs.SocketError);
+                OnSocketAoComplete(this, SocketAsyncOperation.Receive, evtArgs.SocketError);
                 return;
             }
 
             if (evtArgs.BytesTransferred == 0) // Normal shutdown.
             {
-                onSocketAoComplete(this, SocketAsyncOperation.Receive, SocketError.Disconnecting);
+                OnSocketAoComplete(this, SocketAsyncOperation.Receive, SocketError.Disconnecting);
                 return;
             }
 
-            DebugLogger.TraceLog($"[UdpSocket] Socket {id} received {evtArgs.BytesTransferred} bytes", (int)DebugLogChannel.Network);
+            DebugLogger.TraceLog($"[UdpSocket] Socket {Id} received {evtArgs.BytesTransferred} bytes", (int)DebugLogChannel.Network);
             try
             {
                 PacketReadState readState = evtArgs.UserToken as PacketReadState;
-                readState.packetBuf.offset = NetworkManager.PacketLengthSize;
-                onResponseComplete(this, responseProducer.Produce(readState.packetBuf));
+                readState.PacketBuf.Offset = NetworkManager.PacketLengthSize;
+                OnResponseComplete(this, ResponseProducer.Produce(readState.PacketBuf));
             }
             catch (Exception e)
             {
-                DebugLogger.LogError($"[UdpSocket] Socket {id} create message failed. Exception: {e.Message}");
-                onSocketAoComplete(this, SocketAsyncOperation.Receive, SocketError.TypeNotFound);
+                DebugLogger.LogError($"[UdpSocket] Socket {Id} create message failed. Exception: {e.Message}");
+                OnSocketAoComplete(this, SocketAsyncOperation.Receive, SocketError.TypeNotFound);
             }
 
-            evtArgs.SetBuffer(0, receiveBufferSize);
+            evtArgs.SetBuffer(0, ReceiveBufferSize);
             ReceiveInternalAsync(evtArgs.ConnectSocket, evtArgs);
         }
 
         public override void SendAsync(IRequest request)
         {
-            PacketSendState sendState = sendEventArgs.UserToken as PacketSendState;
-            lock (sendEventArgs)
+            PacketSendState sendState = SendEventArgs.UserToken as PacketSendState;
+            lock (SendEventArgs)
             {
-                if (sendState.isSending)
+                if (sendState.IsSending)
                 {
-                    int packetBytes = request.Pack(sendState.packetBuf);
-                    int producedBytes = sendState.packetBuf.offset + packetBytes;
-                    if (packetBytes > maxPacketSize || producedBytes > sendState.packetBuf.final.Length)
+                    int packetBytes = request.Pack(sendState.PacketBuf);
+                    int producedBytes = sendState.PacketBuf.Offset + packetBytes;
+                    if (packetBytes > MaxPacketSize || producedBytes > sendState.PacketBuf.Final.Length)
                     {
-                        onSocketAoComplete(this, SocketAsyncOperation.Send, SocketError.NoBufferSpaceAvailable);
+                        OnSocketAoComplete(this, SocketAsyncOperation.Send, SocketError.NoBufferSpaceAvailable);
                         return;
                     }
 
-                    sendState.packetBuf.offset = producedBytes;
-                    DebugLogger.TraceLog($"[UdpSocket] Socket {id} produce {producedBytes} bytes.", (int)DebugLogChannel.Network);
+                    sendState.PacketBuf.Offset = producedBytes;
+                    DebugLogger.TraceLog($"[UdpSocket] Socket {Id} produce {producedBytes} bytes.", (int)DebugLogChannel.Network);
                     return;
                 }
             }
 
-            sendState.isSending = true;
-            sendState.processedBytes = 0;
-            sendState.pendingBytes = request.Pack(sendState.packetBuf);
-            if (sendState.pendingBytes > maxPacketSize)
+            sendState.IsSending = true;
+            sendState.ProcessedBytes = 0;
+            sendState.PendingBytes = request.Pack(sendState.PacketBuf);
+            if (sendState.PendingBytes > MaxPacketSize)
             {
-                onSocketAoComplete(this, SocketAsyncOperation.Send, SocketError.NoBufferSpaceAvailable);
+                OnSocketAoComplete(this, SocketAsyncOperation.Send, SocketError.NoBufferSpaceAvailable);
                 return;
             }
 
-            DebugLogger.TraceLog($"[UdpSocket] Socket {id} send {sendState.pendingBytes} bytes.", (int)DebugLogChannel.Network);
-            byte[] buffer = sendEventArgs.Buffer;
-            sendEventArgs.SetBuffer(sendState.packetBuf.final, 0, sendState.pendingBytes);
-            sendState.packetBuf.offset = 0;
-            sendState.packetBuf.final = buffer;
-            SendInternalAsync(socket, sendEventArgs);
+            DebugLogger.TraceLog($"[UdpSocket] Socket {Id} send {sendState.PendingBytes} bytes.", (int)DebugLogChannel.Network);
+            byte[] buffer = SendEventArgs.Buffer;
+            SendEventArgs.SetBuffer(sendState.PacketBuf.Final, 0, sendState.PendingBytes);
+            sendState.PacketBuf.Offset = 0;
+            sendState.PacketBuf.Final = buffer;
+            SendInternalAsync(Socket, SendEventArgs);
         }
 
         private void SendInternalAsync(Socket connSocket, SocketAsyncEventArgs evtArgs)
@@ -149,45 +149,45 @@ namespace Morpheus.Network
             }
             catch (Exception e)
             {
-                DebugLogger.LogError($"[UdpSocket] SendAsync failed. Id: {id}, Exception: {e.Message}");
-                onSocketAoComplete(this, SocketAsyncOperation.Send, SocketError.SocketError);
+                DebugLogger.LogError($"[UdpSocket] SendAsync failed. Id: {Id}, Exception: {e.Message}");
+                OnSocketAoComplete(this, SocketAsyncOperation.Send, SocketError.SocketError);
             }
         }
 
         protected override void OnSendAsyncComplete(object sender, SocketAsyncEventArgs evtArgs)
         {
-            DebugLogger.TraceLog($"[UdpSocket] Socket {id} sent {evtArgs.BytesTransferred} bytes.", (int)DebugLogChannel.Network);
+            DebugLogger.TraceLog($"[UdpSocket] Socket {Id} sent {evtArgs.BytesTransferred} bytes.", (int)DebugLogChannel.Network);
             PacketSendState sendState = evtArgs.UserToken as PacketSendState;
             if (evtArgs.SocketError != SocketError.Success)
             {
-                onSocketAoComplete(this, SocketAsyncOperation.Send, evtArgs.SocketError);
+                OnSocketAoComplete(this, SocketAsyncOperation.Send, evtArgs.SocketError);
                 return;
             }
 
-            sendState.pendingBytes -= evtArgs.BytesTransferred;
-            if (sendState.pendingBytes > 0)
+            sendState.PendingBytes -= evtArgs.BytesTransferred;
+            if (sendState.PendingBytes > 0)
             {
-                sendState.processedBytes += evtArgs.BytesTransferred;
-                evtArgs.SetBuffer(sendState.processedBytes, sendState.pendingBytes);
+                sendState.ProcessedBytes += evtArgs.BytesTransferred;
+                evtArgs.SetBuffer(sendState.ProcessedBytes, sendState.PendingBytes);
                 SendInternalAsync(evtArgs.ConnectSocket, evtArgs);
                 return;
             }
 
-            lock (sendEventArgs)
+            lock (SendEventArgs)
             {
-                if (sendState.packetBuf.offset == 0)
+                if (sendState.PacketBuf.Offset == 0)
                 {
-                    sendState.isSending = false;
+                    sendState.IsSending = false;
                     return;
                 }
 
-                DebugLogger.TraceLog($"[UdpSocket] Socket {id} send {sendState.packetBuf.offset} produced bytes.", (int)DebugLogChannel.Network);
+                DebugLogger.TraceLog($"[UdpSocket] Socket {Id} send {sendState.PacketBuf.Offset} produced bytes.", (int)DebugLogChannel.Network);
                 byte[] buffer = evtArgs.Buffer;
-                evtArgs.SetBuffer(sendState.packetBuf.final, 0, sendState.packetBuf.offset);
-                sendState.pendingBytes = sendState.packetBuf.offset;
-                sendState.processedBytes = 0;
-                sendState.packetBuf.offset = 0;
-                sendState.packetBuf.final = buffer;
+                evtArgs.SetBuffer(sendState.PacketBuf.Final, 0, sendState.PacketBuf.Offset);
+                sendState.PendingBytes = sendState.PacketBuf.Offset;
+                sendState.ProcessedBytes = 0;
+                sendState.PacketBuf.Offset = 0;
+                sendState.PacketBuf.Final = buffer;
             }
             SendInternalAsync(evtArgs.ConnectSocket, evtArgs);
         }

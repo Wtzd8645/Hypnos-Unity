@@ -1,16 +1,16 @@
 namespace Morpheus
 {
-    public static class IDGenerator
+    public static class IdGenerator
     {
         private static object locker = new object();
-        private static ulong nowID = 1;
-        private const ulong startId = 1;
+        private static ulong nowId = 1;
+        private const ulong StartId = 1;
 
         public static void Reset()
         {
             lock (locker)
             {
-                nowID = startId;
+                nowId = StartId;
             }
         }
 
@@ -18,7 +18,7 @@ namespace Morpheus
         {
             lock (locker)
             {
-                return nowID++;
+                return nowId++;
             }
         }
     }

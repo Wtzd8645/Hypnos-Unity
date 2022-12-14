@@ -5,7 +5,7 @@ namespace Morpheus.Ecs
 {
     public interface IComponentConfig
     {
-        Type type {get;}
+        Type Type {get;}
         void Apply(EcsComponent c);
 
         IComponentConfig Combine(IComponentConfig b);
@@ -25,21 +25,21 @@ namespace Morpheus.Ecs
 
         public IComponentConfig Combine(IComponentConfig c2)
         {
-            ApplyAction += ((ComponentConfig<T>)c2).ApplyAction;
+            applyAction += ((ComponentConfig<T>)c2).applyAction;
             return this;
         }
 
-        public Type type => typeof(T);
-        private Action<T> ApplyAction;
+        public Type Type => typeof(T);
+        private Action<T> applyAction;
         
         public ComponentConfig(Action<T> _applyAction = null)
         {
-            ApplyAction = _applyAction;
+            applyAction = _applyAction;
         }
 
         public void Apply(EcsComponent _c)
         {
-            ApplyAction?.Invoke((T)_c);
+            applyAction?.Invoke((T)_c);
         }
     }
 }

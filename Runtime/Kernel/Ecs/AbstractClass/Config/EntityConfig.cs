@@ -12,11 +12,11 @@ namespace Morpheus.Ecs
     {
         public static EntityConfig operator +(EntityConfig c1, EntityConfig c2)
         {
-            foreach(var c in c2.componenetConfigMap)
+            foreach(var c in c2.componentConfigMap)
             {
-                if (!c1.componenetConfigMap.TryGetValue(c.Key, out var config))
+                if (!c1.componentConfigMap.TryGetValue(c.Key, out var config))
                 {
-                    c1.componenetConfigMap[c.Key] = c.Value;
+                    c1.componentConfigMap[c.Key] = c.Value;
                 }
                 else
                 {
@@ -26,24 +26,24 @@ namespace Morpheus.Ecs
             return c1;
         }
 
-        Dictionary<Type, IComponentConfig> componenetConfigMap;
+        Dictionary<Type, IComponentConfig> componentConfigMap;
 
-        public IEnumerable<IComponentConfig> ComponentTypes => componenetConfigMap.Values;
+        public IEnumerable<IComponentConfig> ComponentTypes => componentConfigMap.Values;
 
         public EntityConfig(params IComponentConfig[] configs)
         {
-            componenetConfigMap = new Dictionary<Type, IComponentConfig>();
+            componentConfigMap = new Dictionary<Type, IComponentConfig>();
             foreach(var c in configs)
             {
-                componenetConfigMap.Add(c.type, c);
+                componentConfigMap.Add(c.Type, c);
             }
         }
 
         public void AddComponentConfig(IComponentConfig _config)
         {
-            if (!componenetConfigMap.TryGetValue(_config.type, out var config))
+            if (!componentConfigMap.TryGetValue(_config.Type, out var config))
             {
-                componenetConfigMap[_config.type] = _config;
+                componentConfigMap[_config.Type] = _config;
             }
             else
             {

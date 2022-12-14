@@ -18,12 +18,12 @@ namespace Morpheus.GameTime
         }
         #endregion
 
-        private static readonly GameTimeInfo timeInfo = new GameTimeInfo();
+        private static readonly GameTimeInfo TimeInfo = new GameTimeInfo();
 
-        public static float RealTimeSinceStartup => timeInfo.realTimeSinceStartup;
-        public static float FixedDeltaTime => timeInfo.fixedDeltaTime;
-        public static float UnscaledDeltaTime => timeInfo.unscaledDeltaTime;
-        public static float DeltaTime => timeInfo.deltaTime;
+        public static float RealTimeSinceStartup => TimeInfo.RealTimeSinceStartup;
+        public static float FixedDeltaTime => TimeInfo.FixedDeltaTime;
+        public static float UnscaledDeltaTime => TimeInfo.UnscaledDeltaTime;
+        public static float DeltaTime => TimeInfo.DeltaTime;
 
         // NOTE:
         // Stack pool makes memory fragmentation(I guess),
@@ -40,9 +40,9 @@ namespace Morpheus.GameTime
             GameTimerBase currNode = headNode;
             while (currNode != null)
             {
-                GameTimerBase nextNode = currNode.nextNode;
+                GameTimerBase nextNode = currNode.NextNode;
                 currNode.Reset();
-                currNode.nextNode = null;
+                currNode.NextNode = null;
                 currNode = nextNode;
             }
             headNode = null;
@@ -51,16 +51,16 @@ namespace Morpheus.GameTime
 
         internal void FixedUpdate()
         {
-            timeInfo.fixedDeltaTime = Time.fixedDeltaTime;
+            TimeInfo.FixedDeltaTime = Time.fixedDeltaTime;
         }
 
         // NOTE: This update MUST BE before other scripts.
         internal void Update()
         {
             // NOTE: Access Time.deltaTime in loop is slower.
-            timeInfo.realTimeSinceStartup = Time.realtimeSinceStartup;
-            timeInfo.unscaledDeltaTime = Time.unscaledDeltaTime;
-            timeInfo.deltaTime = Time.deltaTime;
+            TimeInfo.RealTimeSinceStartup = Time.realtimeSinceStartup;
+            TimeInfo.UnscaledDeltaTime = Time.unscaledDeltaTime;
+            TimeInfo.DeltaTime = Time.deltaTime;
 
             GameTimerBase prevNode = null;
             GameTimerBase currNode = headNode;
@@ -71,11 +71,11 @@ namespace Morpheus.GameTime
                     // Remove node.
                     if (prevNode == null)
                     {
-                        headNode = currNode.nextNode; // NOTE: NextNode can't be self.
+                        headNode = currNode.NextNode; // NOTE: NextNode can't be self.
                     }
                     else
                     {
-                        prevNode.nextNode = currNode.nextNode;
+                        prevNode.NextNode = currNode.NextNode;
                     }
 
                     // Set last node.
@@ -85,21 +85,21 @@ namespace Morpheus.GameTime
                     }
 
                     // Move to next node.
-                    GameTimerBase nextNode = currNode.nextNode;
-                    currNode.nextNode = null;
+                    GameTimerBase nextNode = currNode.NextNode;
+                    currNode.NextNode = null;
                     currNode = nextNode;
                     continue;
                 }
 
-                currNode.Tick(timeInfo);
+                currNode.Tick(TimeInfo);
                 prevNode = currNode;
-                currNode = currNode.nextNode;
+                currNode = currNode.NextNode;
             }
         }
 
         internal void AddLast(GameTimerBase timer)
         {
-            if (timer.nextNode != null || timer == tailNode)
+            if (timer.NextNode != null || timer == tailNode)
             {
                 return;
             }
@@ -111,7 +111,7 @@ namespace Morpheus.GameTime
             }
             else
             {
-                tailNode.nextNode = timer;
+                tailNode.NextNode = timer;
                 tailNode = timer;
             }
         }

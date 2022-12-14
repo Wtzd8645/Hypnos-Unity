@@ -28,7 +28,7 @@ namespace Morpheus.UI
             base.Awake();
             if (i18nTextId != 0u)
             {
-                SetText(I18nTextManager.Instance.GetText(i18nTextId));
+                SetText(I18NTextManager.Instance.GetText(i18nTextId));
             }
         }
 
@@ -36,11 +36,11 @@ namespace Morpheus.UI
         {
             if (args == null)
             {
-                SetText(I18nTextManager.Instance.GetText(id));
+                SetText(I18NTextManager.Instance.GetText(id));
             }
             else
             {
-                SetText(string.Format(I18nTextManager.Instance.GetText(id), args));
+                SetText(string.Format(I18NTextManager.Instance.GetText(id), args));
             }
         }
     }

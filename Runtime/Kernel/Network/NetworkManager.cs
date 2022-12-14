@@ -33,10 +33,10 @@ namespace Morpheus.Network
 
         public void Initialize(NetworkConfig config)
         {
-            responseProducers = config.responseProducer;
-            for (int i = 0; i < config.socketConfigs.Length; ++i)
+            responseProducers = config.ResponseProducer;
+            for (int i = 0; i < config.SocketConfigs.Length; ++i)
             {
-                AddSocket(config.socketConfigs[i]);
+                AddSocket(config.SocketConfigs[i]);
             }
         }
 
@@ -84,46 +84,46 @@ namespace Morpheus.Network
 
         public void AddSocket(SocketConfig config)
         {
-            if (socketMap.ContainsKey(config.id))
+            if (socketMap.ContainsKey(config.Id))
             {
-                DebugLogger.LogError($"[NetworkManager] Socket is duplicate. SocketId: {config.id}");
+                DebugLogger.LogError($"[NetworkManager] Socket is duplicate. SocketId: {config.Id}");
                 return;
             }
 
             SocketHandlerConfig handlerConfig = new SocketHandlerConfig
             {
-                onSocketAoCompleteHandler = OnSocketAoComplete,
-                responseProducer = responseProducers[config.responseProducerId],
-                onResponseCompleteHandler = OnResponseComplete
+                OnSocketAoCompleteHandler = OnSocketAoComplete,
+                ResponseProducer = responseProducers[config.ResponseProducerId],
+                OnResponseCompleteHandler = OnResponseComplete
 
             };
 
-            SocketConnectionConfig connConfig = config.connectionConfig;
-            switch (connConfig.protocol)
+            SocketConnectionConfig connConfig = config.ConnectionConfig;
+            switch (connConfig.Protocol)
             {
                 case TransportProtocol.LocalSimulation:
                 {
-                    socketMap[config.id] = new LocalSocket(config.id, handlerConfig);
+                    socketMap[config.Id] = new LocalSocket(config.Id, handlerConfig);
                     break;
                 }
-                case TransportProtocol.TCP:
+                case TransportProtocol.Tcp:
                 {
-                    socketMap[config.id] = new TcpSocket(config.id, connConfig, handlerConfig);
+                    socketMap[config.Id] = new TcpSocket(config.Id, connConfig, handlerConfig);
                     break;
                 }
-                case TransportProtocol.UDP:
+                case TransportProtocol.Udp:
                 {
-                    socketMap[config.id] = new UdpSocket(config.id, connConfig, handlerConfig);
+                    socketMap[config.Id] = new UdpSocket(config.Id, connConfig, handlerConfig);
                     break;
                 }
-                case TransportProtocol.HTTP:
+                case TransportProtocol.Http:
                 {
-                    socketMap[config.id] = new HttpSocket(config.id, handlerConfig);
+                    socketMap[config.Id] = new HttpSocket(config.Id, handlerConfig);
                     break;
                 }
                 default:
                 {
-                    DebugLogger.LogError($"[NetworkManager] Protocol not implemented. SocketId: {config.id}, Protocol: {connConfig.protocol}");
+                    DebugLogger.LogError($"[NetworkManager] Protocol not implemented. SocketId: {config.Id}, Protocol: {connConfig.Protocol}");
                     break;
                 }
             }
@@ -185,13 +185,13 @@ namespace Morpheus.Network
         // NOTE: May be called by multiple threads.
         private void OnSocketAoComplete(SocketBase socket, SocketAsyncOperation operation, SocketError socketError)
         {
-            DebugLogger.Log($"[NetworkManager] OnStreamSocketAoComplete. SocketId: {socket.id}, Operation: {operation}, Error: {socketError}", (int)DebugLogChannel.Network);
+            DebugLogger.Log($"[NetworkManager] OnStreamSocketAoComplete. SocketId: {socket.Id}, Operation: {operation}, Error: {socketError}", (int)DebugLogChannel.Network);
             SocketEventArgs args = new SocketEventArgs()
             {
-                socket = socket,
-                socketVersion = socket.version,
-                operation = operation,
-                result = socketError
+                Socket = socket,
+                SocketVersion = socket.Version,
+                Operation = operation,
+                Result = socketError
             };
             socketEventArgs.Enqueue(args);
         }
@@ -199,16 +199,16 @@ namespace Morpheus.Network
         // NOTE: Only called by main thread.
         private void ProcessSocketEventArg(SocketEventArgs args)
         {
-            if (args.socketVersion != args.socket.version)
+            if (args.SocketVersion != args.Socket.Version)
             {
                 return;
             }
 
-            switch (args.operation)
+            switch (args.Operation)
             {
                 case SocketAsyncOperation.Connect:
                 {
-                    switch (args.result)
+                    switch (args.Result)
                     {
                         case SocketError.IsConnected:
                         {
@@ -216,16 +216,16 @@ namespace Morpheus.Network
                         }
                         case SocketError.Success:
                         {
-                            args.socket.ReceiveAsync();
+                            args.Socket.ReceiveAsync();
                             break;
                         }
                     }
-                    Notify((int)NetworkEvent.ConnectComplete, args.socket.id, args.result);
+                    Notify((int)NetworkEvent.ConnectComplete, args.Socket.Id, args.Result);
                     return;
                 }
                 case SocketAsyncOperation.Disconnect:
                 {
-                    switch (args.result)
+                    switch (args.Result)
                     {
                         case SocketError.NotConnected:
                         {
@@ -233,16 +233,16 @@ namespace Morpheus.Network
                         }
                         case SocketError.Success:
                         {
-                            args.socket.Reset();
+                            args.Socket.Reset();
                             break;
                         }
                     }
-                    Notify((int)NetworkEvent.DisconnectComplete, args.socket.id, args.result);
+                    Notify((int)NetworkEvent.DisconnectComplete, args.Socket.Id, args.Result);
                     return;
                 }
                 case SocketAsyncOperation.Receive:
                 {
-                    switch (args.result)
+                    switch (args.Result)
                     {
                         case SocketError.OperationAborted:
                         case SocketError.NetworkReset:
@@ -252,16 +252,16 @@ namespace Morpheus.Network
                         }
                         default:
                         {
-                            args.socket.Reset();
+                            args.Socket.Reset();
                             break;
                         }
                     }
-                    Notify((int)NetworkEvent.ReceiveError, args.socket.id);
+                    Notify((int)NetworkEvent.ReceiveError, args.Socket.Id);
                     return;
                 }
                 case SocketAsyncOperation.Send:
                 {
-                    switch (args.result)
+                    switch (args.Result)
                     {
                         case SocketError.OperationAborted:
                         case SocketError.NetworkReset:
@@ -272,11 +272,11 @@ namespace Morpheus.Network
                         case SocketError.NoBufferSpaceAvailable:
                         case SocketError.TimedOut:
                         {
-                            args.socket.Reset();
+                            args.Socket.Reset();
                             break;
                         }
                     }
-                    Notify((int)NetworkEvent.SendError, args.socket.id);
+                    Notify((int)NetworkEvent.SendError, args.Socket.Id);
                     return;
                 }
             }

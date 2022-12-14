@@ -31,7 +31,7 @@ namespace Morpheus.Editor.UI
 
         protected virtual void Awake()
         {
-            if (I18nTextManager.Instance != null)
+            if (I18NTextManager.Instance != null)
             {
                 return;
             }

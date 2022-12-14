@@ -5,7 +5,7 @@ namespace Morpheus.GameState
 {
     public class GameStateConfig : ScriptableObject
     {
-        [NonSerialized] public GameStateBase[] gameStates;
-        public int startGameState;
+        [NonSerialized] public GameStateBase[] GameStates;
+        public int StartGameState;
     }
 }

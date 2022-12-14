@@ -88,9 +88,9 @@ namespace Morpheus.Debug
 
             for (int i = 0; i < currentLogs.Count; i++)
             {
-                if (GUILayout.Button(currentLogs[i].condition))
+                if (GUILayout.Button(currentLogs[i].Condition))
                 {
-                    DebugLogger.Log(currentLogs[i].condition);
+                    DebugLogger.Log(currentLogs[i].Condition);
                 }
             }
 
@@ -131,7 +131,7 @@ namespace Morpheus.Debug
                         collapsedLogs.Add(log);
                     }
 
-                    switch (receivedLogs[i].logType)
+                    switch (receivedLogs[i].LogType)
                     {
                         case LogType.Log:
                             ++totalNormalLogCount;
@@ -160,7 +160,7 @@ namespace Morpheus.Debug
             {
                 for (int i = 0; i < collapsedLogs.Count; i++)
                 {
-                    isShow = (1 << (int)collapsedLogs[i].logType) & logLevelMask;
+                    isShow = (1 << (int)collapsedLogs[i].LogType) & logLevelMask;
                     if (isShow == 0)
                     {
                         continue;
@@ -168,7 +168,7 @@ namespace Morpheus.Debug
 
                     if (isFilter)
                     {
-                        if (collapsedLogs[i].condition.Contains(filterString))
+                        if (collapsedLogs[i].Condition.Contains(filterString))
                         {
                             currentLogs.Add(collapsedLogs[i]);
                         }
@@ -182,7 +182,7 @@ namespace Morpheus.Debug
 
             for (int i = 0; i < totalLogs.Count; i++)
             {
-                isShow = (1 << (int)totalLogs[i].logType) & logLevelMask;
+                isShow = (1 << (int)totalLogs[i].LogType) & logLevelMask;
                 if (isShow == 0)
                 {
                     continue;
@@ -190,7 +190,7 @@ namespace Morpheus.Debug
 
                 if (isFilter)
                 {
-                    if (totalLogs[i].condition.Contains(filterString))
+                    if (totalLogs[i].Condition.Contains(filterString))
                     {
                         currentLogs.Add(totalLogs[i]);
                     }

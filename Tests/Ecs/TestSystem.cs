@@ -4,23 +4,23 @@ namespace Morpheus.Tests.Ecs
 {
     public class TestNode : EcsNode
     {
-        public TestComponent testComponent1 => GetComponent<TestComponent>();
-        public TestComponent2 testComponent2 => GetComponent<TestComponent2>();
+        public TestComponent TestComponent1 => GetComponent<TestComponent>();
+        public TestComponent2 TestComponent2 => GetComponent<TestComponent2>();
         
         [OptionalComponent]
-        public TestComponent3 testComponent3 => GetComponent<TestComponent3>();
+        public TestComponent3 TestComponent3 => GetComponent<TestComponent3>();
     }
 
     public class TestSystem : EcsSystem<TestNode>
     {
         protected override void Process(TestNode node)
         {
-            node.testComponent1.i += 1;
-            node.testComponent2.f += 1;
+            node.TestComponent1.I += 1;
+            node.TestComponent2.F += 1;
 
-            if (node.testComponent3 != null)
+            if (node.TestComponent3 != null)
             {
-                node.testComponent3.u += 1;
+                node.TestComponent3.U += 1;
             }
         }
     }

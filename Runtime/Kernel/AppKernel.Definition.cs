@@ -21,7 +21,7 @@ namespace Morpheus
         Network = Input << 1,
         GameState = Network << 1,
         Audio = GameState << 1,
-        UI = Audio << 1,
+        Ui = Audio << 1,
         All = -1
     }
 

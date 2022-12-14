@@ -13,17 +13,17 @@ namespace Morpheus.Network
 
         public override void ConnectAsync()
         {
-            onSocketAoComplete(this, SocketAsyncOperation.Connect, SocketError.Success);
+            OnSocketAoComplete(this, SocketAsyncOperation.Connect, SocketError.Success);
         }
 
         public override void DisconnectAsync()
         {
-            onSocketAoComplete(this, SocketAsyncOperation.Disconnect, SocketError.Success);
+            OnSocketAoComplete(this, SocketAsyncOperation.Disconnect, SocketError.Success);
         }
 
         protected override void OnConnectAsyncComplete(object sender, SocketAsyncEventArgs e)
         {
-            onSocketAoComplete(this, e.LastOperation, SocketError.Success);
+            OnSocketAoComplete(this, e.LastOperation, SocketError.Success);
         }
 
         public override void ReceiveAsync() { }
@@ -35,7 +35,7 @@ namespace Morpheus.Network
 
         public override void SendAsync(IRequest request)
         {
-            onResponseComplete(this, responseProducer.Produce(request));
+            OnResponseComplete(this, ResponseProducer.Produce(request));
         }
 
         protected override void OnSendAsyncComplete(object sender, SocketAsyncEventArgs e)
