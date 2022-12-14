@@ -18,19 +18,11 @@ namespace Morpheus.Network
 
         public bool IsConnected => socket.Connected; // NOTE: Socket.Connected只會反應上一次的操作情況
 
-        public TcpSocket(int id, SocketConnectionConfig conneConfig, SocketHandlerConfig handlerConfig) : base(id, conneConfig, handlerConfig)
+        public TcpSocket(int id, SocketConfig socketConfig, ConnectionHandlerConfig handlerConfig) : base(id, socketConfig, handlerConfig)
         {
             CreateSocket();
             connectEventArgs.RemoteEndPoint = bindingEndPoint;
             connectEventArgs.Completed += OnConnectAsyncComplete;
-        }
-
-        private void CreateSocket()
-        {
-            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            socket.NoDelay = true;
-            socket.IOControl(IOControlCode.KeepAliveValues, GetKeepAliveValue(1, 8000, 2000), null);
-            ++version;
         }
 
         public override void Dispose()
@@ -51,6 +43,16 @@ namespace Morpheus.Network
             // heartbeatTimer.Change(Timeout.Infinite, Timeout.Infinite);
         }
 
+        private void CreateSocket()
+        {
+            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
+            {
+                NoDelay = true
+            };
+            // socket.IOControl(IOControlCode.KeepAliveValues, GetKeepAliveValue(1, 8000, 2000), null);
+            ++version;
+        }
+
         public override void ConnectAsync()
         {
             try
@@ -58,7 +60,7 @@ namespace Morpheus.Network
                 Kernel.Log($"[TcpSocket] ConnectAsync. Id: {id}", (int)LogChannel.Network);
                 if (socket.Connected)
                 {
-                    onSocketAoComplete(this, SocketAsyncOperation.Connect, SocketError.IsConnected);
+                    onConnectionAoComplete(this, SocketAsyncOperation.Connect, SocketError.IsConnected);
                     return;
                 }
 
@@ -70,7 +72,7 @@ namespace Morpheus.Network
             catch (Exception e)
             {
                 Kernel.LogError($"[TcpSocket] ConnectAsync failed. Id: {id}, Exception: {e.Message}");
-                onSocketAoComplete(this, SocketAsyncOperation.Connect, SocketError.SocketError);
+                onConnectionAoComplete(this, SocketAsyncOperation.Connect, SocketError.SocketError);
             }
         }
 
@@ -81,7 +83,7 @@ namespace Morpheus.Network
                 Kernel.Log($"[TcpSocket] DisconnectAsync. Id: {id}", (int)LogChannel.Network);
                 if (!socket.Connected)
                 {
-                    onSocketAoComplete(this, SocketAsyncOperation.Disconnect, SocketError.NotConnected);
+                    onConnectionAoComplete(this, SocketAsyncOperation.Disconnect, SocketError.NotConnected);
                     return;
                 }
 
@@ -94,13 +96,13 @@ namespace Morpheus.Network
             catch (Exception e)
             {
                 Kernel.LogError($"[TcpSocket] DisconnectAsync failed. Id: {id}, Exception: {e.Message}");
-                onSocketAoComplete(this, SocketAsyncOperation.Disconnect, SocketError.SocketError);
+                onConnectionAoComplete(this, SocketAsyncOperation.Disconnect, SocketError.SocketError);
             }
         }
 
         protected override void OnConnectAsyncComplete(object sender, SocketAsyncEventArgs evtArgs)
         {
-            onSocketAoComplete(this, evtArgs.LastOperation, evtArgs.SocketError);
+            onConnectionAoComplete(this, evtArgs.LastOperation, evtArgs.SocketError);
         }
 
         public override void ReceiveAsync()
@@ -121,7 +123,7 @@ namespace Morpheus.Network
             catch (Exception e)
             {
                 Kernel.LogError($"[TcpSocket] ReceiveAsync failed. Id: {id}, Exception: {e.Message}");
-                onSocketAoComplete(this, SocketAsyncOperation.Receive, SocketError.SocketError);
+                onConnectionAoComplete(this, SocketAsyncOperation.Receive, SocketError.SocketError);
             }
         }
 
@@ -129,13 +131,13 @@ namespace Morpheus.Network
         {
             if (evtArgs.SocketError != SocketError.Success) // Abnormal shutdown.
             {
-                onSocketAoComplete(this, SocketAsyncOperation.Receive, evtArgs.SocketError);
+                onConnectionAoComplete(this, SocketAsyncOperation.Receive, evtArgs.SocketError);
                 return;
             }
 
             if (evtArgs.BytesTransferred == 0) // Normal shutdown.
             {
-                onSocketAoComplete(this, SocketAsyncOperation.Receive, SocketError.Disconnecting);
+                onConnectionAoComplete(this, SocketAsyncOperation.Receive, SocketError.Disconnecting);
                 return;
             }
 
@@ -156,12 +158,12 @@ namespace Morpheus.Network
                 try
                 {
                     readState.packetBuf.offset = readState.processedBytes;
-                    onResponseComplete(this, responseProducer.Produce(readState.packetBuf));
+                    pendingResponses.Enqueue(responseProducer.Produce(readState.packetBuf));
                 }
                 catch (Exception e)
                 {
                     Kernel.LogError($"[TcpSocket] Socket {id} create message failed. Exception: {e.Message}");
-                    onSocketAoComplete(this, SocketAsyncOperation.Receive, SocketError.TypeNotFound);
+                    onConnectionAoComplete(this, SocketAsyncOperation.Receive, SocketError.TypeNotFound);
                 }
                 finally
                 {
@@ -195,33 +197,30 @@ namespace Morpheus.Network
                 if (sendState.isSending)
                 {
                     int packetBytes = request.Pack(sendState.packetBuf);
-                    int producedBytes = sendState.packetBuf.offset + packetBytes;
-                    if (packetBytes > maxPacketSize || producedBytes > sendState.packetBuf.final.Length)
+                    int pendingBytes = sendState.packetBuf.offset + packetBytes;
+                    if (packetBytes > maxPacketSize || pendingBytes > sendState.packetBuf.final.Length)
                     {
-                        onSocketAoComplete(this, SocketAsyncOperation.Send, SocketError.NoBufferSpaceAvailable);
+                        onConnectionAoComplete(this, SocketAsyncOperation.Send, SocketError.NoBufferSpaceAvailable);
                         return;
                     }
 
-                    sendState.packetBuf.offset = producedBytes;
-                    Kernel.TraceLog($"[TcpSocket] Socket {id} produce {producedBytes} bytes.", (int)LogChannel.Network);
+                    sendState.packetBuf.offset = pendingBytes;
+                    Kernel.TraceLog($"[TcpSocket] Socket {id} produce {pendingBytes} bytes.", (int)LogChannel.Network);
                     return;
                 }
             }
 
             sendState.isSending = true;
-            sendState.pendingBytes = request.Pack(sendState.packetBuf);
+            sendState.pendingBytes = request.Pack(sendState.sendBuf);
             sendState.processedBytes = 0;
             if (sendState.pendingBytes > maxPacketSize)
             {
-                onSocketAoComplete(this, SocketAsyncOperation.Send, SocketError.NoBufferSpaceAvailable);
+                onConnectionAoComplete(this, SocketAsyncOperation.Send, SocketError.NoBufferSpaceAvailable);
                 return;
             }
 
             Kernel.TraceLog($"[TcpSocket] Socket {id} send {sendState.pendingBytes} bytes.", (int)LogChannel.Network);
-            byte[] buffer = sendEventArgs.Buffer;
-            sendEventArgs.SetBuffer(sendState.packetBuf.final, 0, sendState.pendingBytes);
-            sendState.packetBuf.offset = 0;
-            sendState.packetBuf.final = buffer;
+            sendEventArgs.SetBuffer(0, sendState.pendingBytes);
             SendInternalAsync(socket, sendEventArgs);
         }
 
@@ -237,7 +236,7 @@ namespace Morpheus.Network
             catch (Exception e)
             {
                 Kernel.LogError($"[TcpSocket] SendAsync failed. Id: {id}, Exception: {e.Message}");
-                onSocketAoComplete(this, SocketAsyncOperation.Send, evtArgs.SocketError);
+                onConnectionAoComplete(this, SocketAsyncOperation.Send, evtArgs.SocketError);
             }
         }
 
@@ -247,7 +246,7 @@ namespace Morpheus.Network
             PacketSendState sendState = evtArgs.UserToken as PacketSendState;
             if (evtArgs.SocketError != SocketError.Success)
             {
-                onSocketAoComplete(this, SocketAsyncOperation.Send, evtArgs.SocketError);
+                onConnectionAoComplete(this, SocketAsyncOperation.Send, evtArgs.SocketError);
                 return;
             }
 
@@ -269,12 +268,14 @@ namespace Morpheus.Network
                 }
 
                 Kernel.TraceLog($"[TcpSocket] Socket {id} send {sendState.packetBuf.offset} produced bytes.", (int)LogChannel.Network);
-                byte[] buffer = evtArgs.Buffer;
                 evtArgs.SetBuffer(sendState.packetBuf.final, 0, sendState.packetBuf.offset);
                 sendState.pendingBytes = sendState.packetBuf.offset;
                 sendState.processedBytes = 0;
+
+                byte[] sendBuf = sendState.sendBuf.final;
+                sendState.sendBuf.final = sendState.packetBuf.final;
                 sendState.packetBuf.offset = 0;
-                sendState.packetBuf.final = buffer;
+                sendState.packetBuf.final = sendBuf;
             }
             SendInternalAsync(evtArgs.ConnectSocket, evtArgs);
         }

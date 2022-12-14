@@ -24,47 +24,51 @@ namespace Morpheus.Network
         private NetworkManager() { }
         #endregion
 
-        private readonly Dictionary<int, ISocket> socketMap = new Dictionary<int, ISocket>(3);
-        private readonly ConcurrentQueue<SocketEventArgs> socketEventArgs = new ConcurrentQueue<SocketEventArgs>();
+        private readonly Dictionary<int, IConnection> connectionMap = new Dictionary<int, IConnection>(3);
+        private readonly ConcurrentQueue<ConnectionEventArgs> socketEventArgs = new ConcurrentQueue<ConnectionEventArgs>();
 
         private IResponseProducer[] responseProducers;
-        private readonly ConcurrentQueue<IResponse> pendingResponses = new ConcurrentQueue<IResponse>(); // NOTE: Only produced from the receiving thread.
         private readonly Dictionary<ushort, Action<IResponse>> responseHandlerMap = new Dictionary<ushort, Action<IResponse>>(521);
 
         public void Initialize(NetworkConfig config)
         {
-            responseProducers = config.responseProducer;
-            for (int i = 0; i < config.socketConfigs.Length; ++i)
+            responseProducers = config.responseProducers;
+            for (int i = 0; i < config.connectionConfigs.Length; ++i)
             {
-                AddSocket(config.socketConfigs[i]);
+                AddConnection(config.connectionConfigs[i]);
             }
         }
 
         public void Release()
         {
-            foreach (ISocket socket in socketMap.Values)
+            foreach (IConnection conn in connectionMap.Values)
             {
-                socket.Dispose();
+                conn.Dispose();
             }
         }
 
         public void Update()
         {
-            while (socketEventArgs.TryDequeue(out SocketEventArgs arg))
+            while (socketEventArgs.TryDequeue(out ConnectionEventArgs arg))
             {
-                ProcessSocketEventArg(arg);
+                ProcessConnectionEventArg(arg);
             }
 
             // Dispatch responses
-            while (pendingResponses.TryDequeue(out IResponse response))
+            foreach (IConnection conn in connectionMap.Values)
             {
-                responseHandlerMap.TryGetValue(response.Id, out Action<IResponse> responseHandler);
-                if (responseHandler == null)
+                while (conn.TryGetResponse(out IResponse resp))
                 {
-                    Kernel.LogWarning($"[NetworkManager] Response handler is null. MsgId: {response.Id}");
-                    continue;
+                    responseHandlerMap.TryGetValue(resp.Id, out Action<IResponse> responseHandler);
+                    if (responseHandler == null)
+                    {
+                        Kernel.LogWarning($"[NetworkManager] Response handler is null. MsgId: {resp.Id}");
+                    }
+                    else
+                    {
+                        responseHandler(resp);
+                    }
                 }
-                responseHandler(response);
             }
         }
 
@@ -82,114 +86,107 @@ namespace Morpheus.Network
             }
         }
 
-        public void AddSocket(SocketConfig config)
+        public void AddConnection(ConnectionConfig config)
         {
-            if (socketMap.ContainsKey(config.id))
+            if (connectionMap.ContainsKey(config.id))
             {
-                Kernel.LogError($"[NetworkManager] Socket is duplicate. SocketId: {config.id}");
+                Kernel.LogError($"[NetworkManager] Connection is duplicate. ConnectionId: {config.id}");
                 return;
             }
 
-            SocketHandlerConfig handlerConfig = new SocketHandlerConfig
+            ConnectionHandlerConfig handlerConfig = new ConnectionHandlerConfig
             {
-                onSocketAoCompleteHandler = OnSocketAoComplete,
-                responseProducer = responseProducers[config.responseProducerId],
-                onResponseCompleteHandler = OnResponseComplete
-
+                onConnectionAoCompleteHandler = OnConnectionAoComplete,
+                responseProducer = responseProducers[config.responseProducerId]
             };
 
-            SocketConnectionConfig connConfig = config.connectionConfig;
-            switch (connConfig.protocol)
+            SocketConfig socketConfig = config.socketConfig;
+            switch (socketConfig.protocol)
             {
                 case TransportProtocol.LocalSimulation:
                 {
-                    socketMap[config.id] = new LocalSocket(config.id, handlerConfig);
+                    connectionMap[config.id] = new LocalSocket(config.id, handlerConfig);
                     break;
                 }
                 case TransportProtocol.TCP:
                 {
-                    socketMap[config.id] = new TcpSocket(config.id, connConfig, handlerConfig);
+                    connectionMap[config.id] = new TcpSocket(config.id, socketConfig, handlerConfig);
                     break;
                 }
                 case TransportProtocol.UDP:
                 {
-                    socketMap[config.id] = new UdpSocket(config.id, connConfig, handlerConfig);
+                    connectionMap[config.id] = new UdpSocket(config.id, socketConfig, handlerConfig);
                     break;
                 }
                 case TransportProtocol.HTTP:
                 {
-                    socketMap[config.id] = new HttpSocket(config.id, handlerConfig);
+                    connectionMap[config.id] = new HttpConnection(config.id, handlerConfig);
                     break;
                 }
                 default:
                 {
-                    Kernel.LogError($"[NetworkManager] Protocol not implemented. SocketId: {config.id}, Protocol: {connConfig.protocol}");
+                    Kernel.LogError($"[NetworkManager] Protocol not implemented. ConnectionId: {config.id}, Protocol: {socketConfig.protocol}");
                     break;
                 }
             }
         }
 
-        public void RemoveSocket(int id)
+        public void RemoveConnection(int id)
         {
-            socketMap.TryGetValue(id, out ISocket socket);
-            if (socket == null)
+            connectionMap.TryGetValue(id, out IConnection conn);
+            if (conn == null)
             {
                 return;
             }
 
-            socketMap.Remove(id);
-            socket.Dispose();
+            connectionMap.Remove(id);
+            conn.Dispose();
         }
 
-        public void ConnectAsync(int socketId)
+        public void ConnectAsync(int connectionId)
         {
-            socketMap.TryGetValue(socketId, out ISocket socket);
-            if (socket == null)
+            connectionMap.TryGetValue(connectionId, out IConnection conn);
+            if (conn == null)
             {
-                Kernel.Log($"[NetworkManager] Can't find socket to connect. SocketId: {socketId}", (int)LogChannel.Network);
+                Kernel.Log($"[NetworkManager] Can't find socket to connect. ConnectionId: {connectionId}", (int)LogChannel.Network);
                 return;
             }
 
-            socket.ConnectAsync();
+            conn.ConnectAsync();
         }
 
-        public void DisconnectAsync(int socketId)
+        public void DisconnectAsync(int connectionId)
         {
-            socketMap.TryGetValue(socketId, out ISocket socket);
-            if (socket == null)
+            connectionMap.TryGetValue(connectionId, out IConnection conn);
+            if (conn == null)
             {
-                Kernel.Log($"[NetworkManager] Can't find socket to disconnect. SocketId: {socketId}", (int)LogChannel.Network);
+                Kernel.Log($"[NetworkManager] Can't find socket to disconnect. ConnectionId: {connectionId}", (int)LogChannel.Network);
                 return;
             }
 
-            socket.DisconnectAsync();
+            conn.DisconnectAsync();
         }
 
-        public void SendRequest(int socketId, IRequest request)
+        public void SendRequest(int connectionId, IRequest request)
         {
-            socketMap.TryGetValue(socketId, out ISocket socket);
-            if (socket == null)
+            connectionMap.TryGetValue(connectionId, out IConnection conn);
+            if (conn == null)
             {
-                Kernel.Log($"[NetworkManager] Can't find socket to send request. SocketId: {socketId}", (int)LogChannel.Network);
+                Kernel.Log($"[NetworkManager] Can't find socket to send request. ConnectionId: {connectionId}", (int)LogChannel.Network);
                 return;
             }
 
-            socket.SendAsync(request);
-        }
-
-        private void OnResponseComplete(ISocket socket, IResponse resp)
-        {
-            pendingResponses.Enqueue(resp);
+            conn.SendAsync(request);
         }
 
         // NOTE: May be called by multiple threads.
-        private void OnSocketAoComplete(SocketBase socket, SocketAsyncOperation operation, SocketError socketError)
+        private void OnConnectionAoComplete(IConnection conn, SocketAsyncOperation operation, SocketError socketError)
         {
-            Kernel.Log($"[NetworkManager] OnStreamSocketAoComplete. SocketId: {socket.id}, Operation: {operation}, Error: {socketError}", (int)LogChannel.Network);
-            SocketEventArgs args = new SocketEventArgs()
+            Kernel.Log($"[NetworkManager] OnConnectionAoComplete. ConnectionId: {conn.Id}, Operation: {operation}, Error: {socketError}", (int)LogChannel.Network);
+            ConnectionEventArgs args = new ConnectionEventArgs()
             {
-                socket = socket,
-                socketVersion = socket.version,
+                connection = conn,
+                version = conn.Version,
                 operation = operation,
                 result = socketError
             };
@@ -197,9 +194,9 @@ namespace Morpheus.Network
         }
 
         // NOTE: Only called by main thread.
-        private void ProcessSocketEventArg(SocketEventArgs args)
+        private void ProcessConnectionEventArg(ConnectionEventArgs args)
         {
-            if (args.socketVersion != args.socket.version)
+            if (args.version != args.connection.Version)
             {
                 return;
             }
@@ -216,11 +213,11 @@ namespace Morpheus.Network
                         }
                         case SocketError.Success:
                         {
-                            args.socket.ReceiveAsync();
+                            args.connection.ReceiveAsync();
                             break;
                         }
                     }
-                    Notify((int)NetworkEvent.ConnectComplete, args.socket.id, args.result);
+                    Notify((int)NetworkEvent.ConnectComplete, args.connection.Id, args.result);
                     return;
                 }
                 case SocketAsyncOperation.Disconnect:
@@ -233,11 +230,11 @@ namespace Morpheus.Network
                         }
                         case SocketError.Success:
                         {
-                            args.socket.Reset();
+                            args.connection.Reset();
                             break;
                         }
                     }
-                    Notify((int)NetworkEvent.DisconnectComplete, args.socket.id, args.result);
+                    Notify((int)NetworkEvent.DisconnectComplete, args.connection.Id, args.result);
                     return;
                 }
                 case SocketAsyncOperation.Receive:
@@ -252,11 +249,11 @@ namespace Morpheus.Network
                         }
                         default:
                         {
-                            args.socket.Reset();
+                            args.connection.Reset();
                             break;
                         }
                     }
-                    Notify((int)NetworkEvent.ReceiveError, args.socket.id);
+                    Notify((int)NetworkEvent.ReceiveError, args.connection.Id);
                     return;
                 }
                 case SocketAsyncOperation.Send:
@@ -272,11 +269,11 @@ namespace Morpheus.Network
                         case SocketError.NoBufferSpaceAvailable:
                         case SocketError.TimedOut:
                         {
-                            args.socket.Reset();
+                            args.connection.Reset();
                             break;
                         }
                     }
-                    Notify((int)NetworkEvent.SendError, args.socket.id);
+                    Notify((int)NetworkEvent.SendError, args.connection.Id);
                     return;
                 }
             }

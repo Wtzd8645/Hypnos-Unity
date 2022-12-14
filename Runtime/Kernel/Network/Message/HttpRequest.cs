@@ -13,7 +13,7 @@ namespace Morpheus.Network
 
         public int Pack(PacketBuffer result)
         {
-            return 0;
+            throw new System.NotImplementedException();
         }
     }
 }

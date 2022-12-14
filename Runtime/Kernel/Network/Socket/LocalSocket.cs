@@ -5,7 +5,7 @@ namespace Morpheus.Network
 {
     internal class LocalSocket : SocketBase
     {
-        public LocalSocket(int id, SocketHandlerConfig handlerConfig) : base(id, handlerConfig) { }
+        public LocalSocket(int id, ConnectionHandlerConfig handlerConfig) : base(id, handlerConfig) { }
 
         public override void Dispose() { }
 
@@ -13,17 +13,17 @@ namespace Morpheus.Network
 
         public override void ConnectAsync()
         {
-            onSocketAoComplete(this, SocketAsyncOperation.Connect, SocketError.Success);
+            onConnectionAoComplete(this, SocketAsyncOperation.Connect, SocketError.Success);
         }
 
         public override void DisconnectAsync()
         {
-            onSocketAoComplete(this, SocketAsyncOperation.Disconnect, SocketError.Success);
+            onConnectionAoComplete(this, SocketAsyncOperation.Disconnect, SocketError.Success);
         }
 
         protected override void OnConnectAsyncComplete(object sender, SocketAsyncEventArgs e)
         {
-            onSocketAoComplete(this, e.LastOperation, SocketError.Success);
+            onConnectionAoComplete(this, e.LastOperation, SocketError.Success);
         }
 
         public override void ReceiveAsync() { }
@@ -35,7 +35,7 @@ namespace Morpheus.Network
 
         public override void SendAsync(IRequest request)
         {
-            onResponseComplete(this, responseProducer.Produce(request));
+            pendingResponses.Enqueue(responseProducer.Produce(request));
         }
 
         protected override void OnSendAsyncComplete(object sender, SocketAsyncEventArgs e)

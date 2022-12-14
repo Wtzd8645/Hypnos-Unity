@@ -4,8 +4,7 @@ using System.Text;
 
 namespace Morpheus.Network
 {
-    internal delegate void SocketResponseHandler(ISocket socket, IResponse response);
-    internal delegate void SocketAoHandler(SocketBase socket, SocketAsyncOperation operation, SocketError socketError);
+    internal delegate void ConnectionAoHandler(IConnection conn, SocketAsyncOperation operation, SocketError socketError);
 
     public partial class NetworkManager
     {
@@ -15,7 +14,7 @@ namespace Morpheus.Network
         public static readonly Encoding StringEncoder = new UTF8Encoding(false, true);
 
         internal const int DefalutPort = 27015;
-        internal const ushort DefalutMaxBufferSize = 1024; // byte
+        internal const ushort DefalutMaxPacketSize = 1024; // byte
         internal const int DefalutSendTimeout = 4096; // ms
     }
 
@@ -49,10 +48,10 @@ namespace Morpheus.Network
         }
     }
 
-    internal class SocketEventArgs
+    internal class ConnectionEventArgs
     {
-        public SocketBase socket;
-        public int socketVersion;
+        public IConnection connection;
+        public int version;
         public SocketAsyncOperation operation;
         public SocketError result; // Note: https://docs.microsoft.com/zh-tw/windows/win32/winsock/windows-sockets-error-codes-2
     }
@@ -79,7 +78,7 @@ namespace Morpheus.Network
         public bool isSending;
         public int pendingBytes;
         public int processedBytes;
-        public byte[] sendBuf;
+        public PacketBuffer sendBuf;
         public PacketBuffer packetBuf;
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -16,19 +17,22 @@ namespace Morpheus.Network
         Trace
     }
 
-    internal class HttpSocket : ISocket
+    internal class HttpConnection : IConnection
     {
         private HttpClient client = new HttpClient();
+        private readonly ConnectionAoHandler onConnectionAoComplete;
         private readonly IResponseProducer responseProducer;
-        private readonly SocketResponseHandler onResponseComplete;
+        private readonly ConcurrentQueue<IResponse> pendingResponses = new ConcurrentQueue<IResponse>();
 
         public int Id { get; private set; }
 
-        public HttpSocket(int id, SocketHandlerConfig handlerConfig)
+        public int Version { get; private set; }
+
+        public HttpConnection(int id, ConnectionHandlerConfig handlerConfig)
         {
             Id = id;
+            onConnectionAoComplete = handlerConfig.onConnectionAoCompleteHandler;
             responseProducer = handlerConfig.responseProducer;
-            onResponseComplete = handlerConfig.onResponseCompleteHandler;
         }
 
         public void Dispose()
@@ -40,11 +44,19 @@ namespace Morpheus.Network
         {
             client.Dispose();
             client = new HttpClient();
+            ++Version;
         }
 
         public void ConnectAsync() { }
+
         public void DisconnectAsync() { }
+
         public void ReceiveAsync() { }
+
+        public bool TryGetResponse(out IResponse response)
+        {
+            return pendingResponses.TryDequeue(out response);
+        }
 
         public void SendAsync(IRequest request)
         {
@@ -76,19 +88,22 @@ namespace Morpheus.Network
                 }
 
                 response.EnsureSuccessStatusCode();
-                onResponseComplete(this, responseProducer.Produce(response));
+                pendingResponses.Enqueue(responseProducer.Produce(response));
             }
             catch (HttpRequestException e)
             {
                 Kernel.LogError(e.Message);
+                onConnectionAoComplete(this, System.Net.Sockets.SocketAsyncOperation.Send, System.Net.Sockets.SocketError.Fault);
             }
             catch (TaskCanceledException e)
             {
                 Kernel.LogError(e.Message);
+                onConnectionAoComplete(this, System.Net.Sockets.SocketAsyncOperation.Send, System.Net.Sockets.SocketError.OperationAborted);
             }
             catch (Exception e)
             {
                 Kernel.LogError(e.Message);
+                onConnectionAoComplete(this, System.Net.Sockets.SocketAsyncOperation.Send, System.Net.Sockets.SocketError.SocketError);
             }
         }
     }
