@@ -174,9 +174,9 @@ namespace Morpheus.Editor.Build
 
                 AssetData assetData = new AssetData
                 {
-                    assetId = string.IsNullOrEmpty(assetEditorData.assetId) ? assetEditorData.assetPath : assetEditorData.assetId,
-                    assetPath = assetEditorData.assetPath,
-                    groupId = groupId + AssetBundleExt
+                    AssetId = string.IsNullOrEmpty(assetEditorData.assetId) ? assetEditorData.assetPath : assetEditorData.assetId,
+                    AssetPath = assetEditorData.assetPath,
+                    GroupId = groupId + AssetBundleExt
                 };
                 result.Add(assetData);
             }
@@ -191,12 +191,12 @@ namespace Morpheus.Editor.Build
             }
             AssetManifest assetManifest = new AssetManifest
             {
-                assetDatas = assetDatas.ToArray()
+                AssetDatas = assetDatas.ToArray()
             };
             AssetConfig config = new AssetConfig
             {
-                version = editorConfig.version,
-                assetManifest = assetManifest
+                Version = editorConfig.version,
+                AssetManifest = assetManifest
             };
 
             try
@@ -261,18 +261,18 @@ namespace Morpheus.Editor.Build
                 BundleDetails details = infos.Value;
                 AssetGroupData data = new AssetGroupData
                 {
-                    groupId = infos.Key,
-                    crc = details.Crc,
-                    hash = details.Hash,
-                    fileName = infos.Key,
-                    fileOffset = 0ul,
-                    dependencies = details.Dependencies
+                    GroupId = infos.Key,
+                    Crc = details.Crc,
+                    Hash = details.Hash,
+                    FileName = infos.Key,
+                    FileOffset = 0ul,
+                    Dependencies = details.Dependencies
                 };
                 groupDatas[bundleCount++] = data;
             }
             AssetGroupManifest groupManifest = new AssetGroupManifest
             {
-                assetGroupDatas = groupDatas
+                AssetGroupDatas = groupDatas
             };
 
             List<AssetData> assetDatas = new List<AssetData>(32768);
@@ -282,13 +282,13 @@ namespace Morpheus.Editor.Build
             }
             AssetManifest assetManifest = new AssetManifest
             {
-                assetDatas = assetDatas.ToArray()
+                AssetDatas = assetDatas.ToArray()
             };
             AssetConfig config = new AssetConfig
             {
-                version = editorConfig.version,
-                assetGroupManifest = groupManifest,
-                assetManifest = assetManifest
+                Version = editorConfig.version,
+                AssetGroupManifest = groupManifest,
+                AssetManifest = assetManifest
             };
 
             try

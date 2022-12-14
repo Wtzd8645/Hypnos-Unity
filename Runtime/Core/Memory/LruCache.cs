@@ -6,10 +6,10 @@ namespace Morpheus.Core.Memory
     {
         private class Node
         {
-            public TKey key;
-            public TValue value;
-            public Node prev;
-            public Node next;
+            public TKey Key;
+            public TValue Value;
+            public Node Prev;
+            public Node Next;
         }
 
         private const int DefaultCapacity = 8;
@@ -24,16 +24,16 @@ namespace Morpheus.Core.Memory
         public LruCache(int capacity = DefaultCapacity)
         {
             nodeMap = new Dictionary<TKey, Node>(capacity);
-            dummyHead.next = dummyTail;
-            dummyTail.prev = dummyHead;
+            dummyHead.Next = dummyTail;
+            dummyTail.Prev = dummyHead;
             Capacity = capacity > 0 ? capacity : DefaultCapacity;
         }
 
         public void Clear()
         {
             nodeMap.Clear();
-            dummyHead.next = dummyTail;
-            dummyTail.prev = dummyHead;
+            dummyHead.Next = dummyTail;
+            dummyTail.Prev = dummyHead;
             Count = 0;
         }
 
@@ -46,7 +46,7 @@ namespace Morpheus.Core.Memory
             }
 
             MoveToFront(node);
-            return node.value;
+            return node.Value;
         }
 
         public void Put(TKey key, TValue value)
@@ -54,7 +54,7 @@ namespace Morpheus.Core.Memory
             nodeMap.TryGetValue(key, out Node node);
             if (node != null)
             {
-                node.value = value;
+                node.Value = value;
                 MoveToFront(node);
                 return;
             }
@@ -66,31 +66,31 @@ namespace Morpheus.Core.Memory
             }
             else
             {
-                node = dummyTail.prev;
-                node.prev.next = dummyTail;
-                dummyTail.prev = node.prev;
-                nodeMap.Remove(node.key);
+                node = dummyTail.Prev;
+                node.Prev.Next = dummyTail;
+                dummyTail.Prev = node.Prev;
+                nodeMap.Remove(node.Key);
             }
 
-            node.key = key;
-            node.value = value;
-            node.prev = dummyHead;
-            node.next = dummyHead.next;
-            dummyHead.next.prev = node;
-            dummyHead.next = node;
+            node.Key = key;
+            node.Value = value;
+            node.Prev = dummyHead;
+            node.Next = dummyHead.Next;
+            dummyHead.Next.Prev = node;
+            dummyHead.Next = node;
             nodeMap[key] = node;
         }
 
         private void MoveToFront(Node node)
         {
-            Node prev = node.prev;
-            Node next = node.next;
-            prev.next = next;
-            next.prev = prev;
-            node.prev = dummyHead;
-            node.next = dummyHead.next;
-            dummyHead.next.prev = node;
-            dummyHead.next = node;
+            Node prev = node.Prev;
+            Node next = node.Next;
+            prev.Next = next;
+            next.Prev = prev;
+            node.Prev = dummyHead;
+            node.Next = dummyHead.Next;
+            dummyHead.Next.Prev = node;
+            dummyHead.Next = node;
         }
     }
 }

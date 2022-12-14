@@ -4,12 +4,12 @@ namespace Morpheus.Network
 {
     public class HttpRequest : IRequest
     {
-        public ushort id;
-        public string uri;
-        public HttpMethod method;
-        public HttpContent content;
+        public ushort RequestId;
+        public string Uri;
+        public HttpMethod Method;
+        public HttpContent Content;
 
-        public ushort Id => id;
+        public ushort Id => RequestId;
 
         public int Pack(PacketBuffer result)
         {

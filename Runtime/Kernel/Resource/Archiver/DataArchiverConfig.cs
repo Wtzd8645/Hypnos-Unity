@@ -5,9 +5,9 @@ namespace Morpheus.Resource
     [Serializable]
     public class DataArchiverConfig
     {
-        public int id;
-        public CoreSerializer serializer;
-        public CoreCompressor compressor;
-        public CoreEncryptor encryptor;
+        public int Id;
+        public CoreSerializer Serializer;
+        public CoreCompressor Compressor;
+        public CoreEncryptor Encryptor;
     }
 }

@@ -5,25 +5,25 @@ namespace Morpheus.Debug
 {
     public class Log : IEquatable<Log>
     {
-        public LogType logType;
-        public string condition;
-        public string stackTrace;
+        public LogType LogType;
+        public string Condition;
+        public string StackTrace;
 
-        public int count = 1;
-        public int sampleId = 0;
+        public int Count = 1;
+        public int SampleId = 0;
 
         public Log(LogType type, string condition, string stackTrace)
         {
-            logType = type;
-            this.condition = condition;
-            this.stackTrace = stackTrace;
+            LogType = type;
+            this.Condition = condition;
+            this.StackTrace = stackTrace;
         }
 
         public bool Equals(Log other)
         {
-            return logType == other.logType &&
-                condition == other.condition &&
-                stackTrace == other.stackTrace;
+            return LogType == other.LogType &&
+                Condition == other.Condition &&
+                StackTrace == other.StackTrace;
         }
 
         public override int GetHashCode()
@@ -34,9 +34,9 @@ namespace Morpheus.Debug
                 const int FnvPrime = 16777619;
 
                 int hash = OffsetBasis;
-                hash = (hash * FnvPrime) ^ logType.GetHashCode();
-                hash = (hash * FnvPrime) ^ condition.GetHashCode();
-                hash = (hash * FnvPrime) ^ stackTrace.GetHashCode();
+                hash = (hash * FnvPrime) ^ LogType.GetHashCode();
+                hash = (hash * FnvPrime) ^ Condition.GetHashCode();
+                hash = (hash * FnvPrime) ^ StackTrace.GetHashCode();
                 return hash;
             }
         }
@@ -48,7 +48,7 @@ namespace Morpheus.Debug
 
         public int GetMemoryUsage()
         {
-            return sizeof(LogType) + sizeof(char) * condition.Length + sizeof(char) * stackTrace.Length + sizeof(int) + sizeof(int);
+            return sizeof(LogType) + sizeof(char) * Condition.Length + sizeof(char) * StackTrace.Length + sizeof(int) + sizeof(int);
         }
     }
 }

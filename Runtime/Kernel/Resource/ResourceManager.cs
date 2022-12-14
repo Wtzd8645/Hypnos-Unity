@@ -38,28 +38,28 @@ namespace Morpheus.Resource
 
         public void Initialize(ResourceConfig config)
         {
-            ArchiveFileExt = config.archiveFileExt;
-            ArchiveBackupFileExt = config.archiveBackupFileExt;
-            AppDataPath = config.appDataPath;
-            PersistentDataPath = config.persistentDataPath;
-            StreamingDataPath = config.streamingDataPath;
+            ArchiveFileExt = config.ArchiveFileExt;
+            ArchiveBackupFileExt = config.ArchiveBackupFileExt;
+            AppDataPath = config.AppDataPath;
+            PersistentDataPath = config.PersistentDataPath;
+            StreamingDataPath = config.StreamingDataPath;
 
-            dataArchiverMap = new Dictionary<int, DataArchiver>(config.dataArchiverConfigs.Length);
-            foreach (DataArchiverConfig archiverConfig in config.dataArchiverConfigs)
+            dataArchiverMap = new Dictionary<int, DataArchiver>(config.DataArchiverConfigs.Length);
+            foreach (DataArchiverConfig archiverConfig in config.DataArchiverConfigs)
             {
                 DataArchiver archiver = new DataArchiver(
-                    CoreUtil.CreateSerializer(archiverConfig.serializer),
-                    CoreUtil.CreateCompressor(archiverConfig.compressor),
-                    CoreUtil.CreateEncryptor(archiverConfig.encryptor));
-                dataArchiverMap.Add(archiverConfig.id, archiver);
+                    CoreUtil.CreateSerializer(archiverConfig.Serializer),
+                    CoreUtil.CreateCompressor(archiverConfig.Compressor),
+                    CoreUtil.CreateEncryptor(archiverConfig.Encryptor));
+                dataArchiverMap.Add(archiverConfig.Id, archiver);
             }
 
-            switch (config.resourceLoader)
+            switch (config.ResourceLoader)
             {
 #if UNITY_EDITOR
                 case ResourceLoader.FastEditor:
                 {
-                    ResourcesDirectoryPath = Path.Combine(config.persistentDataPath, ResourcesDirectoryName);
+                    ResourcesDirectoryPath = Path.Combine(config.PersistentDataPath, ResourcesDirectoryName);
                     AssetConfigPath = Path.Combine(ResourcesDirectoryPath, AssetConfigFileName);
                     resourceLoader = new FastEditorResourceLoader();
                     break;
@@ -68,21 +68,21 @@ namespace Morpheus.Resource
                 // NOTE: StreamingDataPath is readonly.
                 case ResourceLoader.BuildInAssetBundle:
                 {
-                    ResourcesDirectoryPath = Path.Combine(config.streamingDataPath, ResourcesDirectoryName);
+                    ResourcesDirectoryPath = Path.Combine(config.StreamingDataPath, ResourcesDirectoryName);
                     AssetConfigPath = Path.Combine(ResourcesDirectoryPath, AssetConfigFileName);
                     resourceLoader = new AssetBundleResourceLoader(ResourcesDirectoryPath);
                     break;
                 }
                 case ResourceLoader.AssetBundle:
                 {
-                    ResourcesDirectoryPath = Path.Combine(config.persistentDataPath, ResourcesDirectoryName);
+                    ResourcesDirectoryPath = Path.Combine(config.PersistentDataPath, ResourcesDirectoryName);
                     AssetConfigPath = Path.Combine(ResourcesDirectoryPath, AssetConfigFileName);
                     resourceLoader = new AssetBundleResourceLoader(ResourcesDirectoryPath);
                     break;
                 }
                 default:
                 {
-                    Kernel.LogError($"[ResourceManager] The ResourceLoader type is not supported. {config.resourceLoader}");
+                    Kernel.LogError($"[ResourceManager] The ResourceLoader type is not supported. {config.ResourceLoader}");
                     break;
                 }
             }

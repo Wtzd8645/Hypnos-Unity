@@ -20,13 +20,13 @@ namespace Morpheus.Environment
         }
         #endregion
 
-        public readonly string uniqueIdentifier = SystemInfo.deviceUniqueIdentifier;
-        public readonly string operatingSystem = SystemInfo.operatingSystem;
-        public readonly int processorCount = SystemInfo.processorCount;
-        public readonly int memorySize = SystemInfo.systemMemorySize;
+        public readonly string UniqueIdentifier = SystemInfo.deviceUniqueIdentifier;
+        public readonly string OperatingSystem = SystemInfo.operatingSystem;
+        public readonly int ProcessorCount = SystemInfo.processorCount;
+        public readonly int MemorySize = SystemInfo.systemMemorySize;
 
-        public readonly GraphicsDeviceType graphicsApiType = SystemInfo.graphicsDeviceType;
-        public readonly int graphicsMemorySize = SystemInfo.graphicsMemorySize;
+        public readonly GraphicsDeviceType GraphicsApiType = SystemInfo.graphicsDeviceType;
+        public readonly int GraphicsMemorySize = SystemInfo.graphicsMemorySize;
 
         public string GameVersion => Application.version;
         public int TargetFrameRate => Application.targetFrameRate;
@@ -35,10 +35,10 @@ namespace Morpheus.Environment
 
         public void Initialize(EnvironmentConfig config)
         {
-            Application.runInBackground = config.runInBackground;
-            Application.targetFrameRate = config.targetFrameRate;
-            SetScreenResolution(config.maxScreenResolution.x, config.maxScreenResolution.y);
-            Screen.sleepTimeout = config.neverSleepScreen ? SleepTimeout.NeverSleep : SleepTimeout.SystemSetting; // QUEST: 切換場景時會被重設嗎?
+            Application.runInBackground = config.RunInBackground;
+            Application.targetFrameRate = config.TargetFrameRate;
+            SetScreenResolution(config.MaxScreenResolution.x, config.MaxScreenResolution.y);
+            Screen.sleepTimeout = config.NeverSleepScreen ? SleepTimeout.NeverSleep : SleepTimeout.SystemSetting; // QUEST: 切換場景時會被重設嗎?
         }
 
         public void SetTargetFrameRate(int targetFrameRate)

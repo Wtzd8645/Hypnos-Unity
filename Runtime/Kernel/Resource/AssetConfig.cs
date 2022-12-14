@@ -6,39 +6,39 @@ namespace Morpheus.Resource
     [Serializable]
     public class AssetGroupData
     {
-        public string groupId;
-        public uint crc;
-        public Hash128 hash;
-        public string fileName;
-        public ulong fileOffset;
-        public string[] dependencies;
+        public string GroupId;
+        public uint Crc;
+        public Hash128 Hash;
+        public string FileName;
+        public ulong FileOffset;
+        public string[] Dependencies;
     }
 
     [Serializable]
     public class AssetData
     {
-        public string assetId;
-        public string assetPath;
-        public string groupId;
+        public string AssetId;
+        public string AssetPath;
+        public string GroupId;
     }
 
     [Serializable]
     public class AssetGroupManifest
     {
-        public AssetGroupData[] assetGroupDatas;
+        public AssetGroupData[] AssetGroupDatas;
     }
 
     [Serializable]
     public class AssetManifest
     {
-        public AssetData[] assetDatas;
+        public AssetData[] AssetDatas;
     }
 
     [Serializable]
     public class AssetConfig
     {
-        public int version;
-        public AssetGroupManifest assetGroupManifest;
-        public AssetManifest assetManifest;
+        public int Version;
+        public AssetGroupManifest AssetGroupManifest;
+        public AssetManifest AssetManifest;
     }
 }

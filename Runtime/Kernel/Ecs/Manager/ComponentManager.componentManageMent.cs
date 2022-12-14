@@ -4,11 +4,11 @@ using System.Collections.Generic;
 
 namespace Morpheus.Ecs
 {
-    public partial class ComponentManager : Singleton<ComponentManager>
+    public partial class ComponentManager
     {
         private Dictionary<Type, ObjectPool<EcsComponent>> componentPools = new Dictionary<Type, ObjectPool<EcsComponent>>();
 
-        private T getComponent<T>() where T : EcsComponent
+        private T GetComponent<T>() where T : EcsComponent
         {
             Type type = typeof(T);
             if (!componentPools.TryGetValue(type, out ObjectPool<EcsComponent> objectPool))
@@ -19,7 +19,7 @@ namespace Morpheus.Ecs
             return (T)objectPool.ForcePop();
         }
         
-        private void recycleComponent(EcsComponent component)
+        private void RecycleComponent(EcsComponent component)
         {
             Type type = component.GetType();
             if (componentPools.TryGetValue(type, out ObjectPool<EcsComponent> objectPool))

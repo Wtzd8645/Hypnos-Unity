@@ -5,26 +5,26 @@ namespace Morpheus.Network
     [Serializable]
     public class SocketConnectionConfig
     {
-        public TransportProtocol protocol;
-        public string ipAdderss;
-        public int port = NetworkManager.DefalutPort;
+        public TransportProtocol Protocol;
+        public string IpAdderss;
+        public int Port = NetworkManager.DefalutPort;
 
-        public ushort maxPacketSize = NetworkManager.DefalutMaxBufferSize;
-        public int sendTimeout = NetworkManager.DefalutSendTimeout;
+        public ushort MaxPacketSize = NetworkManager.DefalutMaxBufferSize;
+        public int SendTimeout = NetworkManager.DefalutSendTimeout;
     }
 
     internal class SocketHandlerConfig
     {
-        public SocketAoHandler onSocketAoCompleteHandler;
-        public IResponseProducer responseProducer;
-        public SocketResponseHandler onResponseCompleteHandler;
+        public SocketAoHandler OnSocketAoCompleteHandler;
+        public IResponseProducer ResponseProducer;
+        public SocketResponseHandler OnResponseCompleteHandler;
     }
 
     [Serializable]
     public class SocketConfig
     {
-        public int id;
-        public SocketConnectionConfig connectionConfig;
-        public int responseProducerId;
+        public int Id;
+        public SocketConnectionConfig ConnectionConfig;
+        public int ResponseProducerId;
     }
 }

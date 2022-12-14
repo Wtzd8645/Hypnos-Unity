@@ -20,7 +20,7 @@ namespace Morpheus.Ecs
 
         public void Initialize(ISystemConfig config)
         {
-            void setSystems(Type[] systemTypes, OrderedSet<EcsSystem> systems)
+            void SetSystems(Type[] systemTypes, OrderedSet<EcsSystem> systems)
             {
                 if (systemTypes == null || systemTypes.Length == 0)
                 {
@@ -52,9 +52,9 @@ namespace Morpheus.Ecs
             }
 
             systemWithBelongNodeDict.Clear();
-            setSystems(config.UpdateSystems, updateSystems);
-            setSystems(config.LateUpdateSystems, lateUpdateSystems);
-            setSystems(config.FixedUpdateSystems, fixedUpdateSystems);
+            SetSystems(config.UpdateSystems, updateSystems);
+            SetSystems(config.LateUpdateSystems, lateUpdateSystems);
+            SetSystems(config.FixedUpdateSystems, fixedUpdateSystems);
         }
 
         public void Update()

@@ -243,7 +243,7 @@ namespace Morpheus.UI
                 canvasSize.x * safeAreaRatio.width,
                 canvasSize.y * safeAreaRatio.height);
 
-            Kernel.Log($"[UiManager] CanvasSafeArea: {CanvasSafeArea}", (int)LogChannel.UI);
+            Kernel.Log($"[UiManager] CanvasSafeArea: {CanvasSafeArea}", (int)LogChannel.Ui);
         }
     }
 }

@@ -2,28 +2,28 @@
 {
     internal class AssetInst
     {
-        public string assetId;
-        public string groupId;
+        public string AssetId;
+        public string GroupId;
 
-        public UnityEngine.Object asset;
-        public int refCount;
+        public UnityEngine.Object Asset;
+        public int RefCount;
 
         public bool Dereference()
         {
-            if (--refCount > 0)
+            if (--RefCount > 0)
             {
                 return false;
             }
 
-            if (refCount < 0)
+            if (RefCount < 0)
             {
-                Kernel.LogError($"[AssetInst] Reference count is abnormal. AssetId: {assetId}");
-                asset = null;
-                refCount = 0;
+                Kernel.LogError($"[AssetInst] Reference count is abnormal. AssetId: {AssetId}");
+                Asset = null;
+                RefCount = 0;
                 return false;
             }
 
-            asset = null;
+            Asset = null;
             return true;
         }
     }

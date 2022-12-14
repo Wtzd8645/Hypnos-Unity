@@ -7,90 +7,90 @@ namespace Morpheus.Network
 {
     internal abstract class SocketBase : ISocket, IDisposable
     {
-        protected internal int id;
-        protected internal int version;
+        protected internal int SocketId;
+        protected internal int Version;
 
-        protected Socket socket;
-        protected EndPoint bindingEndPoint;
-        protected readonly SocketAoHandler onSocketAoComplete; // NOTE: When ReceiveAsync & SendAsync successfully will not send events.
-        protected readonly int maxPacketSize;
+        protected Socket Socket;
+        protected EndPoint BindingEndPoint;
+        protected readonly SocketAoHandler OnSocketAoComplete; // NOTE: When ReceiveAsync & SendAsync successfully will not send events.
+        protected readonly int MaxPacketSize;
 
         // Receive Related
-        protected readonly int receiveBufferSize;
-        protected SocketAsyncEventArgs receiveEventArgs;
-        protected readonly IResponseProducer responseProducer;
-        protected readonly SocketResponseHandler onResponseComplete;
+        protected readonly int ReceiveBufferSize;
+        protected SocketAsyncEventArgs ReceiveEventArgs;
+        protected readonly IResponseProducer ResponseProducer;
+        protected readonly SocketResponseHandler OnResponseComplete;
 
         // Send Related
-        protected readonly int sendBufferSize;
-        protected SocketAsyncEventArgs sendEventArgs = new SocketAsyncEventArgs();
-        protected Timer heartbeatTimer;
-        protected int sendTimeout;
+        protected readonly int SendBufferSize;
+        protected SocketAsyncEventArgs SendEventArgs = new SocketAsyncEventArgs();
+        protected Timer HeartbeatTimer;
+        protected int SendTimeout;
 
-        public int Id => id;
+        public int Id => SocketId;
 
-        protected SocketBase(int id, SocketHandlerConfig handlerConfig)
+        protected SocketBase(int _id, SocketHandlerConfig handlerConfig)
         {
-            this.id = id;
-            onSocketAoComplete = handlerConfig.onSocketAoCompleteHandler;
-            responseProducer = handlerConfig.responseProducer;
-            onResponseComplete = handlerConfig.onResponseCompleteHandler;
+            SocketId = _id;
+            OnSocketAoComplete = handlerConfig.OnSocketAoCompleteHandler;
+            ResponseProducer = handlerConfig.ResponseProducer;
+            OnResponseComplete = handlerConfig.OnResponseCompleteHandler;
         }
 
-        protected SocketBase(int id, SocketConnectionConfig connConfig, SocketHandlerConfig handlerConfig)
+        protected SocketBase(int _id, SocketConnectionConfig connConfig, SocketHandlerConfig handlerConfig)
         {
-            this.id = id;
-            IPAddress.TryParse(connConfig.ipAdderss, out IPAddress ipAddress);
-            bindingEndPoint = new IPEndPoint(ipAddress, connConfig.port);
-            onSocketAoComplete = handlerConfig.onSocketAoCompleteHandler;
-            maxPacketSize = connConfig.maxPacketSize;
+            SocketId = _id;
+            IPAddress.TryParse(connConfig.IpAdderss, out IPAddress ipAddress);
+            BindingEndPoint = new IPEndPoint(ipAddress, connConfig.Port);
+            OnSocketAoComplete = handlerConfig.OnSocketAoCompleteHandler;
+            MaxPacketSize = connConfig.MaxPacketSize;
 
-            receiveBufferSize = connConfig.maxPacketSize * 4;
+            ReceiveBufferSize = connConfig.MaxPacketSize * 4;
             CreateReceiveEventArgs();
-            responseProducer = handlerConfig.responseProducer;
-            onResponseComplete = handlerConfig.onResponseCompleteHandler;
+            ResponseProducer = handlerConfig.ResponseProducer;
+            OnResponseComplete = handlerConfig.OnResponseCompleteHandler;
 
-            sendBufferSize = connConfig.maxPacketSize * 2;
+            SendBufferSize = connConfig.MaxPacketSize * 2;
             CreateSendEventArgs();
-            heartbeatTimer = new Timer(OnHeartbeatTimeout);
-            sendTimeout = connConfig.sendTimeout;
+            HeartbeatTimer = new Timer(OnHeartbeatTimeout);
+            SendTimeout = connConfig.SendTimeout;
         }
 
         protected void CreateReceiveEventArgs()
         {
             PacketBuffer packetBuf = new PacketBuffer
             {
-                final = new byte[receiveBufferSize],
-                compress = new byte[receiveBufferSize],
-                encrypt = new byte[receiveBufferSize]
+                Final = new byte[ReceiveBufferSize],
+                Compress = new byte[ReceiveBufferSize],
+                Encrypt = new byte[ReceiveBufferSize]
             };
             PacketReadState readState = new PacketReadState
             {
-                packetBuf = packetBuf
+                PacketBuf = packetBuf
             };
-            receiveEventArgs = new SocketAsyncEventArgs();
-            receiveEventArgs.SetBuffer(packetBuf.final, 0, receiveBufferSize);
-            receiveEventArgs.UserToken = readState;
-            receiveEventArgs.Completed += OnReceiveAsyncComplete;
+            ReceiveEventArgs = new SocketAsyncEventArgs();
+            ReceiveEventArgs.SetBuffer(packetBuf.Final, 0, ReceiveBufferSize);
+            ReceiveEventArgs.UserToken = readState;
+            ReceiveEventArgs.Completed += OnReceiveAsyncComplete;
         }
 
         protected void CreateSendEventArgs()
         {
             PacketBuffer packetBuf = new PacketBuffer
             {
-                final = new byte[short.MaxValue],
-                compress = new byte[sendBufferSize],
-                encrypt = new byte[sendBufferSize]
+                Final = new byte[short.MaxValue],
+                Compress = new byte[SendBufferSize],
+                Encrypt = new byte[SendBufferSize]
             };
             PacketSendState sendState = new PacketSendState
             {
-                sendBuf = new byte[short.MaxValue],
-                packetBuf = packetBuf
+                SendBuf = new byte[short.MaxValue],
+                PacketBuf = packetBuf
             };
-            sendEventArgs = new SocketAsyncEventArgs();
-            sendEventArgs.SetBuffer(sendState.sendBuf, 0, short.MaxValue);
-            sendEventArgs.UserToken = sendState;
-            sendEventArgs.Completed += OnSendAsyncComplete;
+            SendEventArgs = new SocketAsyncEventArgs();
+            SendEventArgs.SetBuffer(sendState.SendBuf, 0, short.MaxValue);
+            SendEventArgs.UserToken = sendState;
+            SendEventArgs.Completed += OnSendAsyncComplete;
         }
 
         // NOTE: Dispose and Reset called uniformly through the main thread.
@@ -114,7 +114,7 @@ namespace Morpheus.Network
 
         private void OnSendAsyncTimeout(object state)
         {
-            onSocketAoComplete(this, SocketAsyncOperation.Send, SocketError.TimedOut);
+            OnSocketAoComplete(this, SocketAsyncOperation.Send, SocketError.TimedOut);
         }
     }
 }

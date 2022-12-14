@@ -21,9 +21,10 @@ namespace Morpheus.Tests.Ecs
             }
         }
 
-        private void entityCreateTest()
+        [Test]
+        public  void EntityCreateTest()
         {
-            IDGenerator.Reset();
+            IdGenerator.Reset();
             ComponentManager.CreateInstance();
             SystemManager.CreateInstance();
             EntityManager.CreateInstance();
@@ -33,7 +34,7 @@ namespace Morpheus.Tests.Ecs
             ));
 
             EntityConfig config = new(
-                new ComponentConfig<TestComponent>((c)=>c.i = 1),
+                new ComponentConfig<TestComponent>((c)=>c.I = 1),
                 new ComponentConfig<TestComponent3>()
             );
 
@@ -59,92 +60,86 @@ namespace Morpheus.Tests.Ecs
 
             EntityManager.Instance.SpawnEntity(config);
 
-            Assert.AreEqual(testComponent1[0].i, 1);
-            Assert.AreEqual(testComponent3[0].u, 0);
+            Assert.AreEqual(testComponent1[0].I, 1);
+            Assert.AreEqual(testComponent3[0].U, 0);
 
             SystemManager.Instance.Update();
             
-            Assert.AreEqual(testComponent1[0].i, 1);
-            Assert.AreEqual(testComponent3[0].u, 0);
+            Assert.AreEqual(testComponent1[0].I, 1);
+            Assert.AreEqual(testComponent3[0].U, 0);
 
             ComponentManager.Instance.AddComponent<TestComponent2>(
                 1,
-                new ComponentConfig<TestComponent2>((c)=>c.f = 2)
+                new ComponentConfig<TestComponent2>((c)=>c.F = 2)
             );
 
             SystemManager.Instance.Update();
             
-            Assert.AreEqual(testComponent1[0].i, 2);
-            Assert.AreEqual(testComponent2[0].f, 3);
-            Assert.AreEqual(testComponent3[0].u, 1);
+            Assert.AreEqual(testComponent1[0].I, 2);
+            Assert.AreEqual(testComponent2[0].F, 3);
+            Assert.AreEqual(testComponent3[0].U, 1);
 
             config += new EntityConfig(
                 new ComponentConfig<TestComponent2>()
             );
             config += new EntityConfig(
-                new ComponentConfig<TestComponent2>((c)=>c.f = 2)
+                new ComponentConfig<TestComponent2>((c)=>c.F = 2)
             );
             
             SystemManager.Instance.Update();
             
-            Assert.AreEqual(testComponent1[0].i, 3);
-            Assert.AreEqual(testComponent2[0].f, 4);
-            Assert.AreEqual(testComponent3[0].u, 2);
+            Assert.AreEqual(testComponent1[0].I, 3);
+            Assert.AreEqual(testComponent2[0].F, 4);
+            Assert.AreEqual(testComponent3[0].U, 2);
             
             ComponentManager.Instance.RemoveComponent<TestComponent3>(1);
             
             SystemManager.Instance.Update();
             
-            Assert.AreEqual(testComponent1[0].i, 4);
-            Assert.AreEqual(testComponent2[0].f, 5);
-            Assert.AreEqual(testComponent3[0].u, 0);
+            Assert.AreEqual(testComponent1[0].I, 4);
+            Assert.AreEqual(testComponent2[0].F, 5);
+            Assert.AreEqual(testComponent3[0].U, 0);
             
             EntityManager.Instance.SpawnEntity(config);
             
             SystemManager.Instance.Update();
             
-            Assert.AreEqual(testComponent1[0].i, 5);
-            Assert.AreEqual(testComponent2[0].f, 6);
+            Assert.AreEqual(testComponent1[0].I, 5);
+            Assert.AreEqual(testComponent2[0].F, 6);
             
-            Assert.AreEqual(testComponent1[1].i, 2);
-            Assert.AreEqual(testComponent2[1].f, 3);
+            Assert.AreEqual(testComponent1[1].I, 2);
+            Assert.AreEqual(testComponent2[1].F, 3);
             // 被拿來回收了
-            Assert.AreEqual(testComponent3[1].u, 1);
+            Assert.AreEqual(testComponent3[1].U, 1);
             ComponentManager.Instance.RemoveComponent<TestComponent>(1);
 
             EntityManager.Instance.SpawnEntity(config);
             
             SystemManager.Instance.Update();
 
-            Assert.AreEqual(testComponent2[0].f, 6);
+            Assert.AreEqual(testComponent2[0].F, 6);
             
-            Assert.AreEqual(testComponent1[1].i, 3);
-            Assert.AreEqual(testComponent2[1].f, 4);
-            Assert.AreEqual(testComponent3[1].u, 2);
+            Assert.AreEqual(testComponent1[1].I, 3);
+            Assert.AreEqual(testComponent2[1].F, 4);
+            Assert.AreEqual(testComponent3[1].U, 2);
 
-            Assert.AreEqual(testComponent1[2].i, 2);
-            Assert.AreEqual(testComponent2[2].f, 3);
-            Assert.AreEqual(testComponent3[2].u, 1);
+            Assert.AreEqual(testComponent1[2].I, 2);
+            Assert.AreEqual(testComponent2[2].F, 3);
+            Assert.AreEqual(testComponent3[2].U, 1);
 
             ComponentManager.Instance.RemoveComponent<TestComponent>(3);
             
             SystemManager.Instance.Update();
 
-            Assert.AreEqual(testComponent2[0].f, 6);
+            Assert.AreEqual(testComponent2[0].F, 6);
             
-            Assert.AreEqual(testComponent1[1].i, 4);
-            Assert.AreEqual(testComponent2[1].f, 5);
-            Assert.AreEqual(testComponent3[1].u, 3);
+            Assert.AreEqual(testComponent1[1].I, 4);
+            Assert.AreEqual(testComponent2[1].F, 5);
+            Assert.AreEqual(testComponent3[1].U, 3);
             
-            Assert.AreEqual(testComponent1[2].i, 0);
-            Assert.AreEqual(testComponent2[2].f, 3);
-            Assert.AreEqual(testComponent3[2].u, 1);
-        }
-
-        [Test]
-        public void EntityCreateTest()
-        {
-            entityCreateTest();
+            Assert.AreEqual(testComponent1[2].I, 0);
+            Assert.AreEqual(testComponent2[2].F, 3);
+            Assert.AreEqual(testComponent3[2].U, 1);
         }
     }
 }

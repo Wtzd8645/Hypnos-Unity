@@ -6,18 +6,18 @@ using System.Reflection;
 
 namespace Morpheus.Ecs
 {
-    public class ComonentTypeInNodeDic : IEnumerable<KeyValuePair<Type, HashSet<Type>>>
+    public class ComponentTypeInNodeDic : IEnumerable<KeyValuePair<Type, HashSet<Type>>>
     {
         private Dictionary<Type, HashSet<Type>> componentTypeOfNode = new Dictionary<Type, HashSet<Type>>();
 
-        public static ComonentTypeInNodeDic GetInstanceByAssembly()
+        public static ComponentTypeInNodeDic GetInstanceByAssembly()
         {
-            ComonentTypeInNodeDic set = new ComonentTypeInNodeDic();
+            var set = new ComponentTypeInNodeDic();
             set.componentTypeOfNode.Clear();
 
-            foreach (Assembly assembly in AppDomain.CurrentDomain.GetAssemblies())
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                set.addDataByAssembly(assembly);
+                set.AddDataByAssembly(assembly);
             }
 
             return set;
@@ -28,7 +28,7 @@ namespace Morpheus.Ecs
             get => componentTypeOfNode[key];
         }
 
-        public static ComonentTypeInNodeDic operator +(ComonentTypeInNodeDic c1, ComonentTypeInNodeDic c2)
+        public static ComponentTypeInNodeDic operator +(ComponentTypeInNodeDic c1, ComponentTypeInNodeDic c2)
         {
             if (c1 == null)
             {
@@ -46,23 +46,23 @@ namespace Morpheus.Ecs
             return c1;
         }
 
-        private void addDataByAssembly(Assembly fromAssembly)
+        private void AddDataByAssembly(Assembly fromAssembly)
         {
             foreach (Type type in fromAssembly.GetTypes()
-                .Where(myType =>
-                {
-                    return myType.IsClass
-                        && !myType.IsAbstract
-                        && myType.IsSubclassOf(typeof(EcsNode));
-                }))
+                         .Where(myType =>
+                         {
+                             return myType.IsClass
+                                    && !myType.IsAbstract
+                                    && myType.IsSubclassOf(typeof(EcsNode));
+                         }))
             {
                 componentTypeOfNode.Add(type, new HashSet<Type>());
 
                 IEnumerable<PropertyInfo> componentsField = type.GetProperties()
                     .Where((comType) =>
-                            comType.PropertyType.IsClass
-                            && !comType.PropertyType.IsAbstract
-                            && comType.PropertyType.IsSubclassOf(typeof(EcsComponent)));
+                        comType.PropertyType.IsClass
+                        && !comType.PropertyType.IsAbstract
+                        && comType.PropertyType.IsSubclassOf(typeof(EcsComponent)));
                 foreach (PropertyInfo field in componentsField)
                 {
                     if (field.GetCustomAttribute<OptionalComponentAttribute>() == null)
