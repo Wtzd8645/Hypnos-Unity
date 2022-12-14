@@ -46,7 +46,7 @@ namespace Morpheus.Editor
                         workbook = new XSSFWorkbook(fs);
                         break;
                     default:
-                        DebugLogger.LogError($"[ExcelConverter] The file is not xls or xlsx format. File: {fileName}");
+                        Logger.LogError($"[ExcelConverter] The file is not xls or xlsx format. File: {fileName}");
                         return null;
                 }
 
@@ -54,7 +54,7 @@ namespace Morpheus.Editor
             }
             catch (Exception e)
             {
-                DebugLogger.LogError($"[ExcelConverter] {e.Message}");
+                Logger.LogError($"[ExcelConverter] {e.Message}");
                 return null;
             }
             finally

@@ -36,7 +36,7 @@ namespace Morpheus.Editor
         {
             if (workbook == null)
             {
-                DebugLogger.Log("[ExcelParser] Workbook is null.");
+                Logger.Log("[ExcelParser] Workbook is null.");
                 return new List<SheetInfo>();
             }
 
@@ -111,7 +111,7 @@ namespace Morpheus.Editor
         {
             if (sheetInfo.classRow == null)
             {
-                DebugLogger.LogWarning($"[ExcelParser] classRow is null. Sheet: {sheetInfo.sheetName}");
+                Logger.LogWarning($"[ExcelParser] classRow is null. Sheet: {sheetInfo.sheetName}");
                 return;
             }
 
@@ -122,7 +122,7 @@ namespace Morpheus.Editor
         {
             if (sheetInfo.typeRow == null || sheetInfo.nameRow == null)
             {
-                DebugLogger.LogWarning($"[ExcelParser] typeRow or nameRow is null. Sheet: {sheetInfo.sheetName}");
+                Logger.LogWarning($"[ExcelParser] typeRow or nameRow is null. Sheet: {sheetInfo.sheetName}");
                 return;
             }
 
@@ -141,7 +141,7 @@ namespace Morpheus.Editor
                 Type fieldType = Type.GetType("System." + typeStr);
                 if (fieldType == null)
                 {
-                    DebugLogger.LogWarning($"[ExcelParser] Can't get type at column {i - 1}. Sheet: {sheetInfo.sheetName}");
+                    Logger.LogWarning($"[ExcelParser] Can't get type at column {i - 1}. Sheet: {sheetInfo.sheetName}");
                     continue;
                 }
 
@@ -160,7 +160,7 @@ namespace Morpheus.Editor
 
                 if (fieldInfos.Contains(fieldInfo))
                 {
-                    DebugLogger.LogError($"[ExcelParser] FieldName is duplicate at column {i - 1}. Sheet: {sheetInfo.sheetName}");
+                    Logger.LogError($"[ExcelParser] FieldName is duplicate at column {i - 1}. Sheet: {sheetInfo.sheetName}");
                     continue;
                 }
 

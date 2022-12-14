@@ -77,7 +77,7 @@ namespace Morpheus.UI
                 }
                 default:
                 {
-                    DebugLogger.LogError($"[UiAnimator] Unexpected clip: {clip.ToString() + suffix}");
+                    Logger.LogError($"[UiAnimator] Unexpected clip: {clip.ToString() + suffix}");
                     return;
                 }
             }

@@ -49,14 +49,14 @@ namespace Morpheus.Resource
             assetInstMap.TryGetValue(assetId, out AssetInst assetInst);
             if (assetInst == null)
             {
-                DebugLogger.LogError($"[AssetBundleResourceLoader] Can't find AssetInst. AssetId: {assetId}");
+                Logger.LogError($"[AssetBundleResourceLoader] Can't find AssetInst. AssetId: {assetId}");
                 return false;
             }
 
             assetGroupInstMap.TryGetValue(assetInst.GroupId, out AssetGroupInst groupInst);
             if (groupInst == null)
             {
-                DebugLogger.LogError($"[AssetBundleResourceLoader] Can't find AssetGroupInst. GroupId: {assetInst.GroupId}, AssetId: {assetId}");
+                Logger.LogError($"[AssetBundleResourceLoader] Can't find AssetGroupInst. GroupId: {assetInst.GroupId}, AssetId: {assetId}");
                 return false;
             }
 
@@ -68,7 +68,7 @@ namespace Morpheus.Resource
             assetInstMap.TryGetValue(assetId, out AssetInst assetInst);
             if (assetInst == null)
             {
-                DebugLogger.LogError($"[AssetBundleResourceLoader] Can't find AssetInst. AssetId: {assetId}");
+                Logger.LogError($"[AssetBundleResourceLoader] Can't find AssetInst. AssetId: {assetId}");
                 return null;
             }
 
@@ -77,7 +77,7 @@ namespace Morpheus.Resource
                 assetGroupInstMap.TryGetValue(assetInst.GroupId, out AssetGroupInst groupInst);
                 if (groupInst == null)
                 {
-                    DebugLogger.LogError($"[AssetBundleResourceLoader] Can't find AssetGroupInst. GroupId: {assetInst.GroupId}, AssetId: {assetId}");
+                    Logger.LogError($"[AssetBundleResourceLoader] Can't find AssetGroupInst. GroupId: {assetInst.GroupId}, AssetId: {assetId}");
                     return null;
                 }
 
@@ -89,7 +89,7 @@ namespace Morpheus.Resource
                         assetGroupInstMap.TryGetValue(depGroupId, out AssetGroupInst depGroupInst);
                         if (depGroupInst == null)
                         {
-                            DebugLogger.LogError($"[AssetBundleResourceLoader] Can't find dependent AssetGroupInst. GroupId: {assetInst.GroupId}, DependenctGroupId: {depGroupId}");
+                            Logger.LogError($"[AssetBundleResourceLoader] Can't find dependent AssetGroupInst. GroupId: {assetInst.GroupId}, DependenctGroupId: {depGroupId}");
                             continue;
                         }
 
@@ -113,7 +113,7 @@ namespace Morpheus.Resource
             assetInstMap.TryGetValue(assetId, out AssetInst assetInst);
             if (assetInst == null)
             {
-                DebugLogger.LogError($"[AssetBundleResourceLoader] Can't find AssetInst. AssetId: {assetId}");
+                Logger.LogError($"[AssetBundleResourceLoader] Can't find AssetInst. AssetId: {assetId}");
                 completeCb?.Invoke(null);
                 yield break;
             }
@@ -123,7 +123,7 @@ namespace Morpheus.Resource
                 assetGroupInstMap.TryGetValue(assetInst.GroupId, out AssetGroupInst groupInst);
                 if (groupInst == null)
                 {
-                    DebugLogger.LogError($"[AssetBundleResourceLoader] Can't find AssetGroupInst. GroupId: {assetInst.GroupId}, AssetId: {assetId}");
+                    Logger.LogError($"[AssetBundleResourceLoader] Can't find AssetGroupInst. GroupId: {assetInst.GroupId}, AssetId: {assetId}");
                     yield break;
                 }
 
@@ -135,7 +135,7 @@ namespace Morpheus.Resource
                         assetGroupInstMap.TryGetValue(depGroupId, out AssetGroupInst depGroupInst);
                         if (depGroupInst == null)
                         {
-                            DebugLogger.LogError($"[AssetBundleResourceLoader] Can't find dependent AssetGroupInst. GroupId: {assetInst.GroupId}, DependenctGroupId: {depGroupId}");
+                            Logger.LogError($"[AssetBundleResourceLoader] Can't find dependent AssetGroupInst. GroupId: {assetInst.GroupId}, DependenctGroupId: {depGroupId}");
                             continue;
                         }
 
@@ -159,7 +159,7 @@ namespace Morpheus.Resource
             assetInstMap.TryGetValue(assetId, out AssetInst assetInst);
             if (assetInst == null)
             {
-                DebugLogger.LogError($"[AssetBundleResourceLoader] Can't find AssetInst. AssetId: {assetId}");
+                Logger.LogError($"[AssetBundleResourceLoader] Can't find AssetInst. AssetId: {assetId}");
                 return;
             }
 
@@ -176,7 +176,7 @@ namespace Morpheus.Resource
             assetGroupInstMap.TryGetValue(groupId, out AssetGroupInst groupInst);
             if (groupInst == null)
             {
-                DebugLogger.LogError($"[AssetBundleResourceLoader] Can't find AssetGroupInst. GroupId: {groupId}");
+                Logger.LogError($"[AssetBundleResourceLoader] Can't find AssetGroupInst. GroupId: {groupId}");
                 return;
             }
 
@@ -191,7 +191,7 @@ namespace Morpheus.Resource
                 assetGroupInstMap.TryGetValue(depGroupId, out AssetGroupInst depGroupInst);
                 if (depGroupInst == null)
                 {
-                    DebugLogger.LogError($"[AssetBundleResourceLoader] Can't find dependent AssetGroupInst. GroupId: {groupId}, DependenctGroupId: {depGroupId}");
+                    Logger.LogError($"[AssetBundleResourceLoader] Can't find dependent AssetGroupInst. GroupId: {groupId}, DependenctGroupId: {depGroupId}");
                     continue;
                 }
                 depGroupInst.Dereference();

@@ -80,15 +80,15 @@ namespace Morpheus.Network
             }
             catch (HttpRequestException e)
             {
-                DebugLogger.LogError(e.Message);
+                Logger.LogError(e.Message);
             }
             catch (TaskCanceledException e)
             {
-                DebugLogger.LogError(e.Message);
+                Logger.LogError(e.Message);
             }
             catch (Exception e)
             {
-                DebugLogger.LogError(e.Message);
+                Logger.LogError(e.Message);
             }
         }
     }

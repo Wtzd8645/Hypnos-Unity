@@ -42,13 +42,13 @@ namespace Morpheus.GameState
                 ClassIdentityAttribute attr = Attribute.GetCustomAttribute(state.GetType(), attrType) as ClassIdentityAttribute;
                 if (attr == null)
                 {
-                    DebugLogger.LogError($"[GameStateManager] GameState has no attribute. Class: {state}");
+                    Logger.LogError($"[GameStateManager] GameState has no attribute. Class: {state}");
                     continue;
                 }
 
                 if (stateMap.ContainsKey(attr.Id))
                 {
-                    DebugLogger.LogError($"[GameStateManager] Duplicated GameState Id: {attr.Id}");
+                    Logger.LogError($"[GameStateManager] Duplicated GameState Id: {attr.Id}");
                     continue;
                 }
 
@@ -62,7 +62,7 @@ namespace Morpheus.GameState
         {
             if (currentState != null)
             {
-                DebugLogger.LogError($"[GameStateManager] GameStateManager has started.");
+                Logger.LogError($"[GameStateManager] GameStateManager has started.");
                 return;
             }
 
@@ -83,7 +83,7 @@ namespace Morpheus.GameState
         {
             if (isTransiting)
             {
-                DebugLogger.LogError($"[GameStateManager] GameState is transiting. TargetState: {stateId}");
+                Logger.LogError($"[GameStateManager] GameState is transiting. TargetState: {stateId}");
                 return;
             }
 

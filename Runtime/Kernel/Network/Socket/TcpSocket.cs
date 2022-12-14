@@ -41,7 +41,7 @@ namespace Morpheus.Network
 
         public override void Reset()
         {
-            DebugLogger.Log($"[TcpSocket] Reset. Id: {Id}", (int)DebugLogChannel.Network);
+            Logger.Log($"[TcpSocket] Reset. Id: {Id}", (int)DebugLogChannel.Network);
             // NOTE: https://docs.microsoft.com/zh-tw/dotnet/api/system.net.sockets.socket.close
             // socket.Shutdown(SocketShutdown.Both);
             Socket.Close();
@@ -55,7 +55,7 @@ namespace Morpheus.Network
         {
             try
             {
-                DebugLogger.Log($"[TcpSocket] ConnectAsync. Id: {Id}", (int)DebugLogChannel.Network);
+                Logger.Log($"[TcpSocket] ConnectAsync. Id: {Id}", (int)DebugLogChannel.Network);
                 if (Socket.Connected)
                 {
                     OnSocketAoComplete(this, SocketAsyncOperation.Connect, SocketError.IsConnected);
@@ -69,7 +69,7 @@ namespace Morpheus.Network
             }
             catch (Exception e)
             {
-                DebugLogger.LogError($"[TcpSocket] ConnectAsync failed. Id: {Id}, Exception: {e.Message}");
+                Logger.LogError($"[TcpSocket] ConnectAsync failed. Id: {Id}, Exception: {e.Message}");
                 OnSocketAoComplete(this, SocketAsyncOperation.Connect, SocketError.SocketError);
             }
         }
@@ -78,7 +78,7 @@ namespace Morpheus.Network
         {
             try
             {
-                DebugLogger.Log($"[TcpSocket] DisconnectAsync. Id: {Id}", (int)DebugLogChannel.Network);
+                Logger.Log($"[TcpSocket] DisconnectAsync. Id: {Id}", (int)DebugLogChannel.Network);
                 if (!Socket.Connected)
                 {
                     OnSocketAoComplete(this, SocketAsyncOperation.Disconnect, SocketError.NotConnected);
@@ -93,7 +93,7 @@ namespace Morpheus.Network
             }
             catch (Exception e)
             {
-                DebugLogger.LogError($"[TcpSocket] DisconnectAsync failed. Id: {Id}, Exception: {e.Message}");
+                Logger.LogError($"[TcpSocket] DisconnectAsync failed. Id: {Id}, Exception: {e.Message}");
                 OnSocketAoComplete(this, SocketAsyncOperation.Disconnect, SocketError.SocketError);
             }
         }
@@ -105,7 +105,7 @@ namespace Morpheus.Network
 
         public override void ReceiveAsync()
         {
-            DebugLogger.Log($"[TcpSocket] ReceiveAsync. Id: {Id}", (int)DebugLogChannel.Network);
+            Logger.Log($"[TcpSocket] ReceiveAsync. Id: {Id}", (int)DebugLogChannel.Network);
             ReceiveInternalAsync(Socket, ReceiveEventArgs);
         }
 
@@ -120,7 +120,7 @@ namespace Morpheus.Network
             }
             catch (Exception e)
             {
-                DebugLogger.LogError($"[TcpSocket] ReceiveAsync failed. Id: {Id}, Exception: {e.Message}");
+                Logger.LogError($"[TcpSocket] ReceiveAsync failed. Id: {Id}, Exception: {e.Message}");
                 OnSocketAoComplete(this, SocketAsyncOperation.Receive, SocketError.SocketError);
             }
         }
@@ -139,7 +139,7 @@ namespace Morpheus.Network
                 return;
             }
 
-            DebugLogger.TraceLog($"[TcpSocket] Socket {Id} received {evtArgs.BytesTransferred} bytes", (int)DebugLogChannel.Network);
+            Logger.TraceLog($"[TcpSocket] Socket {Id} received {evtArgs.BytesTransferred} bytes", (int)DebugLogChannel.Network);
             PacketReadState readState = evtArgs.UserToken as PacketReadState;
             readState.PendingBytes += evtArgs.BytesTransferred;
             while (readState.PendingBytes >= readState.WaitingBytes)
@@ -160,7 +160,7 @@ namespace Morpheus.Network
                 }
                 catch (Exception e)
                 {
-                    DebugLogger.LogError($"[TcpSocket] Socket {Id} create message failed. Exception: {e.Message}");
+                    Logger.LogError($"[TcpSocket] Socket {Id} create message failed. Exception: {e.Message}");
                     OnSocketAoComplete(this, SocketAsyncOperation.Receive, SocketError.TypeNotFound);
                 }
                 finally
@@ -203,7 +203,7 @@ namespace Morpheus.Network
                     }
 
                     sendState.PacketBuf.Offset = producedBytes;
-                    DebugLogger.TraceLog($"[TcpSocket] Socket {Id} produce {producedBytes} bytes.", (int)DebugLogChannel.Network);
+                    Logger.TraceLog($"[TcpSocket] Socket {Id} produce {producedBytes} bytes.", (int)DebugLogChannel.Network);
                     return;
                 }
             }
@@ -217,7 +217,7 @@ namespace Morpheus.Network
                 return;
             }
 
-            DebugLogger.TraceLog($"[TcpSocket] Socket {Id} send {sendState.PendingBytes} bytes.", (int)DebugLogChannel.Network);
+            Logger.TraceLog($"[TcpSocket] Socket {Id} send {sendState.PendingBytes} bytes.", (int)DebugLogChannel.Network);
             byte[] buffer = SendEventArgs.Buffer;
             SendEventArgs.SetBuffer(sendState.PacketBuf.Final, 0, sendState.PendingBytes);
             sendState.PacketBuf.Offset = 0;
@@ -236,14 +236,14 @@ namespace Morpheus.Network
             }
             catch (Exception e)
             {
-                DebugLogger.LogError($"[TcpSocket] SendAsync failed. Id: {Id}, Exception: {e.Message}");
+                Logger.LogError($"[TcpSocket] SendAsync failed. Id: {Id}, Exception: {e.Message}");
                 OnSocketAoComplete(this, SocketAsyncOperation.Send, evtArgs.SocketError);
             }
         }
 
         protected override void OnSendAsyncComplete(object sender, SocketAsyncEventArgs evtArgs)
         {
-            DebugLogger.TraceLog($"[TcpSocket] Socket {Id} sent {evtArgs.BytesTransferred} bytes.", (int)DebugLogChannel.Network);
+            Logger.TraceLog($"[TcpSocket] Socket {Id} sent {evtArgs.BytesTransferred} bytes.", (int)DebugLogChannel.Network);
             PacketSendState sendState = evtArgs.UserToken as PacketSendState;
             if (evtArgs.SocketError != SocketError.Success)
             {
@@ -268,7 +268,7 @@ namespace Morpheus.Network
                     return;
                 }
 
-                DebugLogger.TraceLog($"[TcpSocket] Socket {Id} send {sendState.PacketBuf.Offset} produced bytes.", (int)DebugLogChannel.Network);
+                Logger.TraceLog($"[TcpSocket] Socket {Id} send {sendState.PacketBuf.Offset} produced bytes.", (int)DebugLogChannel.Network);
                 byte[] buffer = evtArgs.Buffer;
                 evtArgs.SetBuffer(sendState.PacketBuf.Final, 0, sendState.PacketBuf.Offset);
                 sendState.PendingBytes = sendState.PacketBuf.Offset;

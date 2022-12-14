@@ -23,14 +23,14 @@ namespace Morpheus.Resource
 
             if (IsLoading)
             {
-                DebugLogger.LogError($"[AssetGroupInst] AssetBundle is already loading asynchronously. GroupId: {GroupId}");
+                Logger.LogError($"[AssetGroupInst] AssetBundle is already loading asynchronously. GroupId: {GroupId}");
                 return;
             }
 
             Bundle = AssetBundle.LoadFromFile(FilePath, 0u, FileOffset);
             if (Bundle == null)
             {
-                DebugLogger.LogError($"[AssetGroupInst] Can't load AssetBundle from file. GroupId: {GroupId}, FilePath: {FilePath}, FileOffset: {FileOffset}");
+                Logger.LogError($"[AssetGroupInst] Can't load AssetBundle from file. GroupId: {GroupId}, FilePath: {FilePath}, FileOffset: {FileOffset}");
             }
         }
 
@@ -54,7 +54,7 @@ namespace Morpheus.Resource
             Bundle = bundleLoadAo.assetBundle;
             if (Bundle == null)
             {
-                DebugLogger.LogError($"[AssetGroupInst] Can't load AssetBundle from file. GroupId: {GroupId}, FilePath: {FilePath}, FileOffset: {FileOffset}");
+                Logger.LogError($"[AssetGroupInst] Can't load AssetBundle from file. GroupId: {GroupId}, FilePath: {FilePath}, FileOffset: {FileOffset}");
             }
         }
 
@@ -95,7 +95,7 @@ namespace Morpheus.Resource
         {
             if (IsLoading)
             {
-                DebugLogger.LogError($"[AssetGroupInst] Can't dereference when bundle is loading. GroupId: {GroupId}");
+                Logger.LogError($"[AssetGroupInst] Can't dereference when bundle is loading. GroupId: {GroupId}");
             }
 
             if (--RefCount > 0)
@@ -105,7 +105,7 @@ namespace Morpheus.Resource
 
             if (RefCount < 0)
             {
-                DebugLogger.LogError($"[AssetGroupInst] Reference count is abnormal. GroupId: {GroupId}");
+                Logger.LogError($"[AssetGroupInst] Reference count is abnormal. GroupId: {GroupId}");
             }
 
             Unload();

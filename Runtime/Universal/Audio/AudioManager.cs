@@ -42,7 +42,7 @@ namespace Morpheus.Audio
         {
             if (Microphone.IsRecording(deviceName))
             {
-                DebugLogger.Log($"[AudioManager] Device is recording. Device: {deviceName}", (int)DebugLogChannel.Audio);
+                Logger.Log($"[AudioManager] Device is recording. Device: {deviceName}", (int)DebugLogChannel.Audio);
                 return;
             }
 
@@ -59,7 +59,7 @@ namespace Morpheus.Audio
         {
             if (!Microphone.IsRecording(deviceName))
             {
-                DebugLogger.Log($"[AudioManager] Device isn't recording. Device: {deviceName}", (int)DebugLogChannel.Audio);
+                Logger.Log($"[AudioManager] Device isn't recording. Device: {deviceName}", (int)DebugLogChannel.Audio);
                 return new byte[0];
             }
 
@@ -67,7 +67,7 @@ namespace Morpheus.Audio
             microphoneClipMap.TryGetValue(deviceName, out AudioClip clip);
             if (clip == null)
             {
-                DebugLogger.LogError($"[AudioManager] The recorded audio clip is null. Device: {deviceName}");
+                Logger.LogError($"[AudioManager] The recorded audio clip is null. Device: {deviceName}");
                 return new byte[0];
             }
 

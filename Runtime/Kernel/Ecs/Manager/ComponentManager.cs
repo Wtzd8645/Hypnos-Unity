@@ -67,7 +67,7 @@ namespace Morpheus.Ecs
                 entityId,
                 ()=>
                 {
-                    DebugLogger.TraceLog($"Entity {entityId} Added Component {typeof(T)}");
+                    Logger.TraceLog($"Entity {entityId} Added Component {typeof(T)}");
 
                     OnComponentAdd.Invoke(component);
                     onComplete?.Invoke(component);
@@ -81,7 +81,7 @@ namespace Morpheus.Ecs
                 components.Remove(c.GetType());
             }
 
-            DebugLogger.TraceLog($"Entity {entityId} Removed Component {c.GetType()}");
+            Logger.TraceLog($"Entity {entityId} Removed Component {c.GetType()}");
 
             OnComponentRemove.Invoke(c);
 
@@ -103,7 +103,7 @@ namespace Morpheus.Ecs
                 components.Remove(typeof(T));
             }
 
-            DebugLogger.TraceLog($"Entity {entityId} Remove Component {typeof(T)}");
+            Logger.TraceLog($"Entity {entityId} Remove Component {typeof(T)}");
 
             OnComponentRemove.Invoke(component);
 

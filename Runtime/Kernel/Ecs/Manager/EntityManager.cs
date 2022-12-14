@@ -9,10 +9,10 @@ namespace Morpheus.Ecs
     public class EntityManager : Singleton<EntityManager>
     {
         public event Action<ulong> OnEntityAdd = (id)=>{
-            DebugLogger.TraceLog($"Entity {id} spawned.");
+            Logger.TraceLog($"Entity {id} spawned.");
         };
         public event Action<ulong> OnEntityRemove = (id)=>{
-            DebugLogger.TraceLog($"Entity {id} removed.");
+            Logger.TraceLog($"Entity {id} removed.");
         };
 
         private MethodInfo addComponentInfo;

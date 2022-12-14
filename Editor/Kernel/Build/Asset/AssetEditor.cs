@@ -52,7 +52,7 @@ namespace Morpheus.Editor.Build
             }
             catch (Exception e)
             {
-                DebugLogger.LogError($"[AssetEditor] Save AssetConfig failed. Exception: {e.Message}");
+                Logger.LogError($"[AssetEditor] Save AssetConfig failed. Exception: {e.Message}");
             }
         }
 
@@ -65,7 +65,7 @@ namespace Morpheus.Editor.Build
             }
             catch (Exception e)
             {
-                DebugLogger.LogWarning($"[AssetEditor] Load AssetConfig failed. Exception: {e.Message}");
+                Logger.LogWarning($"[AssetEditor] Load AssetConfig failed. Exception: {e.Message}");
                 return null;
             }
         }
@@ -207,12 +207,12 @@ namespace Morpheus.Editor.Build
                     CoreUtil.CreateCompressor(ResourceManager.AssetConfigCompressor),
                     CoreUtil.CreateEncryptor(ResourceManager.AssetConfigEncryptor));
                 archiver.Save(config, outputPath);
-                DebugLogger.Log($"[AssetEditor] Build FastEditor AssetConfig successfully. OutputPath: {outputPath}");
+                Logger.Log($"[AssetEditor] Build FastEditor AssetConfig successfully. OutputPath: {outputPath}");
                 return true;
             }
             catch (Exception e)
             {
-                DebugLogger.LogError($"[AssetEditor] Build FastEditor AssetConfig failed. Exception: {e.Message}");
+                Logger.LogError($"[AssetEditor] Build FastEditor AssetConfig failed. Exception: {e.Message}");
                 return false;
             }
         }
@@ -221,14 +221,14 @@ namespace Morpheus.Editor.Build
         {
             if (editorConfig == null || editionConfig == null)
             {
-                DebugLogger.LogError("[AssetEditor] AssetEditorConfig or EditionConfig is null.");
+                Logger.LogError("[AssetEditor] AssetEditorConfig or EditionConfig is null.");
                 return;
             }
 
             string assetBundlesDir = GetAssetBundlesOutputPath(editorConfig, editionConfig);
             if (!Directory.Exists(assetBundlesDir))
             {
-                DebugLogger.LogError($"[AssetEditor] Assetbundles directory does not exist. Version: {editorConfig.version}, Path: {assetBundlesDir}");
+                Logger.LogError($"[AssetEditor] Assetbundles directory does not exist. Version: {editorConfig.version}, Path: {assetBundlesDir}");
                 return;
             }
 
@@ -240,7 +240,7 @@ namespace Morpheus.Editor.Build
             {
                 File.Copy(file, Path.Combine(targetDirectory, Path.GetFileName(file)));
             }
-            DebugLogger.Log($"[AssetEditor] Copy AssetBundles successfully. Version: {editorConfig.version}, Path: {targetDirectory}");
+            Logger.Log($"[AssetEditor] Copy AssetBundles successfully. Version: {editorConfig.version}, Path: {targetDirectory}");
         }
 
         private static void CleanAssetBundlesCopy(string targetDirectory)
@@ -249,7 +249,7 @@ namespace Morpheus.Editor.Build
             {
                 Directory.Delete(targetDirectory, true);
             }
-            DebugLogger.Log($"[AssetEditor] Clean AssetBundles copy successfully. Path: {targetDirectory}");
+            Logger.Log($"[AssetEditor] Clean AssetBundles copy successfully. Path: {targetDirectory}");
         }
 
         private static void BuildAssetConfig(AssetEditorConfig editorConfig, EditionConfig editionConfig, IBundleBuildResults buildResults)
@@ -302,7 +302,7 @@ namespace Morpheus.Editor.Build
             }
             catch (Exception e)
             {
-                DebugLogger.LogError($"[AssetEditor] Build AssetConfig failed. Exception: {e.Message}");
+                Logger.LogError($"[AssetEditor] Build AssetConfig failed. Exception: {e.Message}");
             }
         }
 
@@ -326,12 +326,12 @@ namespace Morpheus.Editor.Build
                 GetAssetBundleBuildTasks());
             if (errorCode != ReturnCode.Success)
             {
-                DebugLogger.LogError($"[AssetEditor] Build AssetBundles failed. ErrorCode: {errorCode}");
+                Logger.LogError($"[AssetEditor] Build AssetBundles failed. ErrorCode: {errorCode}");
                 return false;
             }
 
             BuildAssetConfig(editorConfig, editionConfig, results);
-            DebugLogger.Log($"[AssetEditor] Build AssetBundles successfully. OutputPath: {outputPath}");
+            Logger.Log($"[AssetEditor] Build AssetBundles successfully. OutputPath: {outputPath}");
             return true;
         }
     }

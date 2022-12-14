@@ -213,7 +213,7 @@ namespace Morpheus.Editor.Build
         {
             if (selectedEditionitem == null)
             {
-                DebugLogger.LogError($"[BuildEditor] There is no edition seleted.");
+                Logger.LogError($"[BuildEditor] There is no edition seleted.");
                 return;
             }
 

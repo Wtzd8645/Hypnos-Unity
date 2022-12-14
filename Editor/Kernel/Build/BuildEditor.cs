@@ -44,7 +44,7 @@ namespace Morpheus.Editor.Build
             }
             catch (Exception e)
             {
-                DebugLogger.LogError($"[BuildEditor] Save BuildConfig failed. Exception: {e.Message}");
+                Logger.LogError($"[BuildEditor] Save BuildConfig failed. Exception: {e.Message}");
             }
         }
 
@@ -57,7 +57,7 @@ namespace Morpheus.Editor.Build
             }
             catch (Exception e)
             {
-                DebugLogger.LogWarning($"[BuildEditor] Load BuildConfig failed. Exception: {e.Message}");
+                Logger.LogWarning($"[BuildEditor] Load BuildConfig failed. Exception: {e.Message}");
                 return new BuildConfig();
             }
         }

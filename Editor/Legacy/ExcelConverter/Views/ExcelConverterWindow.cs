@@ -168,7 +168,7 @@ namespace Morpheus.Editor
         {
             if (setting == null)
             {
-                DebugLogger.LogError("[ExcelConverterWindow] setting is null.");
+                Logger.LogError("[ExcelConverterWindow] setting is null.");
                 return;
             }
 
@@ -180,7 +180,7 @@ namespace Morpheus.Editor
             }
             catch (Exception e)
             {
-                DebugLogger.LogError($"[ExcelConverterWindow] {e.Message}");
+                Logger.LogError($"[ExcelConverterWindow] {e.Message}");
                 return;
             }
 
@@ -202,7 +202,7 @@ namespace Morpheus.Editor
         {
             if (string.IsNullOrEmpty(setting.bytesOutputPath))
             {
-                DebugLogger.LogError("[ExcelConverterWindow] Output path is empty.");
+                Logger.LogError("[ExcelConverterWindow] Output path is empty.");
                 return;
             }
 

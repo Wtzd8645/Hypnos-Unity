@@ -2,7 +2,7 @@
 
 namespace Morpheus
 {
-    public static class DebugLogger
+    public static class Logger
     {
         public const int AllLogChannel = -1;
         public const string TraceLogCondition = "TRACE_LOG";
