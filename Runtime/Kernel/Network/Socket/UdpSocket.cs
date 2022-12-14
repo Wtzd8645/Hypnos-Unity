@@ -116,7 +116,7 @@ namespace Morpheus.Network
                     }
 
                     sendState.PacketBuf.Offset = producedBytes;
-                    Kernel.TraceLog($"[UdpSocket] Socket {Id} produce {producedBytes} bytes.", (int)DebugLogChannel.Network);
+                    Kernel.TraceLog($"[UdpSocket] Socket {Id} produce {producedBytes} bytes.", (int)LogChannel.Network);
                     return;
                 }
             }

@@ -185,7 +185,7 @@ namespace Morpheus.Network
         // NOTE: May be called by multiple threads.
         private void OnSocketAoComplete(SocketBase socket, SocketAsyncOperation operation, SocketError socketError)
         {
-            Kernel.Log($"[NetworkManager] OnStreamSocketAoComplete. SocketId: {socket.Id}, Operation: {operation}, Error: {socketError}", (int)DebugLogChannel.Network);
+            Kernel.Log($"[NetworkManager] OnStreamSocketAoComplete. SocketId: {socket.Id}, Operation: {operation}, Error: {socketError}", (int)LogChannel.Network);
             SocketEventArgs args = new SocketEventArgs()
             {
                 Socket = socket,

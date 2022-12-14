@@ -21,7 +21,7 @@ namespace Morpheus.Ecs
             }
             nodeDict.Add(type, node);
 
-            Logger.TraceLog($"Entity {entityId} Add Node {type}");
+            Kernel.TraceLog($"Entity {entityId} Add Node {type}");
         }
 
         private void RemoveNodeFromSystem(Type type, ulong entityId)
@@ -44,7 +44,7 @@ namespace Morpheus.Ecs
             {
                 entityNodeDict.Remove(entityId);
             }
-            Logger.TraceLog($"Entity {entityId} Remove Node {type}");
+            Kernel.TraceLog($"Entity {entityId} Remove Node {type}");
         }
 
         private EcsNode GetNode(Type type)

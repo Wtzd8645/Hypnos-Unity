@@ -3,8 +3,6 @@ using System.Diagnostics;
 
 namespace Morpheus
 {
-<<<<<<<< HEAD:Runtime/Kernel/Kernel.Logger.cs
-<<<<<<<< HEAD:Runtime/Kernel/Kernel.Logger.cs
     [Flags]
     public enum LogChannel
     {
@@ -15,17 +13,11 @@ namespace Morpheus
         Network = Input << 1,
         GameState = Network << 1,
         Audio = GameState << 1,
-        UI = Audio << 1,
+        Ui = Audio << 1,
         All = -1
     }
 
     public static partial class Kernel
-========
-    public static class Logger
->>>>>>>> 15abe62 (Refacetor naming: DebugLogger -> Logger):Runtime/Kernel/Logger.cs
-========
-    public static class Logger
->>>>>>>> 15abe62f3f2376d09dd6cb0ddfc39848993e5620:Runtime/Kernel/Logger.cs
     {
         public const int AllLogChannel = -1;
         public const string TraceLogCondition = "TRACE_LOG";

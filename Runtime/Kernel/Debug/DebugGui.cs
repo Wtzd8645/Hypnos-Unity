@@ -90,7 +90,7 @@ namespace Morpheus.Debug
             {
                 if (GUILayout.Button(currentLogs[i].Condition))
                 {
-                    Kernel.Log(currentLogs[i].condition);
+                    Kernel.Log(currentLogs[i].Condition);
                 }
             }
 
