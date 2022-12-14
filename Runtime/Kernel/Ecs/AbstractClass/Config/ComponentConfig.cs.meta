@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Runtime/Kernel/Ecs/AbstractClass/Config/ComponentConfig.cs.meta
 guid: fc565812cfa00314aafc73cd47fdf914
+========
+guid: 41a250e9a42d4d34d90a952f0bc723c5
+>>>>>>>> 15abe62f3f2376d09dd6cb0ddfc39848993e5620:Runtime/Kernel/Ecs/AbstractClass/Config/EntityConfig.cs.meta
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
