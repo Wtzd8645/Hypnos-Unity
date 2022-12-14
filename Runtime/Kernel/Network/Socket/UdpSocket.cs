@@ -5,21 +5,16 @@ namespace Morpheus.Network
 {
     internal class UdpSocket : SocketBase
     {
-        public UdpSocket(int id, SocketConnectionConfig connConfig, SocketHandlerConfig handlerConfig) : base(id, connConfig, handlerConfig)
+        public UdpSocket(int id, SocketConfig socketConfig, ConnectionHandlerConfig handlerConfig) : base(id, socketConfig, handlerConfig)
         {
-            socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            CreateSocket();
             receiveEventArgs.RemoteEndPoint = bindingEndPoint;
             sendEventArgs.RemoteEndPoint = bindingEndPoint;
         }
 
-        private void CreateSocket()
-        {
-            socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
-            ++version;
-        }
-
         public override void Dispose()
         {
+            heartbeatTimer.Dispose();
             socket.Close();
         }
 
@@ -29,19 +24,25 @@ namespace Morpheus.Network
             socket.Close();
             CreateSocket();
             CreateReceiveEventArgs();
-            CreateSendEventArgs();
             receiveEventArgs.RemoteEndPoint = bindingEndPoint;
+            CreateSendEventArgs();
             sendEventArgs.RemoteEndPoint = bindingEndPoint;
+        }
+
+        private void CreateSocket()
+        {
+            socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            ++version;
         }
 
         public override void ConnectAsync()
         {
-            onSocketAoComplete(this, SocketAsyncOperation.Connect, SocketError.Success);
+            onConnectionAoComplete(this, SocketAsyncOperation.Connect, SocketError.Success);
         }
 
         public override void DisconnectAsync()
         {
-            onSocketAoComplete(this, SocketAsyncOperation.Disconnect, SocketError.Success);
+            onConnectionAoComplete(this, SocketAsyncOperation.Disconnect, SocketError.Success);
         }
 
         protected override void OnConnectAsyncComplete(object sender, SocketAsyncEventArgs evtArgs) { }
@@ -65,7 +66,7 @@ namespace Morpheus.Network
             catch (Exception e)
             {
                 Kernel.LogError($"[UdpSocket] ReceiveAsync failed. Id: {id}, Exception: {e.Message}");
-                onSocketAoComplete(this, SocketAsyncOperation.Receive, evtArgs.SocketError);
+                onConnectionAoComplete(this, SocketAsyncOperation.Receive, evtArgs.SocketError);
             }
         }
 
@@ -73,13 +74,13 @@ namespace Morpheus.Network
         {
             if (evtArgs.SocketError != SocketError.Success) // Abnormal shutdown.
             {
-                onSocketAoComplete(this, SocketAsyncOperation.Receive, evtArgs.SocketError);
+                onConnectionAoComplete(this, SocketAsyncOperation.Receive, evtArgs.SocketError);
                 return;
             }
 
             if (evtArgs.BytesTransferred == 0) // Normal shutdown.
             {
-                onSocketAoComplete(this, SocketAsyncOperation.Receive, SocketError.Disconnecting);
+                onConnectionAoComplete(this, SocketAsyncOperation.Receive, SocketError.Disconnecting);
                 return;
             }
 
@@ -88,12 +89,12 @@ namespace Morpheus.Network
             {
                 PacketReadState readState = evtArgs.UserToken as PacketReadState;
                 readState.packetBuf.offset = NetworkManager.PacketLengthSize;
-                onResponseComplete(this, responseProducer.Produce(readState.packetBuf));
+                pendingResponses.Enqueue(responseProducer.Produce(readState.packetBuf));
             }
             catch (Exception e)
             {
                 Kernel.LogError($"[UdpSocket] Socket {id} create message failed. Exception: {e.Message}");
-                onSocketAoComplete(this, SocketAsyncOperation.Receive, SocketError.TypeNotFound);
+                onConnectionAoComplete(this, SocketAsyncOperation.Receive, SocketError.TypeNotFound);
             }
 
             evtArgs.SetBuffer(0, receiveBufferSize);
@@ -108,33 +109,30 @@ namespace Morpheus.Network
                 if (sendState.isSending)
                 {
                     int packetBytes = request.Pack(sendState.packetBuf);
-                    int producedBytes = sendState.packetBuf.offset + packetBytes;
-                    if (packetBytes > maxPacketSize || producedBytes > sendState.packetBuf.final.Length)
+                    int pendingBytes = sendState.packetBuf.offset + packetBytes;
+                    if (packetBytes > maxPacketSize || pendingBytes > sendState.packetBuf.final.Length)
                     {
-                        onSocketAoComplete(this, SocketAsyncOperation.Send, SocketError.NoBufferSpaceAvailable);
+                        onConnectionAoComplete(this, SocketAsyncOperation.Send, SocketError.NoBufferSpaceAvailable);
                         return;
                     }
 
-                    sendState.packetBuf.offset = producedBytes;
-                    Kernel.TraceLog($"[UdpSocket] Socket {id} produce {producedBytes} bytes.", (int)LogChannel.Network);
+                    sendState.packetBuf.offset = pendingBytes;
+                    Kernel.TraceLog($"[UdpSocket] Socket {id} produce {pendingBytes} bytes.", (int)LogChannel.Network);
                     return;
                 }
             }
 
             sendState.isSending = true;
+            sendState.pendingBytes = request.Pack(sendState.sendBuf);
             sendState.processedBytes = 0;
-            sendState.pendingBytes = request.Pack(sendState.packetBuf);
             if (sendState.pendingBytes > maxPacketSize)
             {
-                onSocketAoComplete(this, SocketAsyncOperation.Send, SocketError.NoBufferSpaceAvailable);
+                onConnectionAoComplete(this, SocketAsyncOperation.Send, SocketError.NoBufferSpaceAvailable);
                 return;
             }
 
             Kernel.TraceLog($"[UdpSocket] Socket {id} send {sendState.pendingBytes} bytes.", (int)LogChannel.Network);
-            byte[] buffer = sendEventArgs.Buffer;
-            sendEventArgs.SetBuffer(sendState.packetBuf.final, 0, sendState.pendingBytes);
-            sendState.packetBuf.offset = 0;
-            sendState.packetBuf.final = buffer;
+            sendEventArgs.SetBuffer(0, sendState.pendingBytes);
             SendInternalAsync(socket, sendEventArgs);
         }
 
@@ -150,7 +148,7 @@ namespace Morpheus.Network
             catch (Exception e)
             {
                 Kernel.LogError($"[UdpSocket] SendAsync failed. Id: {id}, Exception: {e.Message}");
-                onSocketAoComplete(this, SocketAsyncOperation.Send, SocketError.SocketError);
+                onConnectionAoComplete(this, SocketAsyncOperation.Send, SocketError.SocketError);
             }
         }
 
@@ -160,7 +158,7 @@ namespace Morpheus.Network
             PacketSendState sendState = evtArgs.UserToken as PacketSendState;
             if (evtArgs.SocketError != SocketError.Success)
             {
-                onSocketAoComplete(this, SocketAsyncOperation.Send, evtArgs.SocketError);
+                onConnectionAoComplete(this, SocketAsyncOperation.Send, evtArgs.SocketError);
                 return;
             }
 
@@ -182,12 +180,14 @@ namespace Morpheus.Network
                 }
 
                 Kernel.TraceLog($"[UdpSocket] Socket {id} send {sendState.packetBuf.offset} produced bytes.", (int)LogChannel.Network);
-                byte[] buffer = evtArgs.Buffer;
                 evtArgs.SetBuffer(sendState.packetBuf.final, 0, sendState.packetBuf.offset);
                 sendState.pendingBytes = sendState.packetBuf.offset;
                 sendState.processedBytes = 0;
+
+                byte[] sendBuf = sendState.sendBuf.final;
+                sendState.sendBuf.final = sendState.packetBuf.final;
                 sendState.packetBuf.offset = 0;
-                sendState.packetBuf.final = buffer;
+                sendState.packetBuf.final = sendBuf;
             }
             SendInternalAsync(evtArgs.ConnectSocket, evtArgs);
         }
