@@ -1,3 +1,4 @@
+using System;
 using System.Net.Http;
 
 namespace Morpheus.Network
@@ -13,7 +14,7 @@ namespace Morpheus.Network
 
         public int Pack(PacketBuffer result)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }

@@ -30,31 +30,27 @@ namespace Morpheus.Network
         public int Id => id;
         public int Version => version;
 
-        protected SocketBase(int id, ConnectionHandlerConfig handlerConfig)
+        protected SocketBase(int id, HandlerConfig handlerConfig)
         {
             this.id = id;
             onConnectionAoComplete = handlerConfig.onConnectionAoCompleteHandler;
             responseProducer = handlerConfig.responseProducer;
         }
 
-        protected SocketBase(int id, SocketConfig socketConfig, ConnectionHandlerConfig handlerConfig)
+        protected SocketBase(int id, TransportConfig transportConfig, HandlerConfig handlerConfig)
         {
             this.id = id;
-            IPAddress.TryParse(socketConfig.ipAdderss, out IPAddress ipAddress);
-            bindingEndPoint = new IPEndPoint(ipAddress, socketConfig.port);
+            IPAddress.TryParse(transportConfig.ip, out IPAddress ip);
+            bindingEndPoint = new IPEndPoint(ip, transportConfig.port);
             onConnectionAoComplete = handlerConfig.onConnectionAoCompleteHandler;
-            maxPacketSize = socketConfig.maxPacketSize;
-
-            CreateReceiveEventArgs();
+            maxPacketSize = transportConfig.maxPacketSize;
             responseProducer = handlerConfig.responseProducer;
             pendingResponses = new ConcurrentQueue<IResponse>();
-
-            CreateSendEventArgs();
             heartbeatTimer = new Timer(OnHeartbeatTimeout);
-            sendTimeout = socketConfig.sendTimeout;
+            sendTimeout = transportConfig.sendTimeout;
         }
 
-        protected void CreateReceiveEventArgs()
+        protected virtual void CreateReceiveEventArgs()
         {
             receiveBufferSize = maxPacketSize * 4;
             PacketBuffer packetBuf = new PacketBuffer
@@ -73,7 +69,7 @@ namespace Morpheus.Network
             receiveEventArgs.Completed += OnReceiveAsyncComplete;
         }
 
-        protected void CreateSendEventArgs()
+        protected virtual void CreateSendEventArgs()
         {
             int sendBufSize = maxPacketSize * 16;
             PacketBuffer sendBuf = new PacketBuffer

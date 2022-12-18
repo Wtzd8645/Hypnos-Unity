@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Net.Sockets;
 
 namespace Morpheus.Network
@@ -18,9 +19,11 @@ namespace Morpheus.Network
 
         public bool IsConnected => socket.Connected; // NOTE: Socket.Connected只會反應上一次的操作情況
 
-        public TcpSocket(int id, SocketConfig socketConfig, ConnectionHandlerConfig handlerConfig) : base(id, socketConfig, handlerConfig)
+        public TcpSocket(int id, TransportConfig transportConfig, HandlerConfig handlerConfig) : base(id, transportConfig, handlerConfig)
         {
             CreateSocket();
+            CreateReceiveEventArgs();
+            CreateSendEventArgs();
             connectEventArgs.RemoteEndPoint = bindingEndPoint;
             connectEventArgs.Completed += OnConnectAsyncComplete;
         }
@@ -34,9 +37,7 @@ namespace Morpheus.Network
         public override void Reset()
         {
             Kernel.Log($"[TcpSocket] Reset. Id: {id}", (int)LogChannel.Network);
-            // NOTE: https://docs.microsoft.com/zh-tw/dotnet/api/system.net.sockets.socket.close
-            // socket.Shutdown(SocketShutdown.Both);
-            socket.Close();
+            socket.Close(); // NOTE: https://docs.microsoft.com/zh-tw/dotnet/api/system.net.sockets.socket.close
             CreateSocket();
             CreateReceiveEventArgs();
             CreateSendEventArgs();
