@@ -5,7 +5,7 @@ namespace Morpheus.Network
 {
     internal class LocalSocket : SocketBase
     {
-        public LocalSocket(int id, ConnectionHandlerConfig handlerConfig) : base(id, handlerConfig) { }
+        public LocalSocket(int id, HandlerConfig handlerConfig) : base(id, handlerConfig) { }
 
         public override void Dispose() { }
 

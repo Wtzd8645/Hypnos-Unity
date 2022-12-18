@@ -94,14 +94,14 @@ namespace Morpheus.Network
                 return;
             }
 
-            ConnectionHandlerConfig handlerConfig = new ConnectionHandlerConfig
+            HandlerConfig handlerConfig = new HandlerConfig
             {
                 onConnectionAoCompleteHandler = OnConnectionAoComplete,
                 responseProducer = responseProducers[config.responseProducerId]
             };
 
-            SocketConfig socketConfig = config.socketConfig;
-            switch (socketConfig.protocol)
+            TransportConfig transportConfig = config.socketConfig;
+            switch (transportConfig.protocol)
             {
                 case TransportProtocol.LocalSimulation:
                 {
@@ -110,12 +110,12 @@ namespace Morpheus.Network
                 }
                 case TransportProtocol.TCP:
                 {
-                    connectionMap[config.id] = new TcpSocket(config.id, socketConfig, handlerConfig);
+                    connectionMap[config.id] = new TcpSocket(config.id, transportConfig, handlerConfig);
                     break;
                 }
                 case TransportProtocol.UDP:
                 {
-                    connectionMap[config.id] = new UdpSocket(config.id, socketConfig, handlerConfig);
+                    connectionMap[config.id] = new UdpSocket(config.id, transportConfig, handlerConfig);
                     break;
                 }
                 case TransportProtocol.HTTP:
@@ -125,7 +125,7 @@ namespace Morpheus.Network
                 }
                 default:
                 {
-                    Kernel.LogError($"[NetworkManager] Protocol not implemented. ConnectionId: {config.id}, Protocol: {socketConfig.protocol}");
+                    Kernel.LogError($"[NetworkManager] Protocol not implemented. ConnectionId: {config.id}, Protocol: {transportConfig.protocol}");
                     break;
                 }
             }

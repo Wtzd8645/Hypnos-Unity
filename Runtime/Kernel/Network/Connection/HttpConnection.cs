@@ -28,7 +28,7 @@ namespace Morpheus.Network
 
         public int Version { get; private set; }
 
-        public HttpConnection(int id, ConnectionHandlerConfig handlerConfig)
+        public HttpConnection(int id, HandlerConfig handlerConfig)
         {
             Id = id;
             onConnectionAoComplete = handlerConfig.onConnectionAoCompleteHandler;
@@ -60,10 +60,10 @@ namespace Morpheus.Network
 
         public void SendAsync(IRequest request)
         {
-            Task.Factory.StartNew(SendAsyncInteral, request);
+            Task.Factory.StartNew(SendAsyncInternal, request);
         }
 
-        private async void SendAsyncInteral(object state)
+        private async void SendAsyncInternal(object state)
         {
             try
             {

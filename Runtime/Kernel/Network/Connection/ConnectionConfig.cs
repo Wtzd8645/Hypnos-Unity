@@ -3,17 +3,17 @@
 namespace Morpheus.Network
 {
     [Serializable]
-    public class SocketConfig
+    public class TransportConfig
     {
         public TransportProtocol protocol;
-        public string ipAdderss;
+        public string ip;
         public int port = NetworkManager.DefalutPort;
 
         public ushort maxPacketSize = NetworkManager.DefalutMaxPacketSize;
         public int sendTimeout = NetworkManager.DefalutSendTimeout;
     }
 
-    internal class ConnectionHandlerConfig
+    internal class HandlerConfig
     {
         public ConnectionAoHandler onConnectionAoCompleteHandler;
         public IResponseProducer responseProducer;
@@ -23,7 +23,7 @@ namespace Morpheus.Network
     public class ConnectionConfig
     {
         public int id;
-        public SocketConfig socketConfig;
+        public TransportConfig socketConfig;
         public int responseProducerId;
     }
 }

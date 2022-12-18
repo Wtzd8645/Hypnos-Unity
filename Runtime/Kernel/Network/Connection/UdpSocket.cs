@@ -5,11 +5,11 @@ namespace Morpheus.Network
 {
     internal class UdpSocket : SocketBase
     {
-        public UdpSocket(int id, SocketConfig socketConfig, ConnectionHandlerConfig handlerConfig) : base(id, socketConfig, handlerConfig)
+        public UdpSocket(int id, TransportConfig transportConfig, HandlerConfig handlerConfig) : base(id, transportConfig, handlerConfig)
         {
             CreateSocket();
-            receiveEventArgs.RemoteEndPoint = bindingEndPoint;
-            sendEventArgs.RemoteEndPoint = bindingEndPoint;
+            CreateReceiveEventArgs();
+            CreateSendEventArgs();
         }
 
         public override void Dispose()
@@ -21,18 +21,29 @@ namespace Morpheus.Network
         public override void Reset()
         {
             Kernel.Log($"[UdpSocket] Reset. Id: {id}", (int)LogChannel.Network);
-            socket.Close();
+            socket.Close(); // NOTE: https://docs.microsoft.com/zh-tw/dotnet/api/system.net.sockets.socket.close
             CreateSocket();
             CreateReceiveEventArgs();
-            receiveEventArgs.RemoteEndPoint = bindingEndPoint;
             CreateSendEventArgs();
-            sendEventArgs.RemoteEndPoint = bindingEndPoint;
+            // heartbeatTimer.Change(Timeout.Infinite, Timeout.Infinite);
         }
 
         private void CreateSocket()
         {
             socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             ++version;
+        }
+
+        protected override void CreateReceiveEventArgs()
+        {
+            base.CreateReceiveEventArgs();
+            receiveEventArgs.RemoteEndPoint = bindingEndPoint;
+        }
+
+        protected override void CreateSendEventArgs()
+        {
+            base.CreateSendEventArgs();
+            sendEventArgs.RemoteEndPoint = bindingEndPoint;
         }
 
         public override void ConnectAsync()

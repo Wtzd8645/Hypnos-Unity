@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 
@@ -10,7 +11,7 @@ namespace Morpheus.Network
         public HttpStatusCode statusCode;
         public Stream stream;
 
-        public ushort Id
+        ushort IResponse.Id
         {
             get => id;
             set => id = value;
@@ -24,7 +25,7 @@ namespace Morpheus.Network
 
         public void Unpack(PacketBuffer source)
         {
-            throw new System.NotImplementedException();
+            throw new NotImplementedException();
         }
     }
 }
