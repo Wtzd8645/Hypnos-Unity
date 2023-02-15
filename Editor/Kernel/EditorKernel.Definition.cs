@@ -1,12 +1,18 @@
 ﻿namespace Hypnos.Editor
 {
+    // NOTE: There will have gap when priority have difference of 11.
+    public enum EditorId
+    {
+        Kernel,
+        Build,
+        ScriptableObjectFactory
+    }
+
     public partial class EditorKernel
     {
-        public const string CSharpEditorAssemblyName = "Assembly-CSharp-Editor";
+        public const string UnityEditorAssemblyName = "Assembly-CSharp-Editor";
+        public const string FrameworkEditorAssemblyName = "Hypnos.Editor";
 
-        public const string EditorFrameworkDirectory = "Hypnos/";
-        public const string FrameworkDirectory = "Framework/";
-        public const string FrameworkMenuDirectory = EditorFrameworkDirectory + FrameworkDirectory;
-        public const string KernelDirectory = FrameworkDirectory + "Kernel/";
+        public const string FrameworkPath = "Hypnos/";
     }
 }
