@@ -3,7 +3,7 @@ using System.IO;
 using System.IO.MemoryMappedFiles;
 using System.Text;
 
-namespace Morpheus.GameData
+namespace Hypnos.GameData
 {
     public unsafe struct NI18nTextArray
     {

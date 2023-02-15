@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace Morpheus.Resource
+namespace Hypnos.Resource
 {
     public sealed partial class ResourceManager
     {

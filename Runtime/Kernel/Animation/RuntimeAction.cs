@@ -1,4 +1,4 @@
-﻿namespace Morpheus.Animation
+﻿namespace Hypnos.Animation
 {
     public struct RuntimeAction
     {

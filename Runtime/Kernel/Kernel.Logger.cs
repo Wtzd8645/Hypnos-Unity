@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Morpheus
+namespace Hypnos
 {
     [Flags]
     public enum LogChannel

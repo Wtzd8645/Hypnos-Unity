@@ -1,6 +1,6 @@
 ﻿using System.Xml;
 
-namespace Morpheus.Editor.GameData
+namespace Hypnos.Editor.GameData
 {
     public static class MetaGameDataToXml
     {

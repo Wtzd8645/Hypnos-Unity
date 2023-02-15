@@ -5,7 +5,7 @@ using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Morpheus.Editor.Build
+namespace Hypnos.Editor.Build
 {
     internal class AssetTreeItem : AssetItemBase
     {

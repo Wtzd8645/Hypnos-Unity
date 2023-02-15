@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Morpheus.Core.Memory
+namespace Hypnos.Core.Memory
 {
     public class LruCache<TKey, TValue> where TValue : class
     {

@@ -1,9 +1,9 @@
-using Morpheus.Core.Hash;
+using Hypnos.Core.Hash;
 using System;
 using System.IO.MemoryMappedFiles;
 using System.Text;
 
-namespace Morpheus.GameData
+namespace Hypnos.GameData
 {
     public sealed unsafe class GameDataManager
     {

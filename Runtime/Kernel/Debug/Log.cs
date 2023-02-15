@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Morpheus.Debug
+namespace Hypnos.Debug
 {
     public class Log : IEquatable<Log>
     {

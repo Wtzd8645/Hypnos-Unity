@@ -1,4 +1,4 @@
-﻿using Morpheus.Resource;
+﻿using Hypnos.Resource;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +7,7 @@ using UnityEditor;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 
-namespace Morpheus.Editor.Build
+namespace Hypnos.Editor.Build
 {
     internal partial class BuildEditor
     {

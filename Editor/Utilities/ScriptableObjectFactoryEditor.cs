@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEditor.ProjectWindowCallback;
 using UnityEngine;
 
-namespace Morpheus.Editor
+namespace Hypnos.Editor
 {
     public class ScriptableObjectFactoryEditor : EditorWindow
     {

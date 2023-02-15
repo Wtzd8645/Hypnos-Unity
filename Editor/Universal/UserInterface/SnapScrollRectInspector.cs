@@ -1,8 +1,8 @@
-﻿using Morpheus.UI;
+﻿using Hypnos.UI;
 using UnityEditor;
 using UnityEditor.UI;
 
-namespace Morpheus.Editor.UnityExtension.UI
+namespace Hypnos.Editor.UnityExtension.UI
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(SnapScrollRect))]

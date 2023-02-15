@@ -1,7 +1,7 @@
-﻿using Morpheus.Network;
+﻿using Hypnos.Network;
 using System;
 
-namespace Morpheus.Tests.Network
+namespace Hypnos.Tests.Network
 {
     public enum ResponseId : ushort
     {

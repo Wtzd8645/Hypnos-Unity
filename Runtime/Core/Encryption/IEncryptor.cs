@@ -1,4 +1,4 @@
-﻿namespace Morpheus.Core.Encryption
+﻿namespace Hypnos.Core.Encryption
 {
     public interface IEncryptor
     {

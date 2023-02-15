@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Morpheus.Resource
+namespace Hypnos.Resource
 {
     public class GameObjectPool
     {

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Morpheus.Environment
+namespace Hypnos.Environment
 {
     public class EnvironmentConfig : ScriptableObject
     {

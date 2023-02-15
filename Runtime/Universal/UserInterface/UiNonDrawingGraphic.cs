@@ -1,6 +1,6 @@
 ﻿using UnityEngine.UI;
 
-namespace Morpheus.UI
+namespace Hypnos.UI
 {
     public class UiNonDrawingGraphic : MaskableGraphic
     {

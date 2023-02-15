@@ -1,6 +1,6 @@
 {
-    "name": "Morpheus",
-    "rootNamespace": "Morpheus",
+    "name": "Hypnos",
+    "rootNamespace": "Hypnos",
     "references": [
         "Unity.InputSystem",
         "Unity.TextMeshPro"

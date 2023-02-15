@@ -1,6 +1,6 @@
 ﻿using NPOI.SS.UserModel;
 
-namespace Morpheus.Editor
+namespace Hypnos.Editor
 {
     public interface IExcelHandler
     {

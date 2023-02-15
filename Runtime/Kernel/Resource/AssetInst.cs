@@ -1,4 +1,4 @@
-﻿namespace Morpheus.Resource
+﻿namespace Hypnos.Resource
 {
     internal class AssetInst
     {

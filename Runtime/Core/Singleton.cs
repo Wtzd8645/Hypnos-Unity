@@ -1,6 +1,6 @@
 using System;
 
-namespace Morpheus
+namespace Hypnos
 {
     public abstract class Singleton<T> : IDisposable where T : Singleton<T>
     {

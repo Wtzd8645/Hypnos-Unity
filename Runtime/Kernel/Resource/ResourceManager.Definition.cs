@@ -1,4 +1,4 @@
-﻿namespace Morpheus.Resource
+﻿namespace Hypnos.Resource
 {
     public delegate void ResourceAoHandler<T>(T obj);
 

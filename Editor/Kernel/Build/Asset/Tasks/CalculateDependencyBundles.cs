@@ -5,7 +5,7 @@ using UnityEditor.Build.Pipeline;
 using UnityEditor.Build.Pipeline.Injector;
 using UnityEditor.Build.Pipeline.Interfaces;
 
-namespace Morpheus.Editor.Build
+namespace Hypnos.Editor.Build
 {
     internal class CalculateDependencyBundles : IBuildTask
     {

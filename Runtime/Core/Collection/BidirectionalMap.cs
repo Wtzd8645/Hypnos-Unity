@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Morpheus.Core.Collection
+namespace Hypnos.Core.Collection
 {
     public class BidirectionalMap<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>
     {

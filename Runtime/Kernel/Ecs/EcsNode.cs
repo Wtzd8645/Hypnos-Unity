@@ -1,6 +1,6 @@
 using System;
 
-namespace Morpheus.Ecs
+namespace Hypnos.Ecs
 {
     public class EcsNode : IDisposable
     {

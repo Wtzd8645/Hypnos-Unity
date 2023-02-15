@@ -1,9 +1,9 @@
-﻿using Morpheus.Core.Encryption;
+﻿using Hypnos.Core.Encryption;
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.IO;
 
-namespace Morpheus.Editor
+namespace Hypnos.Editor
 {
     // TODO
     public class CSharpGenerator

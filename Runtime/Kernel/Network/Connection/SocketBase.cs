@@ -5,7 +5,7 @@ using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Threading;
 
-namespace Morpheus.Network
+namespace Hypnos.Network
 {
     internal abstract class SocketBase : IConnection, IDisposable
     {

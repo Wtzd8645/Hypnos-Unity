@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Morpheus.Editor.GameData
+namespace Hypnos.Editor.GameData
 {
     public class MetaGameDataField : IEquatable<MetaGameDataField>
     {

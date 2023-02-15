@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Morpheus.IO
+namespace Hypnos.IO
 {
     public class InputConfig : MonoBehaviour
     {

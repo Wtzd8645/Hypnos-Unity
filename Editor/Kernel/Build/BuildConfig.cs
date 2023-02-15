@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 
-namespace Morpheus.Editor.Build
+namespace Hypnos.Editor.Build
 {
     [Serializable]
     public class EditionConfig

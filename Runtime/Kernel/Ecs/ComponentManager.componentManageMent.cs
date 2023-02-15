@@ -1,8 +1,8 @@
-using Morpheus.Core.Memory;
+using Hypnos.Core.Memory;
 using System;
 using System.Collections.Generic;
 
-namespace Morpheus.Ecs
+namespace Hypnos.Ecs
 {
     public partial class ComponentManager : Singleton<ComponentManager>
     {

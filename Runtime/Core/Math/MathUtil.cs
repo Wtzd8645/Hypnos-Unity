@@ -1,4 +1,4 @@
-﻿namespace Morpheus.Core
+﻿namespace Hypnos.Core
 {
     public static partial class MathUtil
     {

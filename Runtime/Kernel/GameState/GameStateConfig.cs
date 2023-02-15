@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Morpheus.GameState
+namespace Hypnos.GameState
 {
     public class GameStateConfig : ScriptableObject
     {

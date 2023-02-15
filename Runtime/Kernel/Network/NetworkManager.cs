@@ -1,10 +1,10 @@
-﻿using Morpheus.Core.Event;
+﻿using Hypnos.Core.Event;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net.Sockets;
 
-namespace Morpheus.Network
+namespace Hypnos.Network
 {
     public sealed partial class NetworkManager : Subject<int>
     {

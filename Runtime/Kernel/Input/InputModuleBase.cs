@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Morpheus.IO
+namespace Hypnos.IO
 {
     public abstract class InputModuleBase
     {

@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Morpheus.Editor
+namespace Hypnos.Editor
 {
     public static class UnityEditorUtil
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Morpheus.Editor.GameData
+namespace Hypnos.Editor.GameData
 {
     // TODO: Add generator type;
     [Serializable]

@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace Morpheus.Editor
+namespace Hypnos.Editor
 {
     [CustomPropertyDrawer(typeof(SheetInfo))]
     public class SheetInfoDrawer : PropertyDrawer

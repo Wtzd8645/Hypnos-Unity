@@ -1,4 +1,4 @@
-﻿namespace Morpheus.GameTime
+﻿namespace Hypnos.GameTime
 {
     public class UnscaledCountdownTimer : CountdownTimer
     {

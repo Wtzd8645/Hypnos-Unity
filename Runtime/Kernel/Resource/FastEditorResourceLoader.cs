@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 
-namespace Morpheus.Resource
+namespace Hypnos.Resource
 {
     internal class FastEditorResourceLoader : ResourceLoaderBase
     {

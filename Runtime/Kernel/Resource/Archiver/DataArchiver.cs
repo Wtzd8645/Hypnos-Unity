@@ -1,10 +1,10 @@
-﻿using Morpheus.Core.Compression;
-using Morpheus.Core.Encryption;
-using Morpheus.Core.Serialization;
+﻿using Hypnos.Core.Compression;
+using Hypnos.Core.Encryption;
+using Hypnos.Core.Serialization;
 using System;
 using System.IO;
 
-namespace Morpheus.Resource
+namespace Hypnos.Resource
 {
     public class DataArchiver
     {

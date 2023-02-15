@@ -1,10 +1,10 @@
-﻿using Morpheus.UI;
+﻿using Hypnos.UI;
 using UnityEditor;
 using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Morpheus.Editor.UI
+namespace Hypnos.Editor.UI
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(UiButton))]

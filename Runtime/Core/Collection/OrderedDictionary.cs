@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
 
-namespace Morpheus.Core.Collection
+namespace Hypnos.Core.Collection
 {
 
     /// <summary>

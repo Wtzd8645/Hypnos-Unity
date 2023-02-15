@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Morpheus.Editor
+namespace Hypnos.Editor
 {
     // XSSWorkbook is for .xlsx and it can't write to stream or new an instance with no parameter in Unity.
     // If you need write to stream, use HSSWorkbook instead.

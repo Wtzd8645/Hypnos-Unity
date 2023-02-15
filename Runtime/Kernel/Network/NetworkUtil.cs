@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Morpheus.Network
+namespace Hypnos.Network
 {
     public static class NetworkUtil
     {

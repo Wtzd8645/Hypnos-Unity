@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Morpheus.Network
+namespace Hypnos.Network
 {
     public class NetworkConfig : ScriptableObject
     {

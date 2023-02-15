@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 
-namespace Morpheus.Core.Encryption
+namespace Hypnos.Core.Encryption
 {
     public class Aes256 : IEncryptor
     {

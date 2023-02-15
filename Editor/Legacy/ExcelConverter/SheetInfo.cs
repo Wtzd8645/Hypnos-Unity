@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Morpheus.Editor
+namespace Hypnos.Editor
 {
     // IRow.LastCellNum is the index of the last cell contained in this row PLUS ONE.
     // Both ISheet.LastRowNum and IRow.LastCellNum are 0-based.

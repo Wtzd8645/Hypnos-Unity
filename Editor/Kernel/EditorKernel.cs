@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
 
-namespace Morpheus.Editor
+namespace Hypnos.Editor
 {
     [InitializeOnLoad]
     public partial class EditorKernel : EditorWindow

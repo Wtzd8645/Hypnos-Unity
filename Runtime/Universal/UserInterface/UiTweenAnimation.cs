@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Morpheus.UI
+namespace Hypnos.UI
 {
     public class UiTweenAnimation //: DOTweenAnimation, IUiAnimation
     {

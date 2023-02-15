@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml;
 
-namespace Morpheus.Editor
+namespace Hypnos.Editor
 {
     public class XmlGenerator
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace Morpheus.Resource
+namespace Hypnos.Resource
 {
     internal class AssetBundleResourceLoader : ResourceLoaderBase
     {

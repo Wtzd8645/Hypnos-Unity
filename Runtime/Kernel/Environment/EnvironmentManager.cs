@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Morpheus.Environment
+namespace Hypnos.Environment
 {
     public class EnvironmentManager
     {

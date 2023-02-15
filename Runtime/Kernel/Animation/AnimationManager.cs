@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Morpheus.Animation
+namespace Hypnos.Animation
 {
     public class AnimationManager
     {

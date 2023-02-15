@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Morpheus.Editor.GameData
+namespace Hypnos.Editor.GameData
 {
     public abstract class MetaGameDataParserBase
     {

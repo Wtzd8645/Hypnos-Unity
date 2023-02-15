@@ -3,7 +3,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http;
 
-namespace Morpheus.Network
+namespace Hypnos.Network
 {
     public class HttpResponse : IResponse
     {

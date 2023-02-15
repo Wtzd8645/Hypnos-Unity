@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Morpheus.GameTime
+namespace Hypnos.GameTime
 {
     public sealed class GameTimeManager
     {

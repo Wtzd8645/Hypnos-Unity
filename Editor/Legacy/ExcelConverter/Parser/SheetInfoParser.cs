@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Morpheus.Editor
+namespace Hypnos.Editor
 {
     public class SheetInfoParser
     {

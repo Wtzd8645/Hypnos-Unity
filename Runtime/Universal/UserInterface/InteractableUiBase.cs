@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace Morpheus.UI
+namespace Hypnos.UI
 {
     [RequireComponent(typeof(GraphicRaycaster))]
     public abstract class InteractableUiBase : UiBase

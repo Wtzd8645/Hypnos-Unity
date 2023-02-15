@@ -1,7 +1,7 @@
 using System;
 using System.Net.Http;
 
-namespace Morpheus.Network
+namespace Hypnos.Network
 {
     public class HttpRequest : IRequest
     {

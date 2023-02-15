@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Morpheus.Core.Collection
+namespace Hypnos.Core.Collection
 {
     public class CircularBuffer<T>
     {

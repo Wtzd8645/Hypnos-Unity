@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEditor.IMGUI.Controls;
 
-namespace Morpheus.Editor.Build
+namespace Hypnos.Editor.Build
 {
     internal class EditionTreeView : TreeView
     {
