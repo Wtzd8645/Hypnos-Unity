@@ -15,6 +15,9 @@ namespace Hypnos
 
     public static partial class Kernel
     {
+        public const string UnityEngineAssemblyName = "Assembly-CSharp";
+        public const string FrameworkAssemblyName = "Hypnos";
+
 #if TEST
         public const RunningVersion Version = RunningVersion.Test;
 #elif DEVELOPMENT

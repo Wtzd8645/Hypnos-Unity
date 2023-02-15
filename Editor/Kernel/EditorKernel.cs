@@ -9,42 +9,44 @@ namespace Hypnos.Editor
     public partial class EditorKernel : EditorWindow
     {
         private const string EditorName = "Editor Kernel";
-        private const string DefaultEditorKernelConfigPath = KernelDirectory + "EditorKernelConfig.asset";
+        private const string DefaultEditorKernelConfigPath = FrameworkPath + "EditorKernelConfig.asset";
 
         private static EditorKernelConfig config;
 
-        public static Assembly CSharpAssembly { get; }
-        public static Assembly CSharpEditorAssembly { get; }
-        public static Assembly DreamFrameworkAssembly { get; }
-        public static EditorKernelConfig Config => config;
-
-        static EditorKernel()
+        public static EditorKernelConfig Config
         {
-            config = EditorGUIUtility.Load(DefaultEditorKernelConfigPath) as EditorKernelConfig;
-            if (config == null)
+            get
             {
-                Kernel.LogError("[EditorKernel] Can't load EditorKernelConfig.");
+                if (config == null)
+                {
+                    config = EditorGUIUtility.Load(DefaultEditorKernelConfigPath) as EditorKernelConfig;
+                }
+                return config;
             }
-
-            //CSharpAssembly = Assembly.Load(AppKernel.CSharpAssembly);
-            //CSharpEditorAssembly = Assembly.Load(CSharpEditorAssemblyName);
-            //DreamFrameworkAssembly = Assembly.Load(AppKernel.KernelAssembly);
-            Kernel.Log("[EditorKernel] Initialized");
         }
 
-        // There will have gap when priority have difference of 11.
-        [MenuItem(FrameworkMenuDirectory + EditorName, false, 98)]
+        
+        [MenuItem(FrameworkPath + EditorName, false, (int)EditorId.Kernel)]
         private static void ShowWindow()
         {
+            if (config == null)
+            {
+                config = EditorGUIUtility.Load(DefaultEditorKernelConfigPath) as EditorKernelConfig;
+            }
             GetWindow<EditorKernel>();
         }
 
-        public static void GetTypesFromAssembly(List<Type> result, Type type, Assembly asm)
+        public static void GetTypesFromAssembly(List<Type> result, Type baseType, Assembly asm)
         {
+            if (asm == null)
+            {
+                return;
+            }
+
             Type[] types = asm.GetTypes();
             for (int i = 0; i < types.Length; ++i)
             {
-                if (types[i].BaseType == type)
+                if (types[i].BaseType == baseType)
                 {
                     result.Add(types[i]);
                 }
