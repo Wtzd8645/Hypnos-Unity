@@ -2,6 +2,7 @@
 using System.Collections.Concurrent;
 using System.Net;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Threading;
 
 namespace Morpheus.Network
@@ -108,6 +109,7 @@ namespace Morpheus.Network
 
         public abstract void ReceiveAsync();
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGetResponse(out IResponse response)
         {
             return pendingResponses.TryDequeue(out response);

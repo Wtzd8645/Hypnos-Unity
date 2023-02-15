@@ -13,7 +13,7 @@ namespace Morpheus.Network
         public int sendTimeout = NetworkManager.DefalutSendTimeout;
     }
 
-    internal class HandlerConfig
+    public class HandlerConfig
     {
         public ConnectionAoHandler onConnectionAoCompleteHandler;
         public IResponseProducer responseProducer;
@@ -23,7 +23,7 @@ namespace Morpheus.Network
     public class ConnectionConfig
     {
         public int id;
-        public TransportConfig socketConfig;
+        public TransportConfig transportConfig;
         public int responseProducerId;
     }
 }

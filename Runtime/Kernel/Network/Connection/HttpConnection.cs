@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Net.Http;
+using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 namespace Morpheus.Network
@@ -53,6 +55,7 @@ namespace Morpheus.Network
 
         public void ReceiveAsync() { }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool TryGetResponse(out IResponse response)
         {
             return pendingResponses.TryDequeue(out response);
@@ -60,14 +63,13 @@ namespace Morpheus.Network
 
         public void SendAsync(IRequest request)
         {
-            Task.Factory.StartNew(SendAsyncInternal, request);
+            SendAsyncInternal(request as HttpRequest);
         }
 
-        private async void SendAsyncInternal(object state)
+        private async void SendAsyncInternal(HttpRequest request)
         {
             try
             {
-                HttpRequest request = state as HttpRequest;
                 HttpResponseMessage response;
                 switch (request.method)
                 {
@@ -93,17 +95,17 @@ namespace Morpheus.Network
             catch (HttpRequestException e)
             {
                 Kernel.LogError(e.Message);
-                onConnectionAoComplete(this, System.Net.Sockets.SocketAsyncOperation.Send, System.Net.Sockets.SocketError.Fault);
+                onConnectionAoComplete(this, SocketAsyncOperation.Send, SocketError.Fault);
             }
             catch (TaskCanceledException e)
             {
                 Kernel.LogError(e.Message);
-                onConnectionAoComplete(this, System.Net.Sockets.SocketAsyncOperation.Send, System.Net.Sockets.SocketError.OperationAborted);
+                onConnectionAoComplete(this, SocketAsyncOperation.Send, SocketError.OperationAborted);
             }
             catch (Exception e)
             {
                 Kernel.LogError(e.Message);
-                onConnectionAoComplete(this, System.Net.Sockets.SocketAsyncOperation.Send, System.Net.Sockets.SocketError.SocketError);
+                onConnectionAoComplete(this, SocketAsyncOperation.Send, SocketError.SocketError);
             }
         }
     }

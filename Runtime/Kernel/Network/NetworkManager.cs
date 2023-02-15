@@ -11,12 +11,12 @@ namespace Morpheus.Network
         #region Singleton
         public static NetworkManager Instance { get; private set; }
 
-        internal static void CreateInstance()
+        public static void CreateInstance()
         {
             Instance ??= new NetworkManager();
         }
 
-        internal static void ReleaseInstance()
+        public static void ReleaseInstance()
         {
             Instance = null;
         }
@@ -100,7 +100,7 @@ namespace Morpheus.Network
                 responseProducer = responseProducers[config.responseProducerId]
             };
 
-            TransportConfig transportConfig = config.socketConfig;
+            TransportConfig transportConfig = config.transportConfig;
             switch (transportConfig.protocol)
             {
                 case TransportProtocol.LocalSimulation:

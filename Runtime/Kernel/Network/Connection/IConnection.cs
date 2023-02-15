@@ -1,6 +1,6 @@
 ﻿namespace Morpheus.Network
 {
-    internal interface IConnection
+    public interface IConnection
     {
         public int Id { get; }
         public int Version { get; }

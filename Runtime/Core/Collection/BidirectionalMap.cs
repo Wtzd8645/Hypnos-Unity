@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Morpheus.Core.Collection
 {
-    public class BidirectionalDictionary<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>
+    public class BidirectionalMap<TKey, TValue> : IEnumerable<KeyValuePair<TKey, TValue>>
     {
         private readonly Dictionary<TKey, TValue> keyMap;
         private readonly Dictionary<TValue, TKey> valueMap;
@@ -22,13 +22,13 @@ namespace Morpheus.Core.Collection
             set => valueMap[key] = value;
         }
 
-        public BidirectionalDictionary()
+        public BidirectionalMap()
         {
             keyMap = new Dictionary<TKey, TValue>();
             valueMap = new Dictionary<TValue, TKey>();
         }
 
-        public BidirectionalDictionary(int capacity)
+        public BidirectionalMap(int capacity)
         {
             keyMap = new Dictionary<TKey, TValue>(capacity);
             valueMap = new Dictionary<TValue, TKey>(capacity);

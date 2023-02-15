@@ -18,7 +18,7 @@ namespace Morpheus.Network
 
             ConnectionConfig config = new ConnectionConfig
             {
-                socketConfig = new TransportConfig
+                transportConfig = new TransportConfig
                 {
                     ip = NetworkUtil.GetLocalPrivateIp(),
                     port = NetworkManager.DefalutPort
