@@ -5,7 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace Morpheus.Editor.GameData
+namespace Hypnos.Editor.GameData
 {
     public class ExcelToMetaGameData : MetaGameDataParserBase
     {

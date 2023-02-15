@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq.Expressions;
 using System.Reflection;
 
-namespace Morpheus.Core.Memory
+namespace Hypnos.Core.Memory
 {
     public class ObjectPool<T> where T : class
     {

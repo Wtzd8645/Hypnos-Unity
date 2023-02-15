@@ -1,6 +1,6 @@
-using Morpheus.Network;
+using Hypnos.Network;
 
-namespace Morpheus.Tests.Network
+namespace Hypnos.Tests.Network
 {
     public class EchoRequest : IRequest
     {

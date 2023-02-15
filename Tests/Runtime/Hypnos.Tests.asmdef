@@ -1,11 +1,9 @@
 {
-    "name": "Morpheus.Tests",
-    "rootNamespace": "Morpheus",
+    "name": "Hypnos.Tests",
+    "rootNamespace": "Hypnos.Tests",
     "references": [
-        "UnityEngine.TestRunner",
-        "UnityEditor.TestRunner",
-        "Morpheus",
-        "Morpheus.Editor"
+        "Hypnos",
+        "UnityEngine.TestRunner"
     ],
     "includePlatforms": [],
     "excludePlatforms": [

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Morpheus.Editor
+namespace Hypnos.Editor
 {
     [Serializable]
     [CreateAssetMenu(fileName = "EditorKernelConfig", menuName = "Editor/EditorKernelConfig")]

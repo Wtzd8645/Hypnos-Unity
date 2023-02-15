@@ -1,4 +1,4 @@
-﻿using Morpheus.Core.Encryption;
+﻿using Hypnos.Core.Encryption;
 using NPOI.SS.UserModel;
 using System;
 using System.CodeDom;
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 
-namespace Morpheus.Editor
+namespace Hypnos.Editor
 {
     public class DomoExcelHandler : IExcelHandler
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Morpheus.Core.Serialization
+namespace Hypnos.Core.Serialization
 {
     public class JsonSerializer : ISerializer
     {

@@ -4,7 +4,7 @@ using UnityEngine.UI;
 /// Credit NemoKrad (aka Charles Humphrey) / valtain
 /// Sourced from - http://www.randomchaos.co.uk/SoftAlphaUIMask.aspx
 /// Updated by valtain - https://bitbucket.org/ddreaper/unity-ui-extensions/pull-requests/33
-namespace Morpheus.UI
+namespace Hypnos.UI
 {
     [ExecuteInEditMode]
     [AddComponentMenu("UI/Effects/Extensions/SoftMask")]

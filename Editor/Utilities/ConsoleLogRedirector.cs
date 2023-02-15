@@ -3,7 +3,7 @@ using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
 
-namespace Morpheus.Editor
+namespace Hypnos.Editor
 {
     public static class ConsoleLogRedirector
     {

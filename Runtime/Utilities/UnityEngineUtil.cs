@@ -2,7 +2,7 @@
 using System.Reflection;
 using UnityEngine;
 
-namespace Morpheus
+namespace Hypnos
 {
     public static class UnityEngineUtil
     {

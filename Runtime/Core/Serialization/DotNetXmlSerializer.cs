@@ -2,7 +2,7 @@
 using System.IO;
 using System.Xml.Serialization;
 
-namespace Morpheus.Core.Serialization
+namespace Hypnos.Core.Serialization
 {
     public class DotNetXmlSerializer : ISerializer
     {

@@ -1,4 +1,4 @@
-namespace Morpheus
+namespace Hypnos
 {
     public static class IDGenerator
     {

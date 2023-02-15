@@ -1,10 +1,10 @@
-﻿using Morpheus.GameTime;
-using Morpheus.Resource;
+﻿using Hypnos.GameTime;
+using Hypnos.Resource;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Morpheus.UI
+namespace Hypnos.UI
 {
     public delegate void UiAoHandler(UiBase ui);
 

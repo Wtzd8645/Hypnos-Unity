@@ -1,4 +1,4 @@
-namespace Morpheus.Ecs
+namespace Hypnos.Ecs
 {
     public class EntityManager : Singleton<EntityManager>
     {

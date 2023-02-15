@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Morpheus.GameTime
+namespace Hypnos.GameTime
 {
     public class CountdownTimer : GameTimerBase
     {

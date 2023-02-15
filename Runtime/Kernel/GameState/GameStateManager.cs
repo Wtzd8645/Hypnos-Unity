@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Morpheus.GameState
+namespace Hypnos.GameState
 {
     public sealed class GameStateManager
     {

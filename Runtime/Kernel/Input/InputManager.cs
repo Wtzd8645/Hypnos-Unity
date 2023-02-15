@@ -7,7 +7,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Morpheus.IO
+namespace Hypnos.IO
 {
     public sealed class InputManager
     {

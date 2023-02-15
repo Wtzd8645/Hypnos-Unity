@@ -1,4 +1,4 @@
-﻿namespace Morpheus.Core.Encoding
+﻿namespace Hypnos.Core.Encoding
 {
     public static class ZigZag
     {

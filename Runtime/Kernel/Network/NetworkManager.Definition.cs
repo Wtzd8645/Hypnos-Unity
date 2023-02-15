@@ -2,7 +2,7 @@
 using System.Net.Sockets;
 using System.Text;
 
-namespace Morpheus.Network
+namespace Hypnos.Network
 {
     public delegate void ConnectionAoHandler(IConnection conn, SocketAsyncOperation operation, SocketError socketError);
 

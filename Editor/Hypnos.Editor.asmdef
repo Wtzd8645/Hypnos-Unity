@@ -1,8 +1,8 @@
 {
-    "name": "Morpheus.Editor",
-    "rootNamespace": "Morpheus",
+    "name": "Hypnos.Editor",
+    "rootNamespace": "Hypnos.Editor",
     "references": [
-        "Morpheus",
+        "Hypnos",
         "Unity.TextMeshPro",
         "Unity.TextMeshPro.Editor",
         "Unity.ScriptableBuildPipeline",

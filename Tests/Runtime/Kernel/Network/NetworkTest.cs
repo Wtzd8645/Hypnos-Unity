@@ -1,10 +1,10 @@
-﻿using Morpheus.Network;
+﻿using Hypnos.Network;
 using System.Collections;
 using System.Net.Sockets;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace Morpheus.Tests.Network
+namespace Hypnos.Tests.Network
 {
     internal class NetworkTest : MonoBehaviour, IMonoBehaviourTest
     {

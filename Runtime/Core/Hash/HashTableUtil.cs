@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Morpheus.Core.Hash
+namespace Hypnos.Core.Hash
 {
     public static class HashTableUtil
     {

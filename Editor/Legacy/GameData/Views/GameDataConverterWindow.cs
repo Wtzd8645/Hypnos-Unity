@@ -4,7 +4,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace Morpheus.Editor.GameData
+namespace Hypnos.Editor.GameData
 {
     public class GameDataConverterWindow : EditorWindow
     {

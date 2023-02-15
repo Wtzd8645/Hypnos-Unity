@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Morpheus.UI
+namespace Hypnos.UI
 {
     public enum UiAnimationClip
     {

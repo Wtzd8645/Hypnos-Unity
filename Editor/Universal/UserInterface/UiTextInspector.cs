@@ -1,10 +1,10 @@
-﻿using Morpheus.GameData;
-using Morpheus.UI;
+﻿using Hypnos.GameData;
+using Hypnos.UI;
 using TMPro.EditorUtilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace Morpheus.Editor.UI
+namespace Hypnos.Editor.UI
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(UiText))]

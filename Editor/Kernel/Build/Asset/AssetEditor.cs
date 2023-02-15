@@ -1,4 +1,4 @@
-﻿using Morpheus.Resource;
+﻿using Hypnos.Resource;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,7 +9,7 @@ using UnityEditor.Build.Pipeline.Tasks;
 using UnityEngine;
 using UnityEngine.Build.Pipeline;
 
-namespace Morpheus.Editor.Build
+namespace Hypnos.Editor.Build
 {
     internal partial class AssetEditor
     {

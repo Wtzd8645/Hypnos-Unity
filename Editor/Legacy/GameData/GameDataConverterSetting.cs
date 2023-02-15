@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Morpheus.Editor.GameData
+namespace Hypnos.Editor.GameData
 {
     [CreateAssetMenu(fileName = "GameDataConverterSetting", menuName = "Editor/GameDataConverterSetting")]
     public class GameDataConverterSetting : ScriptableObject

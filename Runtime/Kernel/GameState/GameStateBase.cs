@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Morpheus.GameState
+namespace Hypnos.GameState
 {
     public abstract class GameStateBase : MonoBehaviour
     {

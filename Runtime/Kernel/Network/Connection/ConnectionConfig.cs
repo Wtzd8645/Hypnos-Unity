@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Morpheus.Network
+namespace Hypnos.Network
 {
     [Serializable]
     public class TransportConfig

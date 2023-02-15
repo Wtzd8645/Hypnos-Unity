@@ -1,7 +1,7 @@
-using Morpheus.Core.Encryption;
+using Hypnos.Core.Encryption;
 using NUnit.Framework;
 
-namespace Morpheus.Tests.Core
+namespace Hypnos.Tests.Core
 {
     internal class EncryptionTest
     {

@@ -2,7 +2,7 @@
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
-namespace Morpheus.UI
+namespace Hypnos.UI
 {
     public class InverseMaskableImage : Image
     {

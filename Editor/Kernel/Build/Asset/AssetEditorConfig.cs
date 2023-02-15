@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Morpheus.Editor.Build
+namespace Hypnos.Editor.Build
 {
     public enum AssetType
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Morpheus.Core.Event
+namespace Hypnos.Core.Event
 {
     // NOTE: There is GC overhead when delegates are merged.
     public class Subject<TKey>

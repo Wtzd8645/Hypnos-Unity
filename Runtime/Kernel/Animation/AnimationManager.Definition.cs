@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using UnityEngine;
 
-namespace Morpheus.Animation
+namespace Hypnos.Animation
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct ActStateInfoData

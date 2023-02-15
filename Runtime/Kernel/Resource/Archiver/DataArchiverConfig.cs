@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Morpheus.Resource
+namespace Hypnos.Resource
 {
     [Serializable]
     public class DataArchiverConfig

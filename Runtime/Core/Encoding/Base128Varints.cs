@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace Morpheus.Core.Encoding
+namespace Hypnos.Core.Encoding
 {
     public static class Base128Varints
     {

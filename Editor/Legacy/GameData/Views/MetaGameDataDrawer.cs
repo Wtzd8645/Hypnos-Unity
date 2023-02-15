@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace Morpheus.Editor.GameData
+namespace Hypnos.Editor.GameData
 {
     [CustomPropertyDrawer(typeof(MetaGameData))]
     public class MetaGameDataDrawer : PropertyDrawer

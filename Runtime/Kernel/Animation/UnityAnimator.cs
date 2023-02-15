@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using UnityEngine;
 
-namespace Morpheus.Animation
+namespace Hypnos.Animation
 {
     public class UnityAnimator : Animator, IAnimator
     {

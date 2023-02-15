@@ -1,4 +1,4 @@
-﻿namespace Morpheus.IO
+﻿namespace Hypnos.IO
 {
     public interface IVirtualButton
     {

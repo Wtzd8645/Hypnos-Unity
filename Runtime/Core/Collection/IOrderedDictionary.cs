@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.Specialized;
 
-namespace Morpheus.Core.Collection
+namespace Hypnos.Core.Collection
 {
     public interface IOrderedDictionary<TKey, TValue> : IDictionary<TKey, TValue>, IOrderedDictionary
     {

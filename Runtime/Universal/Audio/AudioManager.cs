@@ -1,9 +1,9 @@
-﻿using Morpheus.Resource;
+﻿using Hypnos.Resource;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Morpheus.Audio
+namespace Hypnos.Audio
 {
     public class AudioManager : MonoBehaviour
     {

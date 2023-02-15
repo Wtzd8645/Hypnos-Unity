@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Morpheus
+namespace Hypnos
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
     public class ClassIdentityAttribute : Attribute

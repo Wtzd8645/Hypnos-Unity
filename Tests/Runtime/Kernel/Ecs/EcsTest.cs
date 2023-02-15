@@ -1,8 +1,8 @@
-using Morpheus.Ecs;
+using Hypnos.Ecs;
 using NUnit.Framework;
 using System;
 
-namespace Morpheus.Tests.Ecs
+namespace Hypnos.Tests.Ecs
 {
     public class EcsTest
     {

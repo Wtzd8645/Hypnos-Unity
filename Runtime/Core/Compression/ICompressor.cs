@@ -1,4 +1,4 @@
-﻿namespace Morpheus.Core.Compression
+﻿namespace Hypnos.Core.Compression
 {
     public interface ICompressor
     {

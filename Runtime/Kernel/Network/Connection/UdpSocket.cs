@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Sockets;
 
-namespace Morpheus.Network
+namespace Hypnos.Network
 {
     internal class UdpSocket : SocketBase
     {

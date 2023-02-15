@@ -2,7 +2,7 @@
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace Morpheus.UI
+namespace Hypnos.UI
 {
     public class UiButton : Button
     {

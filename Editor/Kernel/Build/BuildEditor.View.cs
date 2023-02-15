@@ -5,7 +5,7 @@ using UnityEditor.IMGUI.Controls;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-namespace Morpheus.Editor.Build
+namespace Hypnos.Editor.Build
 {
     internal partial class BuildEditor : EditorWindow
     {

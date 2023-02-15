@@ -1,8 +1,8 @@
-﻿using Morpheus.GameData;
+﻿using Hypnos.GameData;
 using TMPro;
 using UnityEngine;
 
-namespace Morpheus.UI
+namespace Hypnos.UI
 {
     // NOTE: An 2048x2048 atlas can contain about 5350 characters with 24pt.
     public class UiText : TextMeshProUGUI

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Morpheus.UI
+namespace Hypnos.UI
 {
     [RequireComponent(typeof(Animator))]
     public class UiAnimator : MonoBehaviour, IUiAnimation

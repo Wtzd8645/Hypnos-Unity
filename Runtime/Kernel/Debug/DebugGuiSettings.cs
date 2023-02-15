@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Morpheus.Debug
+namespace Hypnos.Debug
 {
     public class DebugGuiSettings : ScriptableObject
     {

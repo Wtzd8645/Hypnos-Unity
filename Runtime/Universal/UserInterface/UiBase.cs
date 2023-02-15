@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Morpheus.UI
+namespace Hypnos.UI
 {
     public enum UiDisplayState
     {

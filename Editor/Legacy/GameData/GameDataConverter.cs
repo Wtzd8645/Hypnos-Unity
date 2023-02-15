@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace Morpheus.Editor.GameData
+namespace Hypnos.Editor.GameData
 {
     public enum CodeGenerator
     {

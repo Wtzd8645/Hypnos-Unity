@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Morpheus.Editor
+namespace Hypnos.Editor
 {
     [CreateAssetMenu(fileName = "ExcelConverterSetting", menuName = "Editor/ExcelConverterSetting")]
     public class ExcelConverterSetting : ScriptableObject

@@ -1,4 +1,4 @@
-﻿namespace Morpheus.Network
+﻿namespace Hypnos.Network
 {
     public interface IConnection
     {

@@ -1,4 +1,4 @@
-﻿using Morpheus.Resource;
+﻿using Hypnos.Resource;
 using System.IO;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
@@ -6,7 +6,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Morpheus.Editor.Build
+namespace Hypnos.Editor.Build
 {
     internal partial class AssetEditor : EditorWindow
     {

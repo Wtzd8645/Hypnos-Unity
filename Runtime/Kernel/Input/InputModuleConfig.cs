@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Morpheus.IO
+namespace Hypnos.IO
 {
     [Serializable]
     public struct AxisKeyPair

@@ -1,6 +1,6 @@
-using Morpheus.Ecs;
+using Hypnos.Ecs;
 
-namespace Morpheus.Tests.Ecs
+namespace Hypnos.Tests.Ecs
 {
     public class TestNode : EcsNode
     {

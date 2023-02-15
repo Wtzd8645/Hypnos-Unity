@@ -1,8 +1,8 @@
-﻿using Morpheus.Core.Compression;
-using Morpheus.Core.Encryption;
-using Morpheus.Core.Serialization;
+﻿using Hypnos.Core.Compression;
+using Hypnos.Core.Encryption;
+using Hypnos.Core.Serialization;
 
-namespace Morpheus
+namespace Hypnos
 {
     public enum CoreSerializer
     {

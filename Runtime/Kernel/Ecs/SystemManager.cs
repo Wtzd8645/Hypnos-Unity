@@ -1,8 +1,8 @@
-using Morpheus.Core.Collection;
+using Hypnos.Core.Collection;
 using System;
 using System.Collections.Generic;
 
-namespace Morpheus.Ecs
+namespace Hypnos.Ecs
 {
     public struct SystemConfig
     {
