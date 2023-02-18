@@ -38,7 +38,7 @@ namespace Hypnos.Editor
             }
 
             // Set data manager class.
-            CodeTypeDeclaration dataManagerClass = new CodeTypeDeclaration(EditorKernel.Config.dataManagerTypeName)
+            CodeTypeDeclaration dataManagerClass = new CodeTypeDeclaration(KernelEditor.Config.dataManagerTypeName)
             {
                 IsPartial = true,
                 IsClass = true,
@@ -163,7 +163,7 @@ namespace Hypnos.Editor
             dataManagerClass.Members.Add(initMethod);
 
             // Set namespace.
-            CodeNamespace targetNamespace = new CodeNamespace(EditorKernel.Config.cSharpCodeNamespace);
+            CodeNamespace targetNamespace = new CodeNamespace(KernelEditor.Config.cSharpCodeNamespace);
             targetNamespace.Types.Add(dataManagerClass);
             targetNamespace.Types.Add(dataClass);
 

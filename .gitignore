@@ -1,0 +1,5 @@
+/[Ee]ditor Default Resources/
+/[Ee]ditor Default Resources.meta
+
+# Asset meta data should only be ignored when the corresponding asset is also ignored
+!/**/*.meta

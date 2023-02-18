@@ -1,11 +1,8 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Hypnos.Editor
 {
-    [Serializable]
-    [CreateAssetMenu(fileName = "EditorKernelConfig", menuName = "Editor/EditorKernelConfig")]
-    public class EditorKernelConfig : ScriptableObject
+    public class KernelEditorConfig : ScriptableObject
     {
         public string[] usedAssamblyNames;
 
@@ -20,9 +17,9 @@ namespace Hypnos.Editor
             usedAssamblyNames ??= new string[4]
             {
                 Kernel.UnityEngineAssemblyName,
-                EditorKernel.UnityEditorAssemblyName,
+                KernelEditor.UnityEditorAssemblyName,
                 Kernel.FrameworkAssemblyName,
-                EditorKernel.FrameworkEditorAssemblyName
+                KernelEditor.FrameworkEditorAssemblyName
             };
         }
     }

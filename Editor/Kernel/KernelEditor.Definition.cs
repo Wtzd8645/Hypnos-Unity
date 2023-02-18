@@ -4,15 +4,18 @@
     public enum EditorId
     {
         Kernel,
-        Build,
-        ScriptableObjectFactory
+        ScriptableObjectFactory,
+        Build
     }
 
-    public partial class EditorKernel
+    public partial class KernelEditor
     {
         public const string UnityEditorAssemblyName = "Assembly-CSharp-Editor";
         public const string FrameworkEditorAssemblyName = "Hypnos.Editor";
 
+        public const string ScriptableObjectExt = ".asset";
+
+        public const string EditorBuiltInResourcePath = "Assets/Editor Default Resources/";
         public const string FrameworkPath = "Hypnos/";
     }
 }

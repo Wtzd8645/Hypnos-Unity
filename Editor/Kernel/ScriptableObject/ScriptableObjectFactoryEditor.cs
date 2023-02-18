@@ -9,6 +9,8 @@ namespace Hypnos.Editor
 {
     public class ScriptableObjectFactoryEditor : EditorWindow
     {
+        private const string EditorName = "ScriptableObject Factory";
+
         private class ScriptableObjectEndNameEditAction : EndNameEditAction
         {
             public override void Action(int instanceId, string pathName, string resourceFile)
@@ -17,14 +19,10 @@ namespace Hypnos.Editor
             }
         }
 
-        private const string ScriptableObjectExt = ".asset";
-
-        [MenuItem(EditorKernel.FrameworkPath + " Scriptable Object Factory", false, (int)EditorId.ScriptableObjectFactory)]
+        [MenuItem(KernelEditor.FrameworkPath + EditorName, false, (int)EditorId.ScriptableObjectFactory)]
         public static void ShowWindow()
         {
-            ScriptableObjectFactoryEditor window = GetWindow<ScriptableObjectFactoryEditor>();
-            window.SetAssemblies(EditorKernel.Config != null ? EditorKernel.Config.usedAssamblyNames : null);
-            window.ShowPopup();
+            GetWindow<ScriptableObjectFactoryEditor>();
         }
 
         public List<string> assemblyNames;
@@ -37,14 +35,16 @@ namespace Hypnos.Editor
 
         private void Awake()
         {
-            titleContent.text = "ScriptableObject Factory";
+            titleContent.text = EditorName;
             minSize = new Vector2(480f, 180f);
+            KernelEditor.LoadConfig();
         }
 
         private void OnEnable()
         {
             serializedObject = new SerializedObject(this);
             assamblyNamesProp = serializedObject.FindProperty("assemblyNames");
+            SetAssemblies(KernelEditor.Config.usedAssamblyNames);
         }
 
         private void OnGUI()
@@ -59,14 +59,7 @@ namespace Hypnos.Editor
 
             if (GUILayout.Button("Save Assemblies"))
             {
-                if (EditorKernel.Config == null)
-                {
-                    Kernel.LogError("[ScriptableObjectFactoryEditor] EditorKernelConfig is not loaded.");
-                }
-                else
-                {
-                    EditorKernel.Config.usedAssamblyNames = assemblyNames.ToArray();
-                }
+                KernelEditor.Config.usedAssamblyNames = assemblyNames.ToArray();
             }
 
             if (selectIndex == -1)
@@ -75,15 +68,14 @@ namespace Hypnos.Editor
                 return;
             }
 
-            selectIndex = EditorGUILayout.Popup("Scriptable Object", selectIndex, scriptableObjectTypeNames);
+            selectIndex = EditorGUILayout.Popup("ScriptableObject", selectIndex, scriptableObjectTypeNames);
             if (GUILayout.Button("Create"))
             {
                 ScriptableObject so = CreateInstance(scriptableObjectTypeNames[selectIndex]);
-                ScriptableObjectEndNameEditAction endNameEditAction = CreateInstance<ScriptableObjectEndNameEditAction>();
                 ProjectWindowUtil.StartNameEditingIfProjectWindowExists(
                     so.GetInstanceID(),
-                    endNameEditAction,
-                    scriptableObjectTypeNames[selectIndex] + ScriptableObjectExt,
+                    CreateInstance<ScriptableObjectEndNameEditAction>(),
+                    scriptableObjectTypeNames[selectIndex] + KernelEditor.ScriptableObjectExt,
                     AssetPreview.GetMiniThumbnail(so),
                     null);
             }
@@ -104,12 +96,18 @@ namespace Hypnos.Editor
 
         private void UpdateScriptableObjectNames()
         {
-            List<Type> types = new List<Type>(64);
+            List<Type> soTypes = new List<Type>(64);
+            HashSet<string> loadedAssemblySet = new HashSet<string>();
             foreach (string asmName in assemblyNames)
             {
+                if (!loadedAssemblySet.Add(asmName))
+                {
+                    continue;
+                }
+
                 try
                 {
-                    EditorKernel.GetTypesFromAssembly(types, typeof(ScriptableObject), Assembly.Load(asmName));
+                    ReflectionUtil.GetTypesFromAssembly(soTypes, typeof(ScriptableObject), Assembly.Load(asmName));
                 }
                 catch
                 {
@@ -117,11 +115,11 @@ namespace Hypnos.Editor
                 }
             }
 
-            selectIndex = types.Count > 0 ? 0 : -1;
-            scriptableObjectTypeNames = new string[types.Count];
+            selectIndex = soTypes.Count > 0 ? 0 : -1;
+            scriptableObjectTypeNames = new string[soTypes.Count];
             for (int i = 0; i < scriptableObjectTypeNames.Length; ++i)
             {
-                scriptableObjectTypeNames[i] = types[i].FullName;
+                scriptableObjectTypeNames[i] = soTypes[i].FullName;
             }
         }
     }

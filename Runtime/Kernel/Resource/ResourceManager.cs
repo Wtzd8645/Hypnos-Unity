@@ -210,7 +210,7 @@ namespace Hypnos.Resource
 
         public void LoadAssetAsync<T>(string assetId, ResourceAoHandler<T> completeCb = null) where T : UnityEngine.Object
         {
-            Kernel.ExecuteCoroutine(resourceLoader.LoadAssetRoutine(assetId, completeCb));
+            Kernel.Execute(resourceLoader.LoadAssetRoutine(assetId, completeCb));
         }
 
         public void UnloadAsset(string assetId)

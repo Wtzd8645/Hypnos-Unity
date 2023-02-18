@@ -18,20 +18,20 @@ namespace Hypnos.Environment
         {
             Instance = null;
         }
+
+        private EnvironmentManager() { }
         #endregion
 
-        public readonly string uniqueIdentifier = SystemInfo.deviceUniqueIdentifier;
-        public readonly string operatingSystem = SystemInfo.operatingSystem;
-        public readonly int processorCount = SystemInfo.processorCount;
-        public readonly int memorySize = SystemInfo.systemMemorySize;
+        public string UniqueIdentifier => SystemInfo.deviceUniqueIdentifier;
+        public string OperatingSystem => SystemInfo.operatingSystem;
 
-        public readonly GraphicsDeviceType graphicsApiType = SystemInfo.graphicsDeviceType;
-        public readonly int graphicsMemorySize = SystemInfo.graphicsMemorySize;
+        public int ProcessorCount => SystemInfo.processorCount;
+        public int MemorySize => SystemInfo.systemMemorySize;
+        public GraphicsDeviceType GraphicsApiType => SystemInfo.graphicsDeviceType;
+        public int GraphicsMemorySize => SystemInfo.graphicsMemorySize;
 
         public string GameVersion => Application.version;
         public int TargetFrameRate => Application.targetFrameRate;
-
-        private EnvironmentManager() { }
 
         public void Initialize(EnvironmentConfig config)
         {
@@ -75,7 +75,7 @@ namespace Hypnos.Environment
             }
 
             Screen.SetResolution((int)width, (int)height, true);
-            Kernel.Log($"[EnvironmentManager] Screen resolution is set: W: {Screen.width}, H: {Screen.height}");
+            Kernel.Log($"[EnvironmentManager] Screen resolution is set: W: {Screen.width}, H: {Screen.height}", (int)LogChannel.Environment);
         }
     }
 }

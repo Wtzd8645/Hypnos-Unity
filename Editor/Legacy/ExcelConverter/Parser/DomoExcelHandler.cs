@@ -362,14 +362,14 @@ namespace Hypnos.Editor
                     ms.Flush();
                     ms.Position = 0;
 
-                    using FileStream fs = new FileStream(EditorKernel.Config.bytesOutputPath + "/" + mainSheet.SheetName + ".bytes", FileMode.Create);
+                    using FileStream fs = new FileStream(KernelEditor.Config.bytesOutputPath + "/" + mainSheet.SheetName + ".bytes", FileMode.Create);
                     //EncryptionUtil.EncodeByAES(fs, ms);
                 }
                 Kernel.Log("[ExcelHandler] Generate encrypted XML successfully.");
             }
             else
             {
-                iXMLDoc.Save(EditorKernel.Config.bytesOutputPath + "/" + mainSheet.SheetName + ".xml");
+                iXMLDoc.Save(KernelEditor.Config.bytesOutputPath + "/" + mainSheet.SheetName + ".xml");
                 Kernel.Log("[ExcelHandler] Generate XML successfully.");
             }
         }
@@ -396,7 +396,7 @@ namespace Hypnos.Editor
             }
 
             // Set data manager class.
-            CodeTypeDeclaration dataManagerClass = new CodeTypeDeclaration(EditorKernel.Config.dataManagerTypeName)
+            CodeTypeDeclaration dataManagerClass = new CodeTypeDeclaration(KernelEditor.Config.dataManagerTypeName)
             {
                 IsPartial = true,
                 IsClass = true,
@@ -523,7 +523,7 @@ namespace Hypnos.Editor
             dataManagerClass.Members.Add(initMethod);
 
             // Set namespace.
-            CodeNamespace targetNamespace = new CodeNamespace(EditorKernel.Config.cSharpCodeNamespace);
+            CodeNamespace targetNamespace = new CodeNamespace(KernelEditor.Config.cSharpCodeNamespace);
             targetNamespace.Types.Add(dataManagerClass);
             targetNamespace.Types.Add(dataClass);
 
@@ -547,7 +547,7 @@ namespace Hypnos.Editor
                 BracingStyle = "C"
             };
 
-            using (FileStream fs = new FileStream(EditorKernel.Config.cSharpCodeOutputPath + "/" + mainSheet.SheetName + ".cs", FileMode.Create))
+            using (FileStream fs = new FileStream(KernelEditor.Config.cSharpCodeOutputPath + "/" + mainSheet.SheetName + ".cs", FileMode.Create))
             {
                 using StreamWriter sw = new StreamWriter(fs);
                 provider.GenerateCodeFromCompileUnit(compileUnit, sw, options);

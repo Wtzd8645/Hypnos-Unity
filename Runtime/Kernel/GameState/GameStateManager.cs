@@ -66,7 +66,7 @@ namespace Hypnos.GameState
                 return;
             }
 
-            Kernel.ExecuteCoroutine(StartRoutine());
+            Kernel.Execute(StartRoutine());
         }
 
         private IEnumerator StartRoutine()
@@ -87,7 +87,7 @@ namespace Hypnos.GameState
                 return;
             }
 
-            Kernel.ExecuteCoroutine(TransitRoutine(stateId));
+            Kernel.Execute(TransitRoutine(stateId));
         }
 
         private IEnumerator TransitRoutine(int nextStateId)

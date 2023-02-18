@@ -1,58 +1,28 @@
-﻿using System;
-using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Hypnos
 {
-    [Flags]
-    public enum RunningVersion
+    public partial class Kernel : MonoBehaviour
     {
-        Release = 0,
-        Stage = 1,
-        Development = 2,
-        Test = 3
-    }
+        private static Kernel instance;
 
-    public static partial class Kernel
-    {
-        public const string UnityEngineAssemblyName = "Assembly-CSharp";
-        public const string FrameworkAssemblyName = "Hypnos";
-
-#if TEST
-        public const RunningVersion Version = RunningVersion.Test;
-#elif DEVELOPMENT
-        public const RunningVersion Version = RunningVersion.Development;
-#elif STAGE
-        public const RunningVersion Version = RunningVersion.Stage;
-#else
-        public const RunningVersion Version = RunningVersion.Release;
-#endif
-
-        #region Coroutine
-        public static readonly WaitForFixedUpdate WaitForFixedUpdate = new WaitForFixedUpdate();
-        public static readonly WaitForEndOfFrame WaitForEndOfFrame = new WaitForEndOfFrame();
-
-        private static MonoBehaviour coroutineExecutor;
-
-        public static void SetCoroutineExecutor(MonoBehaviour executor)
+        public void Awake()
         {
-            coroutineExecutor = executor;
+            if (instance != null)
+            {
+                Destroy(this);
+                return;
+            }
+
+            instance = this;
         }
 
-        public static Coroutine ExecuteCoroutine(IEnumerator routine)
+        private void OnDestroy()
         {
-            return coroutineExecutor.StartCoroutine(routine);
+            if (this == instance)
+            {
+                instance = null;
+            }
         }
-
-        public static void TerminateCoroutine(Coroutine routine)
-        {
-            coroutineExecutor.StopCoroutine(routine);
-        }
-
-        public static void TerminateAllCoroutines()
-        {
-            coroutineExecutor.StopAllCoroutines();
-        }
-        #endregion
     }
 }

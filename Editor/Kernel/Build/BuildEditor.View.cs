@@ -24,7 +24,7 @@ namespace Hypnos.Editor.Build
         private const string AssetConfigEditBtnName = "AssetConfigEditBtn";
         private const string EditionBuildBtnName = "EditionBuildBtn";
 
-        [MenuItem(EditorKernel.FrameworkPath + EditorName, false, (int)EditorId.Build)]
+        [MenuItem(KernelEditor.FrameworkPath + EditorName, false, (int)EditorId.Build)]
         private static void ShowWindow()
         {
             GetWindow<BuildEditor>();
