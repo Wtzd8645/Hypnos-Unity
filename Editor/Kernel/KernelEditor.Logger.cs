@@ -1,31 +1,33 @@
-﻿using System.Reflection;
+﻿using System;
+using System.Reflection;
 using UnityEditor;
 using UnityEditor.Callbacks;
-using UnityEngine;
 
 namespace Hypnos.Editor
 {
-    public static class ConsoleLogRedirector
+    public partial class KernelEditor
     {
-        private static readonly string logScriptName = "DebugLogger"; // TODO: Get from config.
-
+        /// <summary>
+        /// Console Log Redirector
+        /// </summary>
         [OnOpenAsset(0)]
         public static bool OnOpenAsset(int instanceId, int line)
         {
-            Object obj = EditorUtility.InstanceIDToObject(instanceId);
-            if (obj.name != logScriptName)
+            const string LogScriptName = "Kernel.Logger";
+
+            UnityEngine.Object obj = EditorUtility.InstanceIDToObject(instanceId);
+            if (obj.name != LogScriptName)
             {
                 return false;
             }
 
-            string consoleLog = GetConsoleLog();
-            GetFileInfo(consoleLog, out string assetPath, out line);
+            GetFileInfo(out string assetPath, out line);
             if (string.IsNullOrEmpty(assetPath) || line == -1)
             {
                 return false;
             }
 
-            obj = AssetDatabase.LoadAssetAtPath<Object>(assetPath);
+            obj = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(assetPath);
             AssetDatabase.OpenAsset(obj, line);
             return true;
         }
@@ -38,38 +40,32 @@ namespace Hypnos.Editor
             const string ActiveTextField = "m_ActiveText";
             const BindingFlags ActiveTextBindingFlag = BindingFlags.Instance | BindingFlags.NonPublic;
 
-            System.Type consoleWindowType = typeof(EditorWindow).Assembly.GetType(ConsoleWindowClass);
-            FieldInfo consoleWindowfield = consoleWindowType.GetField(ConsoleWindowField, ConsoleWindowBindingFlag);
-            object consoleWindowInst = consoleWindowfield.GetValue(null);
+            Type consoleWindowType = typeof(EditorWindow).Assembly.GetType(ConsoleWindowClass);
+            FieldInfo consoleWindowField = consoleWindowType.GetField(ConsoleWindowField, ConsoleWindowBindingFlag);
+            object consoleWindowInst = consoleWindowField.GetValue(null);
 
-            string consoleLog = string.Empty;
-            if (consoleWindowInst == null)
+            if (consoleWindowInst == null || (EditorWindow)consoleWindowInst != EditorWindow.focusedWindow)
             {
-                return consoleLog;
-            }
-
-            if ((Object)consoleWindowInst != EditorWindow.focusedWindow)
-            {
-                return consoleLog;
+                return string.Empty;
             }
 
             FieldInfo activeTextfield = consoleWindowType.GetField(ActiveTextField, ActiveTextBindingFlag);
-            consoleLog = activeTextfield.GetValue(consoleWindowInst).ToString();
-            return consoleLog;
+            return activeTextfield.GetValue(consoleWindowInst).ToString();
         }
 
-        private static void GetFileInfo(string consoleLog, out string filePath, out int fileLine)
+        private static void GetFileInfo(out string filePath, out int fileLine)
         {
             const string UnityLogTag = "UnityEngine.Debug:";
             const string LogStartTag = "(at ";
             const string LogEndTag = ".cs";
 
+            string consoleLog = GetConsoleLog();
             string[] context = consoleLog.Split('\n');
             for (int i = context.Length - 1; i >= 0; --i)
             {
                 if (context[i].Contains(UnityLogTag))
                 {
-                    consoleLog = context[i + 2];
+                    consoleLog = context[i + 2]; // NOTE: Get the previous script of the logger script.
                     break;
                 }
             }
