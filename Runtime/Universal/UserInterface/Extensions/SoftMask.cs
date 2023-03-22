@@ -50,7 +50,7 @@ namespace Hypnos.UI
             Text text = GetComponent<Text>();
             if (text != null)
             {
-                mat = new Material(Shader.Find("Dream/UI/SoftMask"));
+                mat = new Material(Shader.Find("Blanketer/UI/SoftMask"));
                 text.material = mat;
                 cachedCanvas = text.canvas;
                 cachedCanvasTransform = cachedCanvas.transform;
@@ -68,7 +68,7 @@ namespace Hypnos.UI
             Graphic graphic = GetComponent<Graphic>();
             if (graphic != null)
             {
-                mat = new Material(Shader.Find("Dream/UI/SoftMask"));
+                mat = new Material(Shader.Find("Blanketer/UI/SoftMask"));
                 graphic.material = mat;
                 cachedCanvas = graphic.canvas;
                 cachedCanvasTransform = cachedCanvas.transform;

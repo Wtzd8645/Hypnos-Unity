@@ -10,7 +10,7 @@ namespace Hypnos.Editor.UI
     [CustomEditor(typeof(UiText))]
     public class UiTextInspector : TMP_EditorPanelUI
     {
-        [MenuItem("GameObject/Dream/UI/Text", false, 0)]
+        [MenuItem("GameObject/Blanketer/UI/Text", false, 0)]
         public static void CreateGameObject()
         {
             // Create a custom game object
