@@ -1,6 +1,6 @@
 ﻿using NPOI.SS.UserModel;
 
-namespace Hypnos.Editor
+namespace Blanketmen.Hypnos.Editor
 {
     public interface IExcelHandler
     {

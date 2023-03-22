@@ -1,8 +1,7 @@
-﻿using Hypnos.GameData;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
 
-namespace Hypnos.UI
+namespace Blanketmen.Hypnos.UI
 {
     // NOTE: An 2048x2048 atlas can contain about 5350 characters with 24pt.
     public class UiText : TextMeshProUGUI

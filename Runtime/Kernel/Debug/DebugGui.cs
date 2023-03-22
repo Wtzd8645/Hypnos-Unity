@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Hypnos.Debug
+namespace Blanketmen.Hypnos
 {
     public class DebugGui : MonoBehaviour
     {

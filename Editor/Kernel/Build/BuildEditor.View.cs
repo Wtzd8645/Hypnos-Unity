@@ -5,7 +5,7 @@ using UnityEditor.IMGUI.Controls;
 using UnityEditor.UIElements;
 using UnityEngine.UIElements;
 
-namespace Hypnos.Editor.Build
+namespace Blanketmen.Hypnos.Editor.Build
 {
     internal partial class BuildEditor : EditorWindow
     {

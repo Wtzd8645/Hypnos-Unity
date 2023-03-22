@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 
-namespace Hypnos.Editor.Build
+namespace Blanketmen.Hypnos.Editor.Build
 {
     [Serializable]
     public class EditionConfig

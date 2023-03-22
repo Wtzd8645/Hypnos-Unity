@@ -1,8 +1,8 @@
-﻿using Hypnos.UI;
+﻿using Blanketmen.Hypnos.UI;
 using UnityEditor;
 using UnityEditor.UI;
 
-namespace Hypnos.Editor.UnityExtension.UI
+namespace Blanketmen.Hypnos.Editor.UI
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(SnapScrollRect))]

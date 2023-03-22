@@ -1,4 +1,4 @@
-﻿namespace Hypnos.Resource
+﻿namespace Blanketmen.Hypnos
 {
     public delegate void ResourceAoHandler<T>(T obj);
 

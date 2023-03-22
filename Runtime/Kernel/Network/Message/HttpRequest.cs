@@ -1,7 +1,7 @@
 using System;
 using System.Net.Http;
 
-namespace Hypnos.Network
+namespace Blanketmen.Hypnos
 {
     public class HttpRequest : IRequest
     {

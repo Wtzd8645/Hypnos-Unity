@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 
-namespace Hypnos.Resource
+namespace Blanketmen.Hypnos
 {
     public sealed partial class ResourceManager
     {

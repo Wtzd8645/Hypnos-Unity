@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 
-namespace Hypnos.Editor.GameData
+namespace Blanketmen.Hypnos.Editor.GameData
 {
     public enum CodeGenerator
     {

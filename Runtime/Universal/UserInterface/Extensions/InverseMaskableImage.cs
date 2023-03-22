@@ -2,7 +2,7 @@
 using UnityEngine.Rendering;
 using UnityEngine.UI;
 
-namespace Hypnos.UI
+namespace Blanketmen.Hypnos.UI
 {
     public class InverseMaskableImage : Image
     {

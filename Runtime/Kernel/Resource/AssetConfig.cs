@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Hypnos.Resource
+namespace Blanketmen.Hypnos
 {
     [Serializable]
     public class AssetGroupData

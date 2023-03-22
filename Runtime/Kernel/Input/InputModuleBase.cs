@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Hypnos.IO
+namespace Blanketmen.Hypnos
 {
     public abstract class InputModuleBase
     {

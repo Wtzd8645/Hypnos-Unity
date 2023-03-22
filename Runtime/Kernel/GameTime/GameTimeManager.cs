@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Hypnos.GameTime
+namespace Blanketmen.Hypnos
 {
     public sealed class GameTimeManager
     {

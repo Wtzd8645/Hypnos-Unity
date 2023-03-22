@@ -1,4 +1,4 @@
-﻿namespace Hypnos.Network
+﻿namespace Blanketmen.Hypnos
 {
     public interface IResponseProducer
     {

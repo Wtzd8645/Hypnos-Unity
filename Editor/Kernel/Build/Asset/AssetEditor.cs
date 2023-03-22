@@ -1,5 +1,4 @@
-﻿using Hypnos.Resource;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -9,7 +8,7 @@ using UnityEditor.Build.Pipeline.Tasks;
 using UnityEngine;
 using UnityEngine.Build.Pipeline;
 
-namespace Hypnos.Editor.Build
+namespace Blanketmen.Hypnos.Editor.Build
 {
     internal partial class AssetEditor
     {

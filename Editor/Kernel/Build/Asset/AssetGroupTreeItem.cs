@@ -2,7 +2,7 @@
 using UnityEditor.IMGUI.Controls;
 using UnityEngine;
 
-namespace Hypnos.Editor.Build
+namespace Blanketmen.Hypnos.Editor.Build
 {
     internal class AssetGroupTreeItem : AssetItemBase
     {

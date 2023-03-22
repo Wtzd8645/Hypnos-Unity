@@ -1,9 +1,9 @@
-using Hypnos.Core.Collection;
+using Blanketmen.Hypnos.Collection;
 using System;
 using System.Collections.Generic;
 using System.Numerics;
 
-namespace Hypnos.Ecs
+namespace Blanketmen.Hypnos
 {
     public partial class NodeManager : IDisposable
     {

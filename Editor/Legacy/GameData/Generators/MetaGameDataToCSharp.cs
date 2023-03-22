@@ -1,9 +1,9 @@
-﻿using Hypnos.Core.Encryption;
+﻿using Blanketmen.Hypnos.Encryption;
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.IO;
 
-namespace Hypnos.Editor.GameData
+namespace Blanketmen.Hypnos.Editor.GameData
 {
     public static class MetaGameDataToCSharp
     {

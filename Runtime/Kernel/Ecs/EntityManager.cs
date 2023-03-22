@@ -1,4 +1,4 @@
-namespace Hypnos.Ecs
+namespace Blanketmen.Hypnos
 {
     public class EntityManager : Singleton<EntityManager>
     {

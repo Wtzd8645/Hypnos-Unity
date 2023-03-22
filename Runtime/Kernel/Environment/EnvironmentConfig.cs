@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Hypnos.Environment
+namespace Blanketmen.Hypnos
 {
     public class EnvironmentConfig : ScriptableObject
     {

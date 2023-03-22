@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Hypnos.IO
+namespace Blanketmen.Hypnos
 {
     [Serializable]
     public struct AxisKeyPair

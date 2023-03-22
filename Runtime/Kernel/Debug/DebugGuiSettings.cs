@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Hypnos.Debug
+namespace Blanketmen.Hypnos
 {
     public class DebugGuiSettings : ScriptableObject
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Hypnos.Network
+namespace Blanketmen.Hypnos
 {
     public class NetworkConfig : ScriptableObject
     {

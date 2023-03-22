@@ -1,5 +1,4 @@
-/[Ee]ditor Default Resources/
-/[Ee]ditor Default Resources.meta
+.DS_Store
 
 # Asset meta data should only be ignored when the corresponding asset is also ignored
 !/**/*.meta

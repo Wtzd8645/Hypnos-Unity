@@ -1,6 +1,6 @@
 ﻿using System.Net;
 
-namespace Hypnos.Network
+namespace Blanketmen.Hypnos
 {
     public static class NetworkUtil
     {

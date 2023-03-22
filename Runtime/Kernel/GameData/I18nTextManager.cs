@@ -1,9 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.IO.MemoryMappedFiles;
-using System.Text;
 
-namespace Hypnos.GameData
+namespace Blanketmen.Hypnos
 {
     public unsafe struct NI18nTextArray
     {
@@ -49,7 +48,7 @@ namespace Hypnos.GameData
         private const int KeySize = 4;
         private const int InfoTableEntrySize = 8;
 
-        private static readonly Encoding StringEncoder = Encoding.UTF8; // For efficiency.
+        private static readonly System.Text.Encoding StringEncoder = System.Text.Encoding.UTF8; // For efficiency.
 
         private string i18nTextDirPath;
 

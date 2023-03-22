@@ -1,7 +1,6 @@
-﻿using Hypnos.Network;
-using System;
+﻿using System;
 
-namespace Hypnos.Tests.Network
+namespace Blanketmen.Hypnos.Tests.Network
 {
     public enum ResponseId : ushort
     {

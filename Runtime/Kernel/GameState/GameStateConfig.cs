@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Hypnos.GameState
+namespace Blanketmen.Hypnos
 {
     public class GameStateConfig : ScriptableObject
     {

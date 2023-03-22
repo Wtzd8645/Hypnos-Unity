@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Hypnos.UI
+namespace Blanketmen.Hypnos.UI
 {
     [RequireComponent(typeof(Animator))]
     public class UiAnimator : MonoBehaviour, IUiAnimation

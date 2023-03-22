@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hypnos.Editor.GameData
+namespace Blanketmen.Hypnos.Editor.GameData
 {
     public class MetaGameDataField : IEquatable<MetaGameDataField>
     {

@@ -1,10 +1,10 @@
-﻿using Hypnos.Core.Compression;
-using Hypnos.Core.Encryption;
-using Hypnos.Core.Serialization;
+﻿using Blanketmen.Hypnos.Compression;
+using Blanketmen.Hypnos.Encryption;
+using Blanketmen.Hypnos.Serialization;
 using System;
 using System.IO;
 
-namespace Hypnos.Resource
+namespace Blanketmen.Hypnos
 {
     public class DataArchiver
     {

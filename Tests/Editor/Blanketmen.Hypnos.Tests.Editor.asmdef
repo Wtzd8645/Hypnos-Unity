@@ -1,6 +1,6 @@
 {
-    "name": "Hypnos.Tests.Editor",
-    "rootNamespace": "Hypnos.Tests.Editor",
+    "name": "Blanketmen.Hypnos.Tests.Editor",
+    "rootNamespace": "Blanketmen.Hypnos.Tests.Editor",
     "references": [
         "GUID:cfb050605ec319c40a01d6c062f38234",
         "GUID:d8746d1a1943696499cd35eeb9316b96",

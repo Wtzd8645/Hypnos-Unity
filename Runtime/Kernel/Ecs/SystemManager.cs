@@ -1,8 +1,8 @@
-using Hypnos.Core.Collection;
+using Blanketmen.Hypnos.Collection;
 using System;
 using System.Collections.Generic;
 
-namespace Hypnos.Ecs
+namespace Blanketmen.Hypnos
 {
     public struct SystemConfig
     {

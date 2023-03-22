@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hypnos.UI
+namespace Blanketmen.Hypnos.UI
 {
     public enum UiAnimationClip
     {

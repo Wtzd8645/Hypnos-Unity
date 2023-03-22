@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Net.Sockets;
 
-namespace Hypnos.Network
+namespace Blanketmen.Hypnos
 {
     internal class UdpSocket : SocketBase
     {

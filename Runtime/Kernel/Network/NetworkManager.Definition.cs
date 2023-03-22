@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net.Sockets;
-using System.Text;
 
-namespace Hypnos.Network
+namespace Blanketmen.Hypnos
 {
     public delegate void ConnectionAoHandler(IConnection conn, SocketAsyncOperation operation, SocketError socketError);
 
@@ -11,7 +10,7 @@ namespace Hypnos.Network
         public const int PacketLengthSize = sizeof(short);
         public const int SerialNumberSize = sizeof(byte);
         public const int MessageIdSize = sizeof(ushort);
-        public static readonly Encoding StringEncoder = new UTF8Encoding(false, true);
+        public static readonly System.Text.Encoding StringEncoder = new System.Text.UTF8Encoding(false, true);
 
         public const int DefalutPort = 27015;
         public const ushort DefalutMaxPacketSize = 1024; // byte

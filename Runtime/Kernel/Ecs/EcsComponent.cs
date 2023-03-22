@@ -1,6 +1,6 @@
 using System;
 
-namespace Hypnos.Ecs
+namespace Blanketmen.Hypnos
 {
     public class EcsComponent : IDisposable
     {

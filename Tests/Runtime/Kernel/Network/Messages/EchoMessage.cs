@@ -1,6 +1,4 @@
-using Hypnos.Network;
-
-namespace Hypnos.Tests.Network
+namespace Blanketmen.Hypnos.Tests.Network
 {
     public class EchoRequest : IRequest
     {

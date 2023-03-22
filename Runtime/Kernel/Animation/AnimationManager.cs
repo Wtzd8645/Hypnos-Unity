@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace Hypnos.Animation
+namespace Blanketmen.Hypnos
 {
     public class AnimationManager
     {

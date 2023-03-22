@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Hypnos.UI
+namespace Blanketmen.Hypnos.UI
 {
     [ExecuteInEditMode]
     [AddComponentMenu("UI/Effects/Extensions/UiParticleSystem")]

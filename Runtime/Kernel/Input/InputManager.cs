@@ -7,7 +7,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 
-namespace Hypnos.IO
+namespace Blanketmen.Hypnos
 {
     public sealed class InputManager
     {

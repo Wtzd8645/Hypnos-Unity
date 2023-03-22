@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hypnos
+namespace Blanketmen.Hypnos
 {
     [AttributeUsage(AttributeTargets.Class, Inherited = false, AllowMultiple = false)]
     public class ClassIdentityAttribute : Attribute

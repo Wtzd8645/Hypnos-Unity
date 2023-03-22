@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Hypnos.Resource
+namespace Blanketmen.Hypnos
 {
     internal class AssetGroupInst
     {

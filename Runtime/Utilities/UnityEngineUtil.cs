@@ -2,7 +2,7 @@
 using System.Reflection;
 using UnityEngine;
 
-namespace Hypnos
+namespace Blanketmen.Hypnos
 {
     public static class UnityEngineUtil
     {

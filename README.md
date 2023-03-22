@@ -1,30 +1,11 @@
-# Summary #
+# Summary
+
 An Unity framework that does not depend on Unity as much as possible.
 
-## TO-DO LIST ##
-### Client-Side ###
-#### Core ####
-* Implement encryption (AES, RSA, ECC)
-* Implement compression (LZ4)
+The runtime code of this framework is mainly divided into four parts:
 
-#### AssetBundle ####
-* Circular dependency testing
-* Optimize shader assets
-* Implement asset cache mechanism 
-* Implement AssetGroup setting
-* Implement incremental build & download
-* Merge small AssetBundle files
-* AssetBundle Analyzer
+* ## [Core](./Runtime/Core/README.txt)
 
-#### Network ####
-* Check packet size while packing
-* Stability testing for TCP and UDP socket
-* Implement RUDP
-* Implement Web3 interface
+* ## [Kernel](./Runtime/Kernel/README.txt)
 
-#### Audio ####
-* Import Wwise
-
-#### Animation ####
-
-#### Input ####
+* ## [Universal](./Runtime/Universal/README.txt)

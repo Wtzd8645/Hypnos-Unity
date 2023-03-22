@@ -1,9 +1,8 @@
-﻿using Hypnos.Resource;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Hypnos.Audio
+namespace Blanketmen.Hypnos.Audio
 {
     public class AudioManager : MonoBehaviour
     {

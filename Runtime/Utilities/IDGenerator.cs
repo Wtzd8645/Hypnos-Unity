@@ -1,4 +1,4 @@
-namespace Hypnos
+namespace Blanketmen.Hypnos
 {
     public static class IDGenerator
     {

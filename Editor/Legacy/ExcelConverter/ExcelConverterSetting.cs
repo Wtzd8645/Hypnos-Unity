@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Hypnos.Editor
+namespace Blanketmen.Hypnos.Editor
 {
     [CreateAssetMenu(fileName = "ExcelConverterSetting", menuName = "Editor/ExcelConverterSetting")]
     public class ExcelConverterSetting : ScriptableObject

@@ -1,16 +1,16 @@
-﻿using Hypnos.UI;
+﻿using Blanketmen.Hypnos.UI;
 using UnityEditor;
 using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace Hypnos.Editor.UI
+namespace Blanketmen.Hypnos.Editor.UI
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(UiButton))]
     public class UiButtonInspector : ButtonEditor
     {
-        [MenuItem("GameObject/Blanketer/UI/Button", false, 1)]
+        [MenuItem("GameObject/Blanketmen/UI/Button", false, 1)]
         public static void CreateGameObject()
         {
             // Create a custom game object

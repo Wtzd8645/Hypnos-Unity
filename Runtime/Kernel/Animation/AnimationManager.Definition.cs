@@ -1,7 +1,7 @@
 ﻿using System.Runtime.InteropServices;
 using UnityEngine;
 
-namespace Hypnos.Animation
+namespace Blanketmen.Hypnos
 {
     [StructLayout(LayoutKind.Sequential)]
     public struct ActStateInfoData
