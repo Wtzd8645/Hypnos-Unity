@@ -10,7 +10,7 @@ namespace Hypnos.Editor.UI
     [CustomEditor(typeof(UiButton))]
     public class UiButtonInspector : ButtonEditor
     {
-        [MenuItem("GameObject/Dream/UI/Button", false, 1)]
+        [MenuItem("GameObject/Blanketer/UI/Button", false, 1)]
         public static void CreateGameObject()
         {
             // Create a custom game object
