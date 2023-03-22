@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
 
-namespace Hypnos.Animation
+namespace Blanketmen.Hypnos
 {
     public class AnimationLayerBase
     {

@@ -3,7 +3,7 @@ using System.Reflection;
 using UnityEditor;
 using UnityEditor.Callbacks;
 
-namespace Hypnos.Editor
+namespace Blanketmen.Hypnos.Editor
 {
     public partial class KernelEditor
     {

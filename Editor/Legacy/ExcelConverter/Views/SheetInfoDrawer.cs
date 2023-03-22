@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace Hypnos.Editor
+namespace Blanketmen.Hypnos.Editor
 {
     [CustomPropertyDrawer(typeof(SheetInfo))]
     public class SheetInfoDrawer : PropertyDrawer

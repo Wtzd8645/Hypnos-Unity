@@ -1,8 +1,8 @@
 {
-    "name": "Hypnos.Tests",
-    "rootNamespace": "Hypnos.Tests",
+    "name": "Blanketmen.Hypnos.Tests",
+    "rootNamespace": "Blanketmen.Hypnos.Tests",
     "references": [
-        "Hypnos",
+        "Blanketmen.Hypnos",
         "UnityEngine.TestRunner"
     ],
     "includePlatforms": [],

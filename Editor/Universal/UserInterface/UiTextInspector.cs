@@ -1,16 +1,15 @@
-﻿using Hypnos.GameData;
-using Hypnos.UI;
+﻿using Blanketmen.Hypnos.UI;
 using TMPro.EditorUtilities;
 using UnityEditor;
 using UnityEngine;
 
-namespace Hypnos.Editor.UI
+namespace Blanketmen.Hypnos.Editor.UI
 {
     [CanEditMultipleObjects]
     [CustomEditor(typeof(UiText))]
     public class UiTextInspector : TMP_EditorPanelUI
     {
-        [MenuItem("GameObject/Blanketer/UI/Text", false, 0)]
+        [MenuItem("GameObject/Blanketmen/UI/Text", false, 0)]
         public static void CreateGameObject()
         {
             // Create a custom game object

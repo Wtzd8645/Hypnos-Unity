@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Hypnos.Editor.GameData
+namespace Blanketmen.Hypnos.Editor.GameData
 {
     [CreateAssetMenu(fileName = "GameDataConverterSetting", menuName = "Editor/GameDataConverterSetting")]
     public class GameDataConverterSetting : ScriptableObject

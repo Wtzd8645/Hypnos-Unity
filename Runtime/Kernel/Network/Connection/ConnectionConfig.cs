@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hypnos.Network
+namespace Blanketmen.Hypnos
 {
     [Serializable]
     public class TransportConfig

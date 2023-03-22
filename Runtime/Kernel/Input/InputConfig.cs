@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
-namespace Hypnos.IO
+namespace Blanketmen.Hypnos
 {
     public class InputConfig : MonoBehaviour
     {

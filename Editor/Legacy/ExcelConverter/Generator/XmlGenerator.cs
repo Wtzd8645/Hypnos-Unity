@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Xml;
 
-namespace Hypnos.Editor
+namespace Blanketmen.Hypnos.Editor
 {
     public class XmlGenerator
     {

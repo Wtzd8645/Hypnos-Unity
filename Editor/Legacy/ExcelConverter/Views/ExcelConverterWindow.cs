@@ -4,7 +4,7 @@ using System.IO;
 using UnityEditor;
 using UnityEngine;
 
-namespace Hypnos.Editor
+namespace Blanketmen.Hypnos.Editor
 {
     public class ExcelConverterWindow : EditorWindow
     {

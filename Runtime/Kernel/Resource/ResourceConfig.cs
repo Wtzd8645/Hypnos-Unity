@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Hypnos.Resource
+namespace Blanketmen.Hypnos
 {
     public class ResourceConfig : ScriptableObject
     {

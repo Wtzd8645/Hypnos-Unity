@@ -1,12 +1,11 @@
-﻿using Hypnos.Resource;
-using System.IO;
+﻿using System.IO;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-namespace Hypnos.Editor.Build
+namespace Blanketmen.Hypnos.Editor.Build
 {
     internal partial class AssetEditor : EditorWindow
     {

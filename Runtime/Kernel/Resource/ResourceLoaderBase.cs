@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace Hypnos.Resource
+namespace Blanketmen.Hypnos
 {
     internal abstract class ResourceLoaderBase
     {

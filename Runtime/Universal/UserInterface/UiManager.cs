@@ -1,10 +1,8 @@
-﻿using Hypnos.GameTime;
-using Hypnos.Resource;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Hypnos.UI
+namespace Blanketmen.Hypnos.UI
 {
     public delegate void UiAoHandler(UiBase ui);
 

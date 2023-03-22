@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Hypnos.Editor.GameData
+namespace Blanketmen.Hypnos.Editor.GameData
 {
     // TODO: Add generator type;
     [Serializable]

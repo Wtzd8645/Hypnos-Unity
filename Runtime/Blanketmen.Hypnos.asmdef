@@ -1,6 +1,6 @@
 {
-    "name": "Hypnos",
-    "rootNamespace": "Hypnos",
+    "name": "Blanketmen.Hypnos",
+    "rootNamespace": "Blanketmen.Hypnos",
     "references": [
         "Unity.InputSystem",
         "Unity.TextMeshPro"

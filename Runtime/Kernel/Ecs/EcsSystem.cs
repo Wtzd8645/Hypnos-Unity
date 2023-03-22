@@ -1,6 +1,6 @@
 using System;
 
-namespace Hypnos.Ecs
+namespace Blanketmen.Hypnos
 {
     public abstract class EcsSystem
     {

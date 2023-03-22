@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Hypnos.Editor
+namespace Blanketmen.Hypnos.Editor
 {
     public class SheetInfoParser
     {

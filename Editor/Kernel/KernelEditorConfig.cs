@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Hypnos.Editor
+namespace Blanketmen.Hypnos.Editor
 {
     public class KernelEditorConfig : ScriptableObject
     {

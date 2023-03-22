@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Hypnos.UI
+namespace Blanketmen.Hypnos.UI
 {
     public class UiTweenAnimation //: DOTweenAnimation, IUiAnimation
     {

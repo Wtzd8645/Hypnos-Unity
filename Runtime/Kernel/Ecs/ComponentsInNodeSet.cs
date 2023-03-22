@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
 
-namespace Hypnos.Ecs
+namespace Blanketmen.Hypnos
 {
     public class ComonentsInNodesSet
     {

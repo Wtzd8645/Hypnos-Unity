@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Hypnos.Editor.GameData
+namespace Blanketmen.Hypnos.Editor.GameData
 {
     public abstract class MetaGameDataParserBase
     {

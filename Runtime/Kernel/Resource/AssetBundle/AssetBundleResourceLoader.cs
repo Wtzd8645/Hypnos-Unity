@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace Hypnos.Resource
+namespace Blanketmen.Hypnos
 {
     internal class AssetBundleResourceLoader : ResourceLoaderBase
     {

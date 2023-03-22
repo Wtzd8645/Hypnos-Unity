@@ -5,7 +5,7 @@ using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
-namespace Hypnos.Network
+namespace Blanketmen.Hypnos
 {
     public enum HttpMethod
     {

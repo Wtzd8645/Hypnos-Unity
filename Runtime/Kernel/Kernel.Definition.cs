@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hypnos
+namespace Blanketmen.Hypnos
 {
     [Flags]
     public enum RunningVersion

@@ -1,4 +1,4 @@
-﻿namespace Hypnos.IO
+﻿namespace Blanketmen.Hypnos
 {
     public interface IVirtualButton
     {

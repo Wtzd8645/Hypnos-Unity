@@ -5,7 +5,7 @@ using UnityEditor;
 using UnityEditor.ProjectWindowCallback;
 using UnityEngine;
 
-namespace Hypnos.Editor
+namespace Blanketmen.Hypnos.Editor
 {
     public class ScriptableObjectFactoryEditor : EditorWindow
     {

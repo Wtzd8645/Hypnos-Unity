@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Hypnos.GameState
+namespace Blanketmen.Hypnos
 {
     public abstract class GameStateBase : MonoBehaviour
     {

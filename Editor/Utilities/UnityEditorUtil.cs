@@ -1,11 +1,10 @@
-﻿using NPOI.OpenXmlFormats.Dml;
-using System;
+﻿using System;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
 using Object = UnityEngine.Object;
 
-namespace Hypnos.Editor
+namespace Blanketmen.Hypnos.Editor
 {
     public static class UnityEditorUtil
     {
@@ -222,7 +221,7 @@ namespace Hypnos.Editor
         public static Vector2 Drag2d(Vector2 scrollPos, Rect rect)
         {
             int controlId = GUIUtility.GetControlID("Slider".GetHashCode(), FocusType.Passive);
-            Event currEvt = Event.current;
+            UnityEngine.Event currEvt = UnityEngine.Event.current;
             if (currEvt.button == 2)
             {
                 //GUIUtility.hotControl = controlID;
@@ -274,7 +273,7 @@ namespace Hypnos.Editor
             const float speed = 0.35f;
 
             int controlID = GUIUtility.GetControlID("Slider".GetHashCode(), FocusType.Passive);
-            Event currEvt = Event.current;
+            UnityEngine.Event currEvt = UnityEngine.Event.current;
             EventType type = currEvt.GetTypeForControl(controlID);
             if (type != EventType.ScrollWheel)
             {

@@ -2,7 +2,7 @@
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace Hypnos.Environment
+namespace Blanketmen.Hypnos
 {
     public class EnvironmentManager
     {

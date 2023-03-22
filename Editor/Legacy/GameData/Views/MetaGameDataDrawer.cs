@@ -1,7 +1,7 @@
 ﻿using UnityEditor;
 using UnityEngine;
 
-namespace Hypnos.Editor.GameData
+namespace Blanketmen.Hypnos.Editor.GameData
 {
     [CustomPropertyDrawer(typeof(MetaGameData))]
     public class MetaGameDataDrawer : PropertyDrawer

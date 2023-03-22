@@ -1,9 +1,8 @@
-using Hypnos.Core.Hash;
+using Blanketmen.Hypnos.Hash;
 using System;
 using System.IO.MemoryMappedFiles;
-using System.Text;
 
-namespace Hypnos.GameData
+namespace Blanketmen.Hypnos
 {
     public sealed unsafe class GameDataManager
     {
@@ -28,7 +27,7 @@ namespace Hypnos.GameData
         private const int InfoTableEntrySize = 24;
         private const int KeyTableEntrySize = 12;
 
-        private static readonly Encoding StringEncoder = Encoding.UTF8; // For efficiency.
+        private static readonly System.Text.Encoding StringEncoder = System.Text.Encoding.UTF8; // For efficiency.
 
         private MemoryMappedFile dataMmapFile;
         private MemoryMappedViewAccessor dataMmapAccessor;

@@ -1,4 +1,4 @@
-﻿using Hypnos.Core.Encryption;
+﻿using Blanketmen.Hypnos.Encryption;
 using NPOI.SS.UserModel;
 using System;
 using System.CodeDom;
@@ -7,7 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Xml;
 
-namespace Hypnos.Editor
+namespace Blanketmen.Hypnos.Editor
 {
     public class DomoExcelHandler : IExcelHandler
     {

@@ -1,10 +1,10 @@
-﻿using Hypnos.Core.Event;
+﻿using Blanketmen.Hypnos.Event;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net.Sockets;
 
-namespace Hypnos.Network
+namespace Blanketmen.Hypnos
 {
     public sealed partial class NetworkManager : Subject<int>
     {

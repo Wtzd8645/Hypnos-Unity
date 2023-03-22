@@ -1,10 +1,9 @@
-﻿using Hypnos.Network;
-using System.Collections;
+﻿using System.Collections;
 using System.Net.Sockets;
 using UnityEngine;
 using UnityEngine.TestTools;
 
-namespace Hypnos.Tests.Network
+namespace Blanketmen.Hypnos.Tests.Network
 {
     internal class NetworkTest : MonoBehaviour, IMonoBehaviourTest
     {

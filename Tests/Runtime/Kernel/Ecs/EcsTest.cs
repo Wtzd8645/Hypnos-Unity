@@ -1,8 +1,7 @@
-using Hypnos.Ecs;
 using NUnit.Framework;
 using System;
 
-namespace Hypnos.Tests.Ecs
+namespace Blanketmen.Hypnos.Tests.Ecs
 {
     public class EcsTest
     {

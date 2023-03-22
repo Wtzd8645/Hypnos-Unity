@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 
-namespace Hypnos
+namespace Blanketmen.Hypnos
 {
     [Flags]
     public enum LogChannel

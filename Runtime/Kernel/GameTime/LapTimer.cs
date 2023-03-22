@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Hypnos.GameTime
+namespace Blanketmen.Hypnos
 {
     public class LapTimer : GameTimerBase
     {

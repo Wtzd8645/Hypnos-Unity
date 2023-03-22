@@ -1,8 +1,8 @@
-using Hypnos.Core.Memory;
+using Blanketmen.Hypnos.Cache;
 using System;
 using System.Collections.Generic;
 
-namespace Hypnos.Ecs
+namespace Blanketmen.Hypnos
 {
     public partial class ComponentManager : Singleton<ComponentManager>
     {

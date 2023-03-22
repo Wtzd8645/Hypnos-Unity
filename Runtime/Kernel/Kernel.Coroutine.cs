@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
 
-namespace Hypnos
+namespace Blanketmen.Hypnos
 {
     public partial class Kernel
     {

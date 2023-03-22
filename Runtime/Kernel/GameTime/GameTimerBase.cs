@@ -1,4 +1,4 @@
-﻿namespace Hypnos.GameTime
+﻿namespace Blanketmen.Hypnos
 {
     public abstract class GameTimerBase
     {

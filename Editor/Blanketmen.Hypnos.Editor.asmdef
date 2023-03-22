@@ -1,8 +1,8 @@
 {
-    "name": "Hypnos.Editor",
-    "rootNamespace": "Hypnos.Editor",
+    "name": "Blanketmen.Hypnos.Editor",
+    "rootNamespace": "Blanketmen.Hypnos.Editor",
     "references": [
-        "Hypnos",
+        "Blanketmen.Hypnos",
         "Unity.TextMeshPro",
         "Unity.TextMeshPro.Editor",
         "Unity.ScriptableBuildPipeline",

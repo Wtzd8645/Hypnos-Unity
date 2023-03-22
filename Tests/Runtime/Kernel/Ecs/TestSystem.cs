@@ -1,6 +1,4 @@
-using Hypnos.Ecs;
-
-namespace Hypnos.Tests.Ecs
+namespace Blanketmen.Hypnos.Tests.Ecs
 {
     public class TestSystem : EcsSystem<TestNode>
     {

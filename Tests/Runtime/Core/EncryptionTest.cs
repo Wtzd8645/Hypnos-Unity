@@ -1,7 +1,7 @@
-using Hypnos.Core.Encryption;
+using Blanketmen.Hypnos.Encryption;
 using NUnit.Framework;
 
-namespace Hypnos.Tests.Core
+namespace Blanketmen.Hypnos.Tests.Core
 {
     internal class EncryptionTest
     {

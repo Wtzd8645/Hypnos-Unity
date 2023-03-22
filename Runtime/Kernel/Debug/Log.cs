@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Hypnos.Debug
+namespace Blanketmen.Hypnos
 {
     public class Log : IEquatable<Log>
     {

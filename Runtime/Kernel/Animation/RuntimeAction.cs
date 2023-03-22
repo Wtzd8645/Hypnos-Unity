@@ -1,4 +1,4 @@
-﻿namespace Hypnos.Animation
+﻿namespace Blanketmen.Hypnos
 {
     public struct RuntimeAction
     {

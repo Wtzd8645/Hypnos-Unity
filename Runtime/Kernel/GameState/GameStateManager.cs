@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Hypnos.GameState
+namespace Blanketmen.Hypnos
 {
     public sealed class GameStateManager
     {

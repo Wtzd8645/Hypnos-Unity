@@ -4,7 +4,7 @@ using UnityEngine.UI;
 /// Credit NemoKrad (aka Charles Humphrey) / valtain
 /// Sourced from - http://www.randomchaos.co.uk/SoftAlphaUIMask.aspx
 /// Updated by valtain - https://bitbucket.org/ddreaper/unity-ui-extensions/pull-requests/33
-namespace Hypnos.UI
+namespace Blanketmen.Hypnos.UI
 {
     [ExecuteInEditMode]
     [AddComponentMenu("UI/Effects/Extensions/SoftMask")]
@@ -50,7 +50,7 @@ namespace Hypnos.UI
             Text text = GetComponent<Text>();
             if (text != null)
             {
-                mat = new Material(Shader.Find("Blanketer/UI/SoftMask"));
+                mat = new Material(Shader.Find("Blanketmen/UI/SoftMask"));
                 text.material = mat;
                 cachedCanvas = text.canvas;
                 cachedCanvasTransform = cachedCanvas.transform;
@@ -68,7 +68,7 @@ namespace Hypnos.UI
             Graphic graphic = GetComponent<Graphic>();
             if (graphic != null)
             {
-                mat = new Material(Shader.Find("Blanketer/UI/SoftMask"));
+                mat = new Material(Shader.Find("Blanketmen/UI/SoftMask"));
                 graphic.material = mat;
                 cachedCanvas = graphic.canvas;
                 cachedCanvasTransform = cachedCanvas.transform;

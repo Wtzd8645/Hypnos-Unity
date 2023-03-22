@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEditor.IMGUI.Controls;
 
-namespace Hypnos.Editor.Build
+namespace Blanketmen.Hypnos.Editor.Build
 {
     internal class EditionTreeView : TreeView
     {

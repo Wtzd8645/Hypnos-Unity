@@ -1,9 +1,9 @@
-﻿using Hypnos.Core.Encryption;
+﻿using Blanketmen.Hypnos.Encryption;
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.IO;
 
-namespace Hypnos.Editor
+namespace Blanketmen.Hypnos.Editor
 {
     // TODO
     public class CSharpGenerator

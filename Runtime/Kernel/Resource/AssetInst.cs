@@ -1,4 +1,4 @@
-﻿namespace Hypnos.Resource
+﻿namespace Blanketmen.Hypnos
 {
     internal class AssetInst
     {

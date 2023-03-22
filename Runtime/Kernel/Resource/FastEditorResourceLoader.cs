@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 
-namespace Hypnos.Resource
+namespace Blanketmen.Hypnos
 {
     internal class FastEditorResourceLoader : ResourceLoaderBase
     {

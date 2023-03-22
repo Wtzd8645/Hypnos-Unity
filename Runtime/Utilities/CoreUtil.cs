@@ -1,8 +1,8 @@
-﻿using Hypnos.Core.Compression;
-using Hypnos.Core.Encryption;
-using Hypnos.Core.Serialization;
+﻿using Blanketmen.Hypnos.Compression;
+using Blanketmen.Hypnos.Encryption;
+using Blanketmen.Hypnos.Serialization;
 
-namespace Hypnos
+namespace Blanketmen.Hypnos
 {
     public enum CoreSerializer
     {

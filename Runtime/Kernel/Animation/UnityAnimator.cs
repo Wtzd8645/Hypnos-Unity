@@ -1,7 +1,7 @@
 ﻿using System.Runtime.CompilerServices;
 using UnityEngine;
 
-namespace Hypnos.Animation
+namespace Blanketmen.Hypnos
 {
     public class UnityAnimator : Animator, IAnimator
     {
