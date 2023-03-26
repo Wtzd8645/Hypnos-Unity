@@ -23,6 +23,8 @@ namespace Blanketmen.Hypnos
         {
             Instance = null;
         }
+
+        private InputManager() { }
         #endregion
 
         private static readonly InputModuleBase idleModule = new IdleInputModule();
@@ -30,8 +32,6 @@ namespace Blanketmen.Hypnos
 
         private InputModuleBase lastModule;
         private InputModuleBase currentModule;
-
-        private InputManager() { }
 
         public void Initialize(InputConfig config)
         {

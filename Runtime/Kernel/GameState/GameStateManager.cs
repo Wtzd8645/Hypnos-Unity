@@ -20,6 +20,8 @@ namespace Blanketmen.Hypnos
         {
             Instance = null;
         }
+
+        private GameStateManager() { }
         #endregion
 
         private readonly Dictionary<int, GameStateBase> stateMap = new Dictionary<int, GameStateBase>(11);
@@ -30,8 +32,6 @@ namespace Blanketmen.Hypnos
         private GameStateBase currentState;
 
         public int CurrentStateId => currentState.Id;
-
-        private GameStateManager() { }
 
         public void Initialize(GameStateConfig config)
         {

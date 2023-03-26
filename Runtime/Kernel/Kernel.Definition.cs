@@ -14,7 +14,7 @@ namespace Blanketmen.Hypnos
     public partial class Kernel
     {
         public const string UnityEngineAssemblyName = "Assembly-CSharp";
-        public const string FrameworkAssemblyName = "Hypnos";
+        public const string FrameworkAssemblyName = "Blanketmen.Hypnos";
 
 #if TEST
         public const RunningVersion Version = RunningVersion.Test;

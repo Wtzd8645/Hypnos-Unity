@@ -16,6 +16,8 @@ namespace Blanketmen.Hypnos
         {
             Instance = null;
         }
+
+        private GameTimeManager() { }
         #endregion
 
         private static readonly GameTimeInfo timeInfo = new GameTimeInfo();
@@ -32,8 +34,6 @@ namespace Blanketmen.Hypnos
 
         private GameTimerBase headNode;
         private GameTimerBase tailNode;
-
-        private GameTimeManager() { }
 
         public void Clear()
         {

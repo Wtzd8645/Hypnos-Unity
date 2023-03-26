@@ -19,6 +19,8 @@ namespace Blanketmen.Hypnos
         {
             Instance = null;
         }
+
+        private ResourceManager() { }
         #endregion
 
         private Dictionary<int, DataArchiver> dataArchiverMap;
@@ -33,8 +35,6 @@ namespace Blanketmen.Hypnos
 
         public string ResourcesDirectoryPath { get; private set; }
         public string AssetConfigPath { get; private set; }
-
-        private ResourceManager() { }
 
         public void Initialize(ResourceConfig config)
         {
