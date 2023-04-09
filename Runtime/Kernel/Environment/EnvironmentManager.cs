@@ -7,17 +7,7 @@ namespace Blanketmen.Hypnos
     public class EnvironmentManager
     {
         #region Singleton
-        public static EnvironmentManager Instance { get; private set; }
-
-        public static void CreateInstance()
-        {
-            Instance ??= new EnvironmentManager();
-        }
-
-        public static void ReleaseInstance()
-        {
-            Instance = null;
-        }
+        public static EnvironmentManager Instance { get; } = new EnvironmentManager();
 
         private EnvironmentManager() { }
         #endregion

@@ -41,7 +41,6 @@ namespace Blanketmen.Hypnos.Tests.Network
             networkCfg.connectionConfigs = new ConnectionConfig[] { connCfg };
             networkCfg.responseProducers = new IResponseProducer[] { new ResponseProducer() };
 
-            NetworkManager.CreateInstance();
             NetworkManager.Instance.Initialize(networkCfg);
             NetworkManager.Instance.Register<int, SocketError>((int)NetworkEvent.ConnectComplete, OnConnectComplete);
             NetworkManager.Instance.Register((ushort)ResponseId.Echo, OnEchoResponse);
@@ -61,7 +60,6 @@ namespace Blanketmen.Hypnos.Tests.Network
         {
             NetworkManager.Instance.Unregister<int, SocketError>((int)NetworkEvent.ConnectComplete, OnConnectComplete);
             NetworkManager.Instance.Unregister((ushort)ResponseId.Echo, OnEchoResponse);
-            NetworkManager.ReleaseInstance();
         }
 
         private void OnConnectComplete(int id, SocketError result)

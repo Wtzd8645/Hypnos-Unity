@@ -5,17 +5,7 @@ namespace Blanketmen.Hypnos
     public sealed class GameTimeManager
     {
         #region Singleton
-        public static GameTimeManager Instance { get; private set; }
-
-        public static void CreateInstance()
-        {
-            Instance ??= new GameTimeManager();
-        }
-
-        public static void ReleaseInstance()
-        {
-            Instance = null;
-        }
+        public static GameTimeManager Instance { get; } = new GameTimeManager();
 
         private GameTimeManager() { }
         #endregion

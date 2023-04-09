@@ -9,17 +9,7 @@ namespace Blanketmen.Hypnos
         public const int NullStateId = 0;
 
         #region Singleton
-        public static GameStateManager Instance { get; private set; }
-
-        public static void CreateInstance()
-        {
-            Instance ??= new GameStateManager();
-        }
-
-        public static void ReleaseInstance()
-        {
-            Instance = null;
-        }
+        public static GameStateManager Instance { get; } = new GameStateManager();
 
         private GameStateManager() { }
         #endregion

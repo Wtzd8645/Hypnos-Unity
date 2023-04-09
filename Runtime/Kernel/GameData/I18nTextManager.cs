@@ -29,16 +29,13 @@ namespace Blanketmen.Hypnos
     public sealed unsafe class I18nTextManager
     {
         #region Singleton
-        public static I18nTextManager Instance { get; private set; }
+        public static I18nTextManager Instance { get; } = new I18nTextManager();
 
-        public static void CreateInstance()
-        {
-            Instance ??= new I18nTextManager();
-        }
+        private I18nTextManager() { }
 
-        public static void ReleaseInstance()
+        ~I18nTextManager()
         {
-            Instance = null;
+            Dispose();
         }
         #endregion
 
@@ -57,13 +54,6 @@ namespace Blanketmen.Hypnos
         private byte* i18nMmapPtr;
 
         public string CurrentLanguage { get; private set; }
-
-        private I18nTextManager() { }
-
-        ~I18nTextManager()
-        {
-            Dispose();
-        }
 
         public void Dispose()
         {

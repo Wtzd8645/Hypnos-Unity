@@ -9,17 +9,7 @@ namespace Blanketmen.Hypnos
     public sealed partial class NetworkManager : Subject<int>
     {
         #region Singleton
-        public static NetworkManager Instance { get; private set; }
-
-        public static void CreateInstance()
-        {
-            Instance ??= new NetworkManager();
-        }
-
-        public static void ReleaseInstance()
-        {
-            Instance = null;
-        }
+        public static NetworkManager Instance { get; } = new NetworkManager();
 
         private NetworkManager() { }
         #endregion

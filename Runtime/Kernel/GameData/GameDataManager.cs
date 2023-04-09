@@ -7,16 +7,13 @@ namespace Blanketmen.Hypnos
     public sealed unsafe class GameDataManager
     {
         #region Singleton
-        public static GameDataManager Instance { get; private set; }
+        public static GameDataManager Instance { get; } = new GameDataManager();
 
-        public static void CreateInstance()
-        {
-            Instance ??= new GameDataManager();
-        }
+        private GameDataManager() { }
 
-        public static void ReleaseInstance()
+        ~GameDataManager()
         {
-            Instance = null;
+            Dispose();
         }
         #endregion
 
@@ -32,13 +29,6 @@ namespace Blanketmen.Hypnos
         private MemoryMappedFile dataMmapFile;
         private MemoryMappedViewAccessor dataMmapAccessor;
         private byte* dataMmapPtr;
-
-        private GameDataManager() { }
-
-        ~GameDataManager()
-        {
-            Dispose();
-        }
 
         public void Dispose()
         {

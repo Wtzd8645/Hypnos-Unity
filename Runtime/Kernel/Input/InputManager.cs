@@ -12,17 +12,7 @@ namespace Blanketmen.Hypnos
     public sealed class InputManager
     {
         #region Singleton
-        public static InputManager Instance { get; private set; }
-
-        public static void CreateInstance()
-        {
-            Instance ??= new InputManager();
-        }
-
-        public static void ReleaseInstance()
-        {
-            Instance = null;
-        }
+        public static InputManager Instance { get; } = new InputManager();
 
         private InputManager() { }
         #endregion

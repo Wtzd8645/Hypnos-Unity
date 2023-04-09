@@ -8,17 +8,7 @@ namespace Blanketmen.Hypnos
     public sealed partial class ResourceManager
     {
         #region Singleton
-        public static ResourceManager Instance { get; private set; }
-
-        public static void CreateInstance()
-        {
-            Instance ??= new ResourceManager();
-        }
-
-        public static void ReleaseInstance()
-        {
-            Instance = null;
-        }
+        public static ResourceManager Instance { get; } = new ResourceManager();
 
         private ResourceManager() { }
         #endregion
