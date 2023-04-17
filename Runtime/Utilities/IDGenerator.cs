@@ -1,6 +1,6 @@
 namespace Blanketmen.Hypnos
 {
-    public static class IDGenerator
+    public static class IdGenerator
     {
         private static object locker = new object();
         private static ulong nowID = 1;

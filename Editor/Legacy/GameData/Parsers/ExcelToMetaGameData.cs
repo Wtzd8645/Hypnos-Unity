@@ -57,14 +57,14 @@ namespace Blanketmen.Hypnos.Editor.GameData
                         workbook = new XSSFWorkbook(fs);
                         break;
                     default:
-                        Kernel.LogError($"[ExcelToMetaGameData] The file is not xls or xlsx format. File: {fileName}");
+                        Logging.LogError($"[ExcelToMetaGameData] The file is not xls or xlsx format. File: {fileName}");
                         break;
                 }
             }
 
             if (workbook == null)
             {
-                Kernel.Log("[ExcelToMetaGameData] Workbook is null.");
+                Logging.Log("[ExcelToMetaGameData] Workbook is null.");
                 return;
             }
 

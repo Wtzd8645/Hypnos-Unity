@@ -61,7 +61,7 @@ namespace Blanketmen.Hypnos.Editor.GameData
                     parser = new ExcelToMetaGameData(fileName, ExcelToMetaGameData.XlsxExtension);
                     break;
                 default:
-                    Kernel.LogWarning($"[GameDataConverter] The file format can't be parse. File: {fileName}");
+                    Logging.LogWarning($"[GameDataConverter] The file format can't be parse. File: {fileName}");
                     return;
             }
 

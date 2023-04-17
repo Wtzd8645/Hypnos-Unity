@@ -1,5 +1,4 @@
-﻿using Blanketmen.Hypnos.Encryption;
-using System.CodeDom;
+﻿using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.IO;
 
@@ -9,6 +8,9 @@ namespace Blanketmen.Hypnos.Editor
     public class CSharpGenerator
     {
         public const string CSharpExtension = ".cs";
+
+        public string cSharpCodeNamespace;
+        public string dataManagerTypeName;
 
         public void Generate(SheetInfo sheetInfo, string outputPath)
         {
@@ -38,7 +40,7 @@ namespace Blanketmen.Hypnos.Editor
             }
 
             // Set data manager class.
-            CodeTypeDeclaration dataManagerClass = new CodeTypeDeclaration(KernelEditor.Config.dataManagerTypeName)
+            CodeTypeDeclaration dataManagerClass = new CodeTypeDeclaration(dataManagerTypeName)
             {
                 IsPartial = true,
                 IsClass = true,
@@ -163,7 +165,7 @@ namespace Blanketmen.Hypnos.Editor
             dataManagerClass.Members.Add(initMethod);
 
             // Set namespace.
-            CodeNamespace targetNamespace = new CodeNamespace(KernelEditor.Config.cSharpCodeNamespace);
+            CodeNamespace targetNamespace = new CodeNamespace(cSharpCodeNamespace);
             targetNamespace.Types.Add(dataManagerClass);
             targetNamespace.Types.Add(dataClass);
 
@@ -194,7 +196,7 @@ namespace Blanketmen.Hypnos.Editor
                 provider.GenerateCodeFromCompileUnit(compileUnit, sw, options);
             }
 
-            Kernel.Log("[ExcelHandler] Generate C# code successfully.");
+            Logging.Log("[ExcelHandler] Generate C# code successfully.");
         }
     }
 }

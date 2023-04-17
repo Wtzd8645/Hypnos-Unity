@@ -46,7 +46,7 @@ namespace Blanketmen.Hypnos
                 }
                 default:
                 {
-                    Kernel.LogError($"[Utility] Serializer not implemented. Type: {type}");
+                    Logging.LogError($"[Utility] Serializer not implemented. Type: {type}");
                     return null;
                 }
             }
@@ -62,7 +62,7 @@ namespace Blanketmen.Hypnos
                 }
                 default:
                 {
-                    Kernel.LogError($"[Utility] Compressor not implemented. Type: {type}");
+                    Logging.LogError($"[Utility] Compressor not implemented. Type: {type}");
                     return null;
                 }
             }
@@ -78,7 +78,7 @@ namespace Blanketmen.Hypnos
                 }
                 default:
                 {
-                    Kernel.LogError($"[Utility] Encryptor not implemented. Type: {type}");
+                    Logging.LogError($"[Utility] Encryptor not implemented. Type: {type}");
                     return null;
                 }
             }
