@@ -10,7 +10,7 @@ namespace Blanketmen.Hypnos.Editor.Build
     internal partial class AssetEditor : EditorWindow
     {
         private const string EditorViewName = "Asset Editor";
-        private const string VisualTreeAssetPath = "Assets/Framework/Editor/Kernel/Build/Resource/AssetEditor.uxml";
+        private const string VisualTreeAssetName = "AssetEditor";
 
         private const string VersionFieldName = "VersionField";
         private const string EditionInfoFieldName = "EditionInfoField";
@@ -22,8 +22,7 @@ namespace Blanketmen.Hypnos.Editor.Build
 
         public static void ShowWindow(EditionConfig editionConfig)
         {
-            AssetEditor window = GetWindow<AssetEditor>();
-            window.SetEditionConfig(editionConfig);
+            GetWindow<AssetEditor>().SetEditionConfig(editionConfig);
         }
 
         private MultiColumnHeader multiColumnHeader;
@@ -35,8 +34,8 @@ namespace Blanketmen.Hypnos.Editor.Build
 
         private void OnEnable()
         {
-            titleContent = new GUIContent(EditorViewName);
-            VisualTreeAsset visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(VisualTreeAssetPath);
+            titleContent.text = EditorViewName;
+            VisualTreeAsset visualTree = Resources.Load<VisualTreeAsset>(VisualTreeAssetName);
             if (visualTree == null)
             {
                 return;

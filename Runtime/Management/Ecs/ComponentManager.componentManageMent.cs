@@ -16,7 +16,7 @@ namespace Blanketmen.Hypnos
                 objectPool = new ObjectPool<EcsComponent>(() => (EcsComponent)Activator.CreateInstance(type));
                 componentPools[type] = objectPool;
             }
-            return (T)objectPool.ForcePop();
+            return (T)objectPool.Pop();
         }
 
         private void RecycleComponent<T>(T component) where T : EcsComponent
@@ -24,7 +24,7 @@ namespace Blanketmen.Hypnos
             Type type = typeof(T);
             if (componentPools.TryGetValue(type, out ObjectPool<EcsComponent> objectPool))
             {
-                objectPool.ForcePush(component);
+                objectPool.Push(component);
             }
             else
             {

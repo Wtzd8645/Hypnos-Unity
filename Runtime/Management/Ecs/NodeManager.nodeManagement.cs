@@ -52,14 +52,14 @@ namespace Blanketmen.Hypnos
                 objectPool = new ObjectPool<EcsNode>(() => (EcsNode)Activator.CreateInstance(type));
                 nodePools[type] = objectPool;
             }
-            return objectPool.ForcePop();
+            return objectPool.Pop();
         }
 
         private void RecycleNode(Type type, EcsNode node)
         {
             if (nodePools.TryGetValue(type, out ObjectPool<EcsNode> objectPool))
             {
-                objectPool.ForcePush(node);
+                objectPool.Push(node);
             }
             else
             {

@@ -56,7 +56,7 @@ namespace Blanketmen.Hypnos
                 return;
             }
 
-            Coroutiner.Execute(StartRoutine());
+            CoroutineHelper.Instance.Start(StartRoutine());
         }
 
         private IEnumerator StartRoutine()
@@ -77,14 +77,14 @@ namespace Blanketmen.Hypnos
                 return;
             }
 
-            Coroutiner.Execute(TransitRoutine(stateId));
+            CoroutineHelper.Instance.Start(TransitRoutine(stateId));
         }
 
         private IEnumerator TransitRoutine(int nextStateId)
         {
             isTransiting = true;
             currentState.enabled = false;
-            yield return Coroutiner.WaitForEndOfFrame; // NOTE: Wait for the update of the current frame to complete.
+            yield return CoroutineHelper.WaitForEndOfFrame; // NOTE: Wait for the update of the current frame to complete.
 
             int prevStateId = currentState.Id;
             yield return currentState.OnExit(nextStateId);

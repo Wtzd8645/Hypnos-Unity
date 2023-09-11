@@ -1,4 +1,4 @@
-﻿using Blanketmen.Hypnos.Event;
+﻿using Blanketmen.Hypnos.Communication;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;

@@ -4,7 +4,7 @@ using System.IO.MemoryMappedFiles;
 
 namespace Blanketmen.Hypnos
 {
-    public unsafe struct NI18nTextArray
+    public readonly unsafe struct NI18nTextArray
     {
         public readonly int length;
         private readonly uint* pointer;

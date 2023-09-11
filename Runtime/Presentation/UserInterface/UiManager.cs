@@ -66,38 +66,38 @@ namespace Blanketmen.Hypnos.UI
 
         private void LateUpdate()
         {
-            UiBase previousNode = null;
-            UiBase currentNode = closedUiHeadNode;
-            while (currentNode != null)
+            UiBase prevNode = null;
+            UiBase currNode = closedUiHeadNode;
+            while (currNode != null)
             {
-                if (currentNode.elapsedTimeAfterClosed < 0f)
+                if (currNode.elapsedTimeAfterClosed < 0f)
                 {
-                    RemoveClosedUi(previousNode, currentNode);
-                    // Move to next node.
-                    UiBase nextNode = currentNode.nextNode;
-                    currentNode.nextNode = null;
-                    currentNode = nextNode;
+                    RemoveClosedUi(prevNode, currNode);
+
+                    UiBase nextNode = currNode.nextNode;
+                    currNode.nextNode = null;
+                    currNode = nextNode;
                     continue;
                 }
 
-                if (currentNode.elapsedTimeAfterClosed > closedUiSurvivalTime)
+                if (currNode.elapsedTimeAfterClosed > closedUiSurvivalTime)
                 {
-                    RemoveClosedUi(previousNode, currentNode);
-                    // Release and move to next node.
-                    Type uiType = currentNode.GetType();
+                    RemoveClosedUi(prevNode, currNode);
+                    Type uiType = currNode.GetType();
                     loadedUiMap.Remove(uiType);
-                    currentNode.OnRuin();
-                    ResourceManager.Instance.Destroy(currentNode.gameObject);
+                    currNode.OnRuin();
+                    ResourceManager.Instance.Destroy(currNode.gameObject);
                     ResourceManager.Instance.UnloadAsset(GetBindingResourceAttribute(uiType).AssetId);
-                    UiBase nextNode = currentNode.nextNode;
-                    currentNode.nextNode = null;
-                    currentNode = nextNode;
+
+                    UiBase nextNode = currNode.nextNode;
+                    currNode.nextNode = null;
+                    currNode = nextNode;
                     continue;
                 }
 
-                currentNode.elapsedTimeAfterClosed += GameTimeManager.DeltaTime;
-                previousNode = currentNode;
-                currentNode = currentNode.nextNode;
+                currNode.elapsedTimeAfterClosed += GameTimeManager.UnscaledDeltaTime;
+                prevNode = currNode;
+                currNode = currNode.nextNode;
             }
         }
 
@@ -115,22 +115,22 @@ namespace Blanketmen.Hypnos.UI
             }
         }
 
-        private void RemoveClosedUi(UiBase previousNode, UiBase currentNode)
+        private void RemoveClosedUi(UiBase prevNode, UiBase currNode)
         {
             // Remove node.
-            if (currentNode == closedUiHeadNode)
+            if (currNode == closedUiHeadNode)
             {
-                closedUiHeadNode = currentNode.nextNode; // NOTE: NextNode can't be self.
+                closedUiHeadNode = currNode.nextNode; // NOTE: NextNode can't be self.
             }
             else
             {
-                previousNode.nextNode = currentNode.nextNode;
+                prevNode.nextNode = currNode.nextNode;
             }
 
             // Set last node.
-            if (currentNode == closedUiTailNode)
+            if (currNode == closedUiTailNode)
             {
-                closedUiTailNode = previousNode;
+                closedUiTailNode = prevNode;
             }
         }
 

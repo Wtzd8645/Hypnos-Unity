@@ -8,13 +8,13 @@ namespace Blanketmen.Hypnos
     {
         None = 0,
         Environment = 1,
-        Resource = Environment << 1,
-        Network = Resource << 1,
-        Input = Network << 1,
-        GameTime = Input << 1,
-        GameState = GameTime << 1,
-        UI = GameState << 1,
-        Audio = UI << 1,
+        Resource = 1 << 1,
+        Network = 1 << 2,
+        Input = 1 << 3,
+        GameTime = 1 << 4,
+        GameState = 1 << 5,
+        UI = 1 << 6,
+        Audio = 1 << 7,
         All = -1
     }
 

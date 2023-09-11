@@ -11,7 +11,7 @@ namespace Blanketmen.Hypnos.UI
     }
 
     /// <summary>
-    /// 掛載繼承這個基類的預製物，同型別同時只能載入一個。
+    /// Only one prefab of a specific type inheriting from this base class can be loaded at a time.
     /// </summary>
     [DisallowMultipleComponent]
     [RequireComponent(typeof(Canvas))]

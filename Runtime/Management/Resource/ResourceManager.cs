@@ -200,7 +200,7 @@ namespace Blanketmen.Hypnos
 
         public void LoadAssetAsync<T>(string assetId, ResourceAoHandler<T> completeCb = null) where T : UnityEngine.Object
         {
-            Coroutiner.Execute(resourceLoader.LoadAssetRoutine(assetId, completeCb));
+            CoroutineHelper.Instance.Start(resourceLoader.LoadAssetRoutine(assetId, completeCb));
         }
 
         public void UnloadAsset(string assetId)

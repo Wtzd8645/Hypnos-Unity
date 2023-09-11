@@ -2,6 +2,7 @@
     "name": "Blanketmen.Hypnos.Tests",
     "rootNamespace": "Blanketmen.Hypnos.Tests",
     "references": [
+        "Blanketmen.Hypnos.Core",
         "Blanketmen.Hypnos",
         "UnityEngine.TestRunner"
     ],

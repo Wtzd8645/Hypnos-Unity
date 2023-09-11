@@ -51,9 +51,9 @@ namespace Blanketmen.Hypnos.Editor
         {
             usedAssamblyNames ??= new string[4]
             {
-                EnvironmentSettings.UnityEngineAssemblyName,
+                EnvironmentManager.UnityEngineAssemblyName,
                 UnityEditorAssemblyName,
-                EnvironmentSettings.FrameworkAssemblyName,
+                EnvironmentManager.FrameworkAssemblyName,
                 FrameworkEditorAssemblyName
             };
         }
