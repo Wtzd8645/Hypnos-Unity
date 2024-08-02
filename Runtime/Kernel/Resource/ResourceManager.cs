@@ -8,17 +8,9 @@ namespace Blanketmen.Hypnos
     public sealed partial class ResourceManager
     {
         #region Singleton
-        public static ResourceManager Instance { get; private set; }
+        public static ResourceManager Instance { get; } = new ResourceManager();
 
-        public static void CreateInstance()
-        {
-            Instance ??= new ResourceManager();
-        }
-
-        public static void ReleaseInstance()
-        {
-            Instance = null;
-        }
+        private ResourceManager() { }
         #endregion
 
         private Dictionary<int, DataArchiver> dataArchiverMap;
@@ -33,8 +25,6 @@ namespace Blanketmen.Hypnos
 
         public string ResourcesDirectoryPath { get; private set; }
         public string AssetConfigPath { get; private set; }
-
-        private ResourceManager() { }
 
         public void Initialize(ResourceConfig config)
         {
