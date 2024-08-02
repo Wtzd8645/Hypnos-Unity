@@ -1,9 +1,9 @@
 using Morpheus.Core.Encryption;
 using NUnit.Framework;
 
-namespace Morpheus.Tests
+namespace Morpheus.Tests.Core
 {
-    public class EncryptionTest
+    internal class EncryptionTest
     {
         [Test]
         public void Aes256Passes()
