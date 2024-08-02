@@ -210,7 +210,7 @@ namespace Blanketmen.Hypnos.Editor.Build
         {
             if (selectedEditionitem == null)
             {
-                Logging.LogError($"[BuildEditor] There is no edition seleted.");
+                Logging.Error($"[BuildEditor] There is no edition seleted.");
                 return;
             }
 

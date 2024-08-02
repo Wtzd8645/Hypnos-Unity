@@ -94,17 +94,17 @@ namespace Blanketmen.Hypnos
             }
             catch (HttpRequestException e)
             {
-                Logging.LogError(e.Message);
+                Logging.Error(e.Message);
                 onConnectionAoComplete(this, SocketAsyncOperation.Send, SocketError.Fault);
             }
             catch (TaskCanceledException e)
             {
-                Logging.LogError(e.Message);
+                Logging.Error(e.Message);
                 onConnectionAoComplete(this, SocketAsyncOperation.Send, SocketError.OperationAborted);
             }
             catch (Exception e)
             {
-                Logging.LogError(e.Message);
+                Logging.Error(e.Message);
                 onConnectionAoComplete(this, SocketAsyncOperation.Send, SocketError.SocketError);
             }
         }

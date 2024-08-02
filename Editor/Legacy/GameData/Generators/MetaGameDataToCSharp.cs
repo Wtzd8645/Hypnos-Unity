@@ -193,7 +193,7 @@ namespace Blanketmen.Hypnos.Editor.GameData
                 provider.GenerateCodeFromCompileUnit(compileUnit, sw, options);
             }
 
-            Logging.Log("[ExcelHandler] Generate C# code successfully.");
+            Logging.Info("[ExcelHandler] Generate C# code successfully.");
         }
     }
 }

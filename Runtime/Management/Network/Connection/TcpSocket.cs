@@ -35,7 +35,7 @@ namespace Blanketmen.Hypnos
 
         public override void Reset()
         {
-            Logging.Log($"[TcpSocket] Reset. Id: {id}", (int)LogChannel.Network);
+            Logging.Info($"[TcpSocket] Reset. Id: {id}", (int)LogChannel.Network);
             socket.Close(); // NOTE: https://docs.microsoft.com/zh-tw/dotnet/api/system.net.sockets.socket.close
             CreateSocket();
             CreateReceiveEventArgs();
@@ -57,7 +57,7 @@ namespace Blanketmen.Hypnos
         {
             try
             {
-                Logging.Log($"[TcpSocket] ConnectAsync. Id: {id}", (int)LogChannel.Network);
+                Logging.Info($"[TcpSocket] ConnectAsync. Id: {id}", (int)LogChannel.Network);
                 if (socket.Connected)
                 {
                     onConnectionAoComplete(this, SocketAsyncOperation.Connect, SocketError.IsConnected);
@@ -71,7 +71,7 @@ namespace Blanketmen.Hypnos
             }
             catch (Exception e)
             {
-                Logging.LogError($"[TcpSocket] ConnectAsync failed. Id: {id}, Exception: {e.Message}");
+                Logging.Error($"[TcpSocket] ConnectAsync failed. Id: {id}, Exception: {e.Message}");
                 onConnectionAoComplete(this, SocketAsyncOperation.Connect, SocketError.SocketError);
             }
         }
@@ -80,7 +80,7 @@ namespace Blanketmen.Hypnos
         {
             try
             {
-                Logging.Log($"[TcpSocket] DisconnectAsync. Id: {id}", (int)LogChannel.Network);
+                Logging.Info($"[TcpSocket] DisconnectAsync. Id: {id}", (int)LogChannel.Network);
                 if (!socket.Connected)
                 {
                     onConnectionAoComplete(this, SocketAsyncOperation.Disconnect, SocketError.NotConnected);
@@ -95,7 +95,7 @@ namespace Blanketmen.Hypnos
             }
             catch (Exception e)
             {
-                Logging.LogError($"[TcpSocket] DisconnectAsync failed. Id: {id}, Exception: {e.Message}");
+                Logging.Error($"[TcpSocket] DisconnectAsync failed. Id: {id}, Exception: {e.Message}");
                 onConnectionAoComplete(this, SocketAsyncOperation.Disconnect, SocketError.SocketError);
             }
         }
@@ -107,7 +107,7 @@ namespace Blanketmen.Hypnos
 
         public override void ReceiveAsync()
         {
-            Logging.Log($"[TcpSocket] ReceiveAsync. Id: {id}", (int)LogChannel.Network);
+            Logging.Info($"[TcpSocket] ReceiveAsync. Id: {id}", (int)LogChannel.Network);
             ReceiveInternalAsync(socket, receiveEventArgs);
         }
 
@@ -122,7 +122,7 @@ namespace Blanketmen.Hypnos
             }
             catch (Exception e)
             {
-                Logging.LogError($"[TcpSocket] ReceiveAsync failed. Id: {id}, Exception: {e.Message}");
+                Logging.Error($"[TcpSocket] ReceiveAsync failed. Id: {id}, Exception: {e.Message}");
                 onConnectionAoComplete(this, SocketAsyncOperation.Receive, SocketError.SocketError);
             }
         }
@@ -141,7 +141,7 @@ namespace Blanketmen.Hypnos
                 return;
             }
 
-            Logging.LogTrace($"[TcpSocket] Socket {id} received {evtArgs.BytesTransferred} bytes", (int)LogChannel.Network);
+            Logging.Trace($"[TcpSocket] Socket {id} received {evtArgs.BytesTransferred} bytes", (int)LogChannel.Network);
             PacketReadState readState = evtArgs.UserToken as PacketReadState;
             readState.pendingBytes += evtArgs.BytesTransferred;
             while (readState.pendingBytes >= readState.waitingBytes)
@@ -162,7 +162,7 @@ namespace Blanketmen.Hypnos
                 }
                 catch (Exception e)
                 {
-                    Logging.LogError($"[TcpSocket] Socket {id} create message failed. Exception: {e.Message}");
+                    Logging.Error($"[TcpSocket] Socket {id} create message failed. Exception: {e.Message}");
                     onConnectionAoComplete(this, SocketAsyncOperation.Receive, SocketError.TypeNotFound);
                 }
                 finally
@@ -205,7 +205,7 @@ namespace Blanketmen.Hypnos
                     }
 
                     sendState.packetBuf.offset = pendingBytes;
-                    Logging.LogTrace($"[TcpSocket] Socket {id} produce {pendingBytes} bytes.", (int)LogChannel.Network);
+                    Logging.Trace($"[TcpSocket] Socket {id} produce {pendingBytes} bytes.", (int)LogChannel.Network);
                     return;
                 }
             }
@@ -219,7 +219,7 @@ namespace Blanketmen.Hypnos
                 return;
             }
 
-            Logging.LogTrace($"[TcpSocket] Socket {id} send {sendState.pendingBytes} bytes.", (int)LogChannel.Network);
+            Logging.Trace($"[TcpSocket] Socket {id} send {sendState.pendingBytes} bytes.", (int)LogChannel.Network);
             sendEventArgs.SetBuffer(0, sendState.pendingBytes);
             SendInternalAsync(socket, sendEventArgs);
         }
@@ -235,14 +235,14 @@ namespace Blanketmen.Hypnos
             }
             catch (Exception e)
             {
-                Logging.LogError($"[TcpSocket] SendAsync failed. Id: {id}, Exception: {e.Message}");
+                Logging.Error($"[TcpSocket] SendAsync failed. Id: {id}, Exception: {e.Message}");
                 onConnectionAoComplete(this, SocketAsyncOperation.Send, evtArgs.SocketError);
             }
         }
 
         protected override void OnSendAsyncComplete(object sender, SocketAsyncEventArgs evtArgs)
         {
-            Logging.LogTrace($"[TcpSocket] Socket {id} sent {evtArgs.BytesTransferred} bytes.", (int)LogChannel.Network);
+            Logging.Trace($"[TcpSocket] Socket {id} sent {evtArgs.BytesTransferred} bytes.", (int)LogChannel.Network);
             PacketSendState sendState = evtArgs.UserToken as PacketSendState;
             if (evtArgs.SocketError != SocketError.Success)
             {
@@ -267,7 +267,7 @@ namespace Blanketmen.Hypnos
                     return;
                 }
 
-                Logging.LogTrace($"[TcpSocket] Socket {id} send {sendState.packetBuf.offset} produced bytes.", (int)LogChannel.Network);
+                Logging.Trace($"[TcpSocket] Socket {id} send {sendState.packetBuf.offset} produced bytes.", (int)LogChannel.Network);
                 evtArgs.SetBuffer(sendState.packetBuf.final, 0, sendState.packetBuf.offset);
                 sendState.pendingBytes = sendState.packetBuf.offset;
                 sendState.processedBytes = 0;

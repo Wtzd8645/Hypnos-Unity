@@ -52,14 +52,14 @@ namespace Blanketmen.Hypnos.Editor.Build
         {
             if (editionConfig == null)
             {
-                Logging.LogError("[AssetEditor] EditionConfig is null.");
+                Logging.Error("[AssetEditor] EditionConfig is null.");
                 return null;
             }
 
             AssetEditorConfig editorConfig = new AssetEditorConfig();
             if (!int.TryParse(versionField.value, out editorConfig.version))
             {
-                Logging.LogError("[AssetEditor] AssetEditorConfig version can only be an integer.");
+                Logging.Error("[AssetEditor] AssetEditorConfig version can only be an integer.");
             }
             editorConfig.groupDatas = assetGroupTreeView.FetchData();
             return editorConfig;
@@ -171,7 +171,7 @@ namespace Blanketmen.Hypnos.Editor.Build
         {
             if (editionConfig == null)
             {
-                Logging.LogError("[AssetEditor] The editionData is null, please reopen the window.");
+                Logging.Error("[AssetEditor] The editionData is null, please reopen the window.");
                 return;
             }
 
@@ -201,7 +201,7 @@ namespace Blanketmen.Hypnos.Editor.Build
             AssetEditorConfig editorConfig = new AssetEditorConfig();
             if (!int.TryParse(versionField.value, out editorConfig.version))
             {
-                Logging.LogError("[AssetEditor] AssetEditorConfig version can only be an integer.");
+                Logging.Error("[AssetEditor] AssetEditorConfig version can only be an integer.");
                 return;
             }
 
@@ -222,7 +222,7 @@ namespace Blanketmen.Hypnos.Editor.Build
             AssetEditorConfig editorConfig = new AssetEditorConfig();
             if (!int.TryParse(versionField.value, out editorConfig.version))
             {
-                Logging.LogError("[AssetEditor] AssetEditorConfig version can only be an integer.");
+                Logging.Error("[AssetEditor] AssetEditorConfig version can only be an integer.");
                 return;
             }
 

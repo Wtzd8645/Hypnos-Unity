@@ -23,14 +23,14 @@ namespace Blanketmen.Hypnos
 
             if (isLoading)
             {
-                Logging.LogError($"[AssetGroupInst] AssetBundle is already loading asynchronously. GroupId: {groupId}");
+                Logging.Error($"[AssetGroupInst] AssetBundle is already loading asynchronously. GroupId: {groupId}");
                 return;
             }
 
             bundle = AssetBundle.LoadFromFile(filePath, 0u, fileOffset);
             if (bundle == null)
             {
-                Logging.LogError($"[AssetGroupInst] Can't load AssetBundle from file. GroupId: {groupId}, FilePath: {filePath}, FileOffset: {fileOffset}");
+                Logging.Error($"[AssetGroupInst] Can't load AssetBundle from file. GroupId: {groupId}, FilePath: {filePath}, FileOffset: {fileOffset}");
             }
         }
 
@@ -54,7 +54,7 @@ namespace Blanketmen.Hypnos
             bundle = bundleLoadAo.assetBundle;
             if (bundle == null)
             {
-                Logging.LogError($"[AssetGroupInst] Can't load AssetBundle from file. GroupId: {groupId}, FilePath: {filePath}, FileOffset: {fileOffset}");
+                Logging.Error($"[AssetGroupInst] Can't load AssetBundle from file. GroupId: {groupId}, FilePath: {filePath}, FileOffset: {fileOffset}");
             }
         }
 
@@ -95,7 +95,7 @@ namespace Blanketmen.Hypnos
         {
             if (isLoading)
             {
-                Logging.LogError($"[AssetGroupInst] Can't dereference when bundle is loading. GroupId: {groupId}");
+                Logging.Error($"[AssetGroupInst] Can't dereference when bundle is loading. GroupId: {groupId}");
             }
 
             if (--refCount > 0)
@@ -105,7 +105,7 @@ namespace Blanketmen.Hypnos
 
             if (refCount < 0)
             {
-                Logging.LogError($"[AssetGroupInst] Reference count is abnormal. GroupId: {groupId}");
+                Logging.Error($"[AssetGroupInst] Reference count is abnormal. GroupId: {groupId}");
             }
 
             Unload();

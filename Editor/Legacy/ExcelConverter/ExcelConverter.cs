@@ -46,7 +46,7 @@ namespace Blanketmen.Hypnos.Editor
                         workbook = new XSSFWorkbook(fs);
                         break;
                     default:
-                        Logging.LogError($"[ExcelConverter] The file is not xls or xlsx format. File: {fileName}");
+                        Logging.Error($"[ExcelConverter] The file is not xls or xlsx format. File: {fileName}");
                         return null;
                 }
 
@@ -54,7 +54,7 @@ namespace Blanketmen.Hypnos.Editor
             }
             catch (Exception e)
             {
-                Logging.LogError($"[ExcelConverter] {e.Message}");
+                Logging.Error($"[ExcelConverter] {e.Message}");
                 return null;
             }
             finally

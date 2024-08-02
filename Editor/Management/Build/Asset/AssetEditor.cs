@@ -51,7 +51,7 @@ namespace Blanketmen.Hypnos.Editor.Build
             }
             catch (Exception e)
             {
-                Logging.LogError($"[AssetEditor] Save AssetConfig failed. Exception: {e.Message}");
+                Logging.Error($"[AssetEditor] Save AssetConfig failed. Exception: {e.Message}");
             }
         }
 
@@ -64,7 +64,7 @@ namespace Blanketmen.Hypnos.Editor.Build
             }
             catch (Exception e)
             {
-                Logging.LogWarning($"[AssetEditor] Load AssetConfig failed. Exception: {e.Message}");
+                Logging.Warning($"[AssetEditor] Load AssetConfig failed. Exception: {e.Message}");
                 return null;
             }
         }
@@ -206,12 +206,12 @@ namespace Blanketmen.Hypnos.Editor.Build
                     CoreUtil.CreateCompressor(ResourceManager.AssetConfigCompressor),
                     CoreUtil.CreateEncryptor(ResourceManager.AssetConfigEncryptor));
                 archiver.Save(config, outputPath);
-                Logging.Log($"[AssetEditor] Build FastEditor AssetConfig successfully. OutputPath: {outputPath}");
+                Logging.Info($"[AssetEditor] Build FastEditor AssetConfig successfully. OutputPath: {outputPath}");
                 return true;
             }
             catch (Exception e)
             {
-                Logging.LogError($"[AssetEditor] Build FastEditor AssetConfig failed. Exception: {e.Message}");
+                Logging.Error($"[AssetEditor] Build FastEditor AssetConfig failed. Exception: {e.Message}");
                 return false;
             }
         }
@@ -220,14 +220,14 @@ namespace Blanketmen.Hypnos.Editor.Build
         {
             if (editorConfig == null || editionConfig == null)
             {
-                Logging.LogError("[AssetEditor] AssetEditorConfig or EditionConfig is null.");
+                Logging.Error("[AssetEditor] AssetEditorConfig or EditionConfig is null.");
                 return;
             }
 
             string assetBundlesDir = GetAssetBundlesOutputPath(editorConfig, editionConfig);
             if (!Directory.Exists(assetBundlesDir))
             {
-                Logging.LogError($"[AssetEditor] Assetbundles directory does not exist. Version: {editorConfig.version}, Path: {assetBundlesDir}");
+                Logging.Error($"[AssetEditor] Assetbundles directory does not exist. Version: {editorConfig.version}, Path: {assetBundlesDir}");
                 return;
             }
 
@@ -239,7 +239,7 @@ namespace Blanketmen.Hypnos.Editor.Build
             {
                 File.Copy(file, Path.Combine(targetDirectory, Path.GetFileName(file)));
             }
-            Logging.Log($"[AssetEditor] Copy AssetBundles successfully. Version: {editorConfig.version}, Path: {targetDirectory}");
+            Logging.Info($"[AssetEditor] Copy AssetBundles successfully. Version: {editorConfig.version}, Path: {targetDirectory}");
         }
 
         private static void CleanAssetBundlesCopy(string targetDirectory)
@@ -248,7 +248,7 @@ namespace Blanketmen.Hypnos.Editor.Build
             {
                 Directory.Delete(targetDirectory, true);
             }
-            Logging.Log($"[AssetEditor] Clean AssetBundles copy successfully. Path: {targetDirectory}");
+            Logging.Info($"[AssetEditor] Clean AssetBundles copy successfully. Path: {targetDirectory}");
         }
 
         private static void BuildAssetConfig(AssetEditorConfig editorConfig, EditionConfig editionConfig, IBundleBuildResults buildResults)
@@ -301,7 +301,7 @@ namespace Blanketmen.Hypnos.Editor.Build
             }
             catch (Exception e)
             {
-                Logging.LogError($"[AssetEditor] Build AssetConfig failed. Exception: {e.Message}");
+                Logging.Error($"[AssetEditor] Build AssetConfig failed. Exception: {e.Message}");
             }
         }
 
@@ -325,12 +325,12 @@ namespace Blanketmen.Hypnos.Editor.Build
                 GetAssetBundleBuildTasks());
             if (errorCode != ReturnCode.Success)
             {
-                Logging.LogError($"[AssetEditor] Build AssetBundles failed. ErrorCode: {errorCode}");
+                Logging.Error($"[AssetEditor] Build AssetBundles failed. ErrorCode: {errorCode}");
                 return false;
             }
 
             BuildAssetConfig(editorConfig, editionConfig, results);
-            Logging.Log($"[AssetEditor] Build AssetBundles successfully. OutputPath: {outputPath}");
+            Logging.Info($"[AssetEditor] Build AssetBundles successfully. OutputPath: {outputPath}");
             return true;
         }
     }

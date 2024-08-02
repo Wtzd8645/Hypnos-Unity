@@ -90,7 +90,7 @@ namespace Blanketmen.Hypnos
             {
                 if (GUILayout.Button(currentLogs[i].condition))
                 {
-                    Logging.Log(currentLogs[i].condition);
+                    Logging.Info(currentLogs[i].condition);
                 }
             }
 

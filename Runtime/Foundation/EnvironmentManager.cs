@@ -83,7 +83,7 @@ namespace Blanketmen.Hypnos
             }
 
             Screen.SetResolution((int)width, (int)height, true);
-            Logging.Log($"[EnvironmentManager] Screen resolution is set. Resoltion: {Screen.width}, {Screen.height}", (int)LogChannel.Environment);
+            Logging.Info($"[EnvironmentManager] Screen resolution is set. Resoltion: {Screen.width}, {Screen.height}", (int)LogChannel.Environment);
         }
 
         public static void Set(EnvironmentConfig config)

@@ -113,7 +113,7 @@ namespace Blanketmen.Hypnos.Editor.GameData
             {
                 int index = setting.bytesOutputPath.IndexOf("/Assets");
                 string str = setting.bytesOutputPath.Substring(index, setting.bytesOutputPath.Length - index);
-                Logging.Log(str);
+                Logging.Info(str);
                 GetInfoFromFiles();
             }
             EditorGUILayout.EndHorizontal();
@@ -170,7 +170,7 @@ namespace Blanketmen.Hypnos.Editor.GameData
         {
             if (setting == null)
             {
-                Logging.LogError("[GameDataConverterWindow] GameDataConverterSetting is null.");
+                Logging.Error("[GameDataConverterWindow] GameDataConverterSetting is null.");
                 return;
             }
 
@@ -182,7 +182,7 @@ namespace Blanketmen.Hypnos.Editor.GameData
             }
             catch (Exception e)
             {
-                Logging.LogError($"[GameDataConverterWindow] {e.Message}");
+                Logging.Error($"[GameDataConverterWindow] {e.Message}");
                 return;
             }
 
@@ -196,7 +196,7 @@ namespace Blanketmen.Hypnos.Editor.GameData
         {
             if (setting == null)
             {
-                Logging.LogError("[GameDataConverterWindow] GameDataConverterSetting is null.");
+                Logging.Error("[GameDataConverterWindow] GameDataConverterSetting is null.");
                 return;
             }
 

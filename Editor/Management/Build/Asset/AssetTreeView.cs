@@ -208,7 +208,7 @@ namespace Blanketmen.Hypnos.Editor.Build
 
                 if (!groupIdSet.Add(args.newName))
                 {
-                    Logging.LogError($"[AssetTreeView] GroupId can't be duplicate. GroupId: {args.newName}");
+                    Logging.Error($"[AssetTreeView] GroupId can't be duplicate. GroupId: {args.newName}");
                     return;
                 }
 
@@ -226,7 +226,7 @@ namespace Blanketmen.Hypnos.Editor.Build
 
                 if (!assetIdSet.Add(args.newName))
                 {
-                    Logging.LogError($"[AssetTreeView] AssetId can't be duplicate. AssetId: {args.newName}");
+                    Logging.Error($"[AssetTreeView] AssetId can't be duplicate. AssetId: {args.newName}");
                     return;
                 }
 
@@ -337,7 +337,7 @@ namespace Blanketmen.Hypnos.Editor.Build
         {
             if (!groupIdSet.Add(data.groupId))
             {
-                Logging.LogError($"Duplicate group id are not allowed. GroupId: {data.groupId}");
+                Logging.Error($"Duplicate group id are not allowed. GroupId: {data.groupId}");
                 return;
             }
 
@@ -373,7 +373,7 @@ namespace Blanketmen.Hypnos.Editor.Build
         {
             if (!assetPathSet.Add(assetPath))
             {
-                Logging.LogWarning($"Duplicate asset path are not allowed. AssetPath: {assetPath}");
+                Logging.Warning($"Duplicate asset path are not allowed. AssetPath: {assetPath}");
                 return;
             }
 
@@ -394,7 +394,7 @@ namespace Blanketmen.Hypnos.Editor.Build
 
             if (!assetPathSet.Add(assetPath))
             {
-                Logging.LogWarning($"Duplicate assets are not allowed. AssetPath: {assetPath}");
+                Logging.Warning($"Duplicate assets are not allowed. AssetPath: {assetPath}");
                 return;
             }
 
@@ -429,7 +429,7 @@ namespace Blanketmen.Hypnos.Editor.Build
         {
             if (!assetPathSet.Add(data.assetPath))
             {
-                Logging.LogError($"Duplicate assets are not allowed. AssetPath: {data.assetPath}");
+                Logging.Error($"Duplicate assets are not allowed. AssetPath: {data.assetPath}");
                 return;
             }
 

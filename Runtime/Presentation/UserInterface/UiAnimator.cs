@@ -77,7 +77,7 @@ namespace Blanketmen.Hypnos.UI
                 }
                 default:
                 {
-                    Logging.LogError($"[UiAnimator] Unexpected clip: {clip.ToString() + suffix}");
+                    Logging.Error($"[UiAnimator] Unexpected clip: {clip.ToString() + suffix}");
                     return;
                 }
             }

@@ -63,7 +63,7 @@ namespace Blanketmen.Hypnos.Editor
 
             if (mainSheet == null)
             {
-                Logging.LogError("[ExcelHandler] Can't find main sheet.");
+                Logging.Error("[ExcelHandler] Can't find main sheet.");
                 return false;
             }
 
@@ -108,13 +108,13 @@ namespace Blanketmen.Hypnos.Editor
 
             if ((varTypeList.Count != varNameList.Count) || (varTypeList.Count == 0) || (varNameList.Count == 0))
             {
-                Logging.LogError("[ExcelHandler] Column num not valid. Type: " + varTypeList.Count + " Name: " + varNameList.Count);
+                Logging.Error("[ExcelHandler] Column num not valid. Type: " + varTypeList.Count + " Name: " + varNameList.Count);
                 return false;
             }
 
             if (rowCount > lastRowNumber)
             {
-                Logging.LogError("[ExcelHandler] No data row to parse. LastRowNum: " + lastRowNumber);
+                Logging.Error("[ExcelHandler] No data row to parse. LastRowNum: " + lastRowNumber);
                 return false;
             }
 
@@ -133,21 +133,21 @@ namespace Blanketmen.Hypnos.Editor
                 ICell cell = iRow.GetCell(i);
                 if (cell == null)
                 {
-                    Logging.Log("[ExcelHandler] Type row has " + (i - 1) + " column.");
+                    Logging.Info("[ExcelHandler] Type row has " + (i - 1) + " column.");
                     return;
                 }
 
                 str = GetCellString(cell);
                 if (string.IsNullOrEmpty(str))
                 {
-                    Logging.Log("[ExcelHandler] Type row has " + (i - 1) + " column.");
+                    Logging.Info("[ExcelHandler] Type row has " + (i - 1) + " column.");
                     return;
                 }
 
                 Type type = Type.GetType("System." + str);
                 if (type == null)
                 {
-                    Logging.LogError("[ExcelHandler] Can't find type at column " + (i - 1));
+                    Logging.Error("[ExcelHandler] Can't find type at column " + (i - 1));
                     return;
                 }
 
@@ -166,20 +166,20 @@ namespace Blanketmen.Hypnos.Editor
                 ICell cell = iRow.GetCell(i);
                 if (cell == null)
                 {
-                    Logging.Log("[ExcelHandler] Name row has " + (i - 1) + " column.");
+                    Logging.Info("[ExcelHandler] Name row has " + (i - 1) + " column.");
                     return;
                 }
 
                 str = GetCellString(cell);
                 if (string.IsNullOrEmpty(str))
                 {
-                    Logging.Log("[ExcelHandler] Name row has " + (i - 1) + " column.");
+                    Logging.Info("[ExcelHandler] Name row has " + (i - 1) + " column.");
                     return;
                 }
 
                 if (varNameList.Contains(str))
                 {
-                    Logging.LogError("[ExcelHandler] Name is duplicate at " + (i - 1) + " column.");
+                    Logging.Error("[ExcelHandler] Name is duplicate at " + (i - 1) + " column.");
                     return;
                 }
 
@@ -191,13 +191,13 @@ namespace Blanketmen.Hypnos.Editor
         {
             if ((varTypeList.Count != varNameList.Count) || (varTypeList.Count == 0) || (varNameList.Count == 0))
             {
-                Logging.LogError("[ExcelHandler] Column num not valid. Type: " + varTypeList.Count + " Name: " + varNameList.Count);
+                Logging.Error("[ExcelHandler] Column num not valid. Type: " + varTypeList.Count + " Name: " + varNameList.Count);
                 return;
             }
 
             if (firstValueRow > lastRowNumber)
             {
-                Logging.LogError("[ExcelHandler] No data row to parse. LastRowNum: " + lastRowNumber);
+                Logging.Error("[ExcelHandler] No data row to parse. LastRowNum: " + lastRowNumber);
                 return;
             }
 
@@ -243,7 +243,7 @@ namespace Blanketmen.Hypnos.Editor
 
                 if (!VerificateValue(KeyType, key))
                 {
-                    Logging.LogError("[ExcelHandler] Verificate value failed. [" + rowCount + ", " + 0 + "]");
+                    Logging.Error("[ExcelHandler] Verificate value failed. [" + rowCount + ", " + 0 + "]");
                     return;
                 }
 
@@ -269,7 +269,7 @@ namespace Blanketmen.Hypnos.Editor
                     }
                     else
                     {
-                        Logging.LogError("[ExcelHandler] Verificate value failed at [" + rowCount + ", " + i + "]");
+                        Logging.Error("[ExcelHandler] Verificate value failed at [" + rowCount + ", " + i + "]");
                         return;
                     }
                 }
@@ -370,12 +370,12 @@ namespace Blanketmen.Hypnos.Editor
                     using FileStream fs = new FileStream(bytesOutputPath + "/" + mainSheet.SheetName + ".bytes", FileMode.Create);
                     //EncryptionUtil.EncodeByAES(fs, ms);
                 }
-                Logging.Log("[ExcelHandler] Generate encrypted XML successfully.");
+                Logging.Info("[ExcelHandler] Generate encrypted XML successfully.");
             }
             else
             {
                 iXMLDoc.Save(bytesOutputPath + "/" + mainSheet.SheetName + ".xml");
-                Logging.Log("[ExcelHandler] Generate XML successfully.");
+                Logging.Info("[ExcelHandler] Generate XML successfully.");
             }
         }
 
@@ -557,7 +557,7 @@ namespace Blanketmen.Hypnos.Editor
                 using StreamWriter sw = new StreamWriter(fs);
                 provider.GenerateCodeFromCompileUnit(compileUnit, sw, options);
             }
-            Logging.Log("[ExcelHandler] Generate C# code successfully.");
+            Logging.Info("[ExcelHandler] Generate C# code successfully.");
         }
     }
 }

@@ -163,7 +163,7 @@ namespace Blanketmen.Hypnos.UI
             BindingResourceAttribute attr = GetBindingResourceAttribute(uiType);
             if (attr == null)
             {
-                Logging.LogError($"[UiManager] The type does not have BindingResourceAttribute. Type: {uiType}");
+                Logging.Error($"[UiManager] The type does not have BindingResourceAttribute. Type: {uiType}");
                 loadedCb(null);
                 return;
             }
@@ -202,7 +202,7 @@ namespace Blanketmen.Hypnos.UI
             BindingResourceAttribute attr = GetBindingResourceAttribute(uiType);
             if (attr == null)
             {
-                Logging.LogError($"[UiManager] The type does not have BindingResourceAttribute. Type: {uiType}");
+                Logging.Error($"[UiManager] The type does not have BindingResourceAttribute. Type: {uiType}");
                 completeCb(null);
                 return;
             }
@@ -241,7 +241,7 @@ namespace Blanketmen.Hypnos.UI
                 canvasSize.x * safeAreaRatio.width,
                 canvasSize.y * safeAreaRatio.height);
 
-            Logging.Log($"[UiManager] CanvasSafeArea: {CanvasSafeArea}", (int)LogChannel.UI);
+            Logging.Info($"[UiManager] CanvasSafeArea: {CanvasSafeArea}", (int)LogChannel.UI);
         }
     }
 }

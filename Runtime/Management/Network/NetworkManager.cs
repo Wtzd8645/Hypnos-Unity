@@ -1,4 +1,4 @@
-﻿using Blanketmen.Hypnos.Communication;
+﻿using Blanketmen.Hypnos.Mediation;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -6,7 +6,7 @@ using System.Net.Sockets;
 
 namespace Blanketmen.Hypnos
 {
-    public sealed partial class NetworkManager : Subject<int>
+    public sealed partial class NetworkManager : EventDispatcher<int>
     {
         #region Singleton
         public static NetworkManager Instance { get; } = new NetworkManager();
@@ -52,7 +52,7 @@ namespace Blanketmen.Hypnos
                     responseHandlerMap.TryGetValue(resp.Id, out Action<IResponse> responseHandler);
                     if (responseHandler == null)
                     {
-                        Logging.LogWarning($"[NetworkManager] Response handler is null. MsgId: {resp.Id}");
+                        Logging.Warning($"[NetworkManager] Response handler is null. MsgId: {resp.Id}");
                     }
                     else
                     {
@@ -80,7 +80,7 @@ namespace Blanketmen.Hypnos
         {
             if (connectionMap.ContainsKey(config.id))
             {
-                Logging.LogError($"[NetworkManager] Connection is duplicate. ConnectionId: {config.id}");
+                Logging.Error($"[NetworkManager] Connection is duplicate. ConnectionId: {config.id}");
                 return;
             }
 
@@ -115,7 +115,7 @@ namespace Blanketmen.Hypnos
                 }
                 default:
                 {
-                    Logging.LogError($"[NetworkManager] Protocol not implemented. ConnectionId: {config.id}, Protocol: {transportConfig.protocol}");
+                    Logging.Error($"[NetworkManager] Protocol not implemented. ConnectionId: {config.id}, Protocol: {transportConfig.protocol}");
                     break;
                 }
             }
@@ -138,7 +138,7 @@ namespace Blanketmen.Hypnos
             connectionMap.TryGetValue(connectionId, out IConnection conn);
             if (conn == null)
             {
-                Logging.Log($"[NetworkManager] Can't find socket to connect. ConnectionId: {connectionId}", (int)LogChannel.Network);
+                Logging.Info($"[NetworkManager] Can't find socket to connect. ConnectionId: {connectionId}", (int)LogChannel.Network);
                 return;
             }
 
@@ -150,7 +150,7 @@ namespace Blanketmen.Hypnos
             connectionMap.TryGetValue(connectionId, out IConnection conn);
             if (conn == null)
             {
-                Logging.Log($"[NetworkManager] Can't find socket to disconnect. ConnectionId: {connectionId}", (int)LogChannel.Network);
+                Logging.Info($"[NetworkManager] Can't find socket to disconnect. ConnectionId: {connectionId}", (int)LogChannel.Network);
                 return;
             }
 
@@ -162,7 +162,7 @@ namespace Blanketmen.Hypnos
             connectionMap.TryGetValue(connectionId, out IConnection conn);
             if (conn == null)
             {
-                Logging.Log($"[NetworkManager] Can't find socket to send request. ConnectionId: {connectionId}", (int)LogChannel.Network);
+                Logging.Info($"[NetworkManager] Can't find socket to send request. ConnectionId: {connectionId}", (int)LogChannel.Network);
                 return;
             }
 
@@ -172,7 +172,7 @@ namespace Blanketmen.Hypnos
         // NOTE: May be called by multiple threads.
         private void OnConnectionAoComplete(IConnection conn, SocketAsyncOperation operation, SocketError socketError)
         {
-            Logging.Log($"[NetworkManager] OnConnectionAoComplete. ConnectionId: {conn.Id}, Operation: {operation}, Error: {socketError}", (int)LogChannel.Network);
+            Logging.Info($"[NetworkManager] OnConnectionAoComplete. ConnectionId: {conn.Id}, Operation: {operation}, Error: {socketError}", (int)LogChannel.Network);
             ConnectionEventArgs args = new ConnectionEventArgs()
             {
                 connection = conn,

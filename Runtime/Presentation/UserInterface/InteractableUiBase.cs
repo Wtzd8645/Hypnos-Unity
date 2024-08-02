@@ -36,7 +36,7 @@ namespace Blanketmen.Hypnos.UI
         {
             if (DisplayState != UiDisplayState.Hide)
             {
-                Logging.LogWarning($"[InteractableUiBase] Show UI at wrong state. Name: {gameObject.name}, State: {DisplayState}");
+                Logging.Warning($"[InteractableUiBase] Show UI at wrong state. Name: {gameObject.name}, State: {DisplayState}");
                 showCompleteCb?.Invoke(this);
                 return;
             }
@@ -58,7 +58,7 @@ namespace Blanketmen.Hypnos.UI
         {
             if (DisplayState != UiDisplayState.Hide)
             {
-                Logging.LogWarning($"[InteractableUiBase] Show UI at wrong state. Name: {gameObject.name}, State: {DisplayState}");
+                Logging.Warning($"[InteractableUiBase] Show UI at wrong state. Name: {gameObject.name}, State: {DisplayState}");
                 return;
             }
 
@@ -78,7 +78,7 @@ namespace Blanketmen.Hypnos.UI
         {
             if (DisplayState != UiDisplayState.Show)
             {
-                Logging.LogWarning($"[InteractableUiBase] Hide UI at wrong state. Name: {gameObject.name}, State: {DisplayState}");
+                Logging.Warning($"[InteractableUiBase] Hide UI at wrong state. Name: {gameObject.name}, State: {DisplayState}");
                 hideCompleteCb?.Invoke(this);
                 return;
             }
@@ -99,7 +99,7 @@ namespace Blanketmen.Hypnos.UI
         {
             if (DisplayState != UiDisplayState.Show)
             {
-                Logging.LogWarning($"[InteractableUiBase] Hide UI at wrong state. Name: {gameObject.name}, State: {DisplayState}");
+                Logging.Warning($"[InteractableUiBase] Hide UI at wrong state. Name: {gameObject.name}, State: {DisplayState}");
                 return;
             }
 

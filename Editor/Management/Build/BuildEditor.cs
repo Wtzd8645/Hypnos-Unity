@@ -43,7 +43,7 @@ namespace Blanketmen.Hypnos.Editor.Build
             }
             catch (Exception e)
             {
-                Logging.LogError($"[BuildEditor] Save BuildConfig failed. Exception: {e.Message}");
+                Logging.Error($"[BuildEditor] Save BuildConfig failed. Exception: {e.Message}");
             }
         }
 
@@ -56,7 +56,7 @@ namespace Blanketmen.Hypnos.Editor.Build
             }
             catch (Exception e)
             {
-                Logging.LogWarning($"[BuildEditor] Load BuildConfig failed. Exception: {e.Message}");
+                Logging.Warning($"[BuildEditor] Load BuildConfig failed. Exception: {e.Message}");
                 return new BuildConfig();
             }
         }

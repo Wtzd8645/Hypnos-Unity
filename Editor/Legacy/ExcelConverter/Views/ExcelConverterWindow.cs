@@ -168,7 +168,7 @@ namespace Blanketmen.Hypnos.Editor
         {
             if (setting == null)
             {
-                Logging.LogError("[ExcelConverterWindow] setting is null.");
+                Logging.Error("[ExcelConverterWindow] setting is null.");
                 return;
             }
 
@@ -180,7 +180,7 @@ namespace Blanketmen.Hypnos.Editor
             }
             catch (Exception e)
             {
-                Logging.LogError($"[ExcelConverterWindow] {e.Message}");
+                Logging.Error($"[ExcelConverterWindow] {e.Message}");
                 return;
             }
 
@@ -202,7 +202,7 @@ namespace Blanketmen.Hypnos.Editor
         {
             if (string.IsNullOrEmpty(setting.bytesOutputPath))
             {
-                Logging.LogError("[ExcelConverterWindow] Output path is empty.");
+                Logging.Error("[ExcelConverterWindow] Output path is empty.");
                 return;
             }
 

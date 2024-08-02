@@ -47,13 +47,13 @@ namespace Blanketmen.Hypnos.Editor
         {
             if (string.IsNullOrEmpty(className))
             {
-                Logging.LogError($"[SheetInfo] Class name is not valid. Sheet: {sheetName}");
+                Logging.Error($"[SheetInfo] Class name is not valid. Sheet: {sheetName}");
                 return false;
             }
 
             if (fieldInfos.Count == 0)
             {
-                Logging.LogError($"[SheetInfo] Field info is not valid. Sheet: {sheetName}");
+                Logging.Error($"[SheetInfo] Field info is not valid. Sheet: {sheetName}");
                 return false;
             }
 
@@ -65,7 +65,7 @@ namespace Blanketmen.Hypnos.Editor
         {
             if (firstValueRowIndex > LastRowIndex)
             {
-                Logging.LogError($"[SheetInfo] {sheetName} No data row to parse. LastRowNum: {LastRowIndex}");
+                Logging.Error($"[SheetInfo] {sheetName} No data row to parse. LastRowNum: {LastRowIndex}");
                 return false;
             }
             return true;

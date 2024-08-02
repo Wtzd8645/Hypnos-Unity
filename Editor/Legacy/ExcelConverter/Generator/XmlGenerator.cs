@@ -42,7 +42,7 @@ namespace Blanketmen.Hypnos.Editor
             rootElement.SetAttribute("Length", sheetInfo.totalValueRowCount.ToString());
 
             xmlDoc.Save(outputPath + "/" + sheetInfo.sheetName + XmlExtension);
-            Logging.Log("[XmlGenerator] Generate XML successfully.");
+            Logging.Info("[XmlGenerator] Generate XML successfully.");
         }
     }
 }

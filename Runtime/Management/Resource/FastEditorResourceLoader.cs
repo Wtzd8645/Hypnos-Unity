@@ -37,7 +37,7 @@ namespace Blanketmen.Hypnos
             assetInstMap.TryGetValue(assetId, out AssetInst assetInst);
             if (assetInst == null)
             {
-                Logging.LogError($"[FastEditorResourceLoader] Can't find AssetInst. AssetId: {assetId}");
+                Logging.Error($"[FastEditorResourceLoader] Can't find AssetInst. AssetId: {assetId}");
                 return null;
             }
 
@@ -55,7 +55,7 @@ namespace Blanketmen.Hypnos
             assetInstMap.TryGetValue(assetId, out AssetInst assetInst);
             if (assetInst == null)
             {
-                Logging.LogError($"[FastEditorResourceLoader] Can't find AssetInst. AssetId: {assetId}");
+                Logging.Error($"[FastEditorResourceLoader] Can't find AssetInst. AssetId: {assetId}");
                 completeCb?.Invoke(null);
                 yield break;
             }
@@ -75,7 +75,7 @@ namespace Blanketmen.Hypnos
             assetInstMap.TryGetValue(assetId, out AssetInst assetInst);
             if (assetInst == null)
             {
-                Logging.LogError($"[FastEditorResourceLoader] AssetInst is in an error state. AssetId: {assetId}");
+                Logging.Error($"[FastEditorResourceLoader] AssetInst is in an error state. AssetId: {assetId}");
                 return;
             }
 

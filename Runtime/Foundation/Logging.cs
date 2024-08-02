@@ -1,70 +1,57 @@
-﻿using System;
 using System.Diagnostics;
+using System.Runtime.CompilerServices;
 
 namespace Blanketmen.Hypnos
 {
-    [Flags]
-    public enum LogChannel
-    {
-        None = 0,
-        Environment = 1,
-        Resource = 1 << 1,
-        Network = 1 << 2,
-        Input = 1 << 3,
-        GameTime = 1 << 4,
-        GameState = 1 << 5,
-        UI = 1 << 6,
-        Audio = 1 << 7,
-        All = -1
-    }
-
     public static class Logging
     {
         public const int AllLogChannel = -1;
-        public const string TraceLogCondition = "TRACE_LOG";
         public const string DebugLogCondition = "DEBUG_LOG";
+        public const string TraceLogCondition = "TRACE_LOG";
 
-        public static int TraceLogChannel = AllLogChannel;
         public static int DebugLogChannel = AllLogChannel;
+        public static int TraceLogChannel = AllLogChannel;
 
-        public static void LogFile(string message, int channel = AllLogChannel)
+        public static void Info(string msg, int chn = AllLogChannel)
         {
-            // TODO: Implement
+            if ((chn & DebugLogChannel) != 0)
+            {
+                UnityEngine.Debug.Log(msg);
+            }
+        }
+
+        [Conditional(DebugLogCondition)]
+        public static void Verbose(string msg, int chn = AllLogChannel)
+        {
+            if ((chn & DebugLogChannel) != 0)
+            {
+                UnityEngine.Debug.Log(msg);
+            }
         }
 
         [Conditional(TraceLogCondition)]
-        public static void LogTrace(string message, int channel = AllLogChannel)
+        public static void Trace(string msg, int chn = AllLogChannel)
         {
-            if ((channel & TraceLogChannel) != 0)
+            if ((chn & TraceLogChannel) != 0)
             {
-                UnityEngine.Debug.Log(message);
+                UnityEngine.Debug.Log(msg);
             }
         }
 
         [Conditional(DebugLogCondition)]
-        public static void Log(string message, int channel = AllLogChannel)
+        public static void Warning(string msg, int chn = AllLogChannel)
         {
-            if ((channel & DebugLogChannel) != 0)
+            if ((chn & DebugLogChannel) != 0)
             {
-                UnityEngine.Debug.Log(message);
+                UnityEngine.Debug.LogWarning(msg);
             }
         }
 
-        [Conditional(DebugLogCondition)]
-        public static void LogWarning(string message, int channel = AllLogChannel)
+        public static void Error(string msg, [CallerMemberName] string name = "", [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNum = 0)
         {
-            if ((channel & DebugLogChannel) != 0)
-            {
-                UnityEngine.Debug.LogWarning(message);
-            }
+            UnityEngine.Debug.LogError($"{msg}\n{name}\n{filePath}:{lineNum}");
         }
 
-        public static void LogError(string message)
-        {
-            UnityEngine.Debug.LogError(message);
-        }
-
-        [Conditional(DebugLogCondition)]
         public static void Assert(bool condition, string message)
         {
             UnityEngine.Debug.Assert(condition, message);
