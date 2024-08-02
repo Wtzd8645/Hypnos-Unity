@@ -41,7 +41,7 @@ namespace Blanketmen.Hypnos.Editor.GameData
             rootElement.SetAttribute("Length", metadata.rowValues.Count.ToString());
 
             xmlDoc.Save(setting.bytesOutputPath + "/" + metadata.sheetName + XmlExtension);
-            Kernel.Log("[MetaGameDataToXml] Generate XML successfully.");
+            Logging.Log("[MetaGameDataToXml] Generate XML successfully.");
         }
     }
 }

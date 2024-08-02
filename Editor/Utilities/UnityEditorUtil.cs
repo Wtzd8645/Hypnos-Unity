@@ -8,6 +8,34 @@ namespace Blanketmen.Hypnos.Editor
 {
     public static class UnityEditorUtil
     {
+        public struct ClipScope : IDisposable
+        {
+            private bool isDisposed;
+
+            public ClipScope(Rect rect)
+            {
+                EventType eventType = Event.current.type;
+                if (eventType == EventType.Repaint || eventType == EventType.Layout)
+                {
+                    GUI.BeginClip(rect, -rect.min, Vector2.zero, false);
+                    isDisposed = true;
+                }
+                else
+                {
+                    isDisposed = false;
+                }
+            }
+
+            public void Dispose()
+            {
+                if (!isDisposed)
+                {
+                    isDisposed = true;
+                    GUI.EndClip();
+                }
+            }
+        }
+
         #region Build-In Resources
         public const string DefalutAvatarFbxPath = "Avatar/DefaultAvatar.fbx";
 
@@ -26,14 +54,6 @@ namespace Blanketmen.Hypnos.Editor
         }
         #endregion
 
-        public static Texture2D MakeTexForBackGround(Color col)
-        {
-            Texture2D result = new Texture2D(1, 1);
-            result.SetPixel(0, 0, col);
-            result.Apply();
-            return result;
-        }
-
         public static void DrawHorizontalBar()
         {
             EditorGUILayout.LabelField("", GUI.skin.horizontalSlider);
@@ -41,24 +61,30 @@ namespace Blanketmen.Hypnos.Editor
 
         public static void ShowTitle(string title, bool isBold = true)
         {
+            EditorGUILayout.Space();
             if (isBold)
             {
-                EditorGUILayout.Space();
                 EditorGUILayout.LabelField(title, EditorStyles.boldLabel);
-                EditorGUILayout.Space();
             }
             else
             {
-                EditorGUILayout.Space();
                 EditorGUILayout.LabelField(title);
-                EditorGUILayout.Space();
             }
+            EditorGUILayout.Space();
         }
 
-        public static Texture2D GenerateGridTexture(Color line, Color bg)
+        public static Texture2D CreateSolidColorTexture2d(Color col)
+        {
+            Texture2D result = new Texture2D(1, 1);
+            result.SetPixel(0, 0, col);
+            result.Apply();
+            return result;
+        }
+
+        public static Texture2D CreateGridTexture2d(Color line, Color bg)
         {
             Texture2D tex = new Texture2D(64, 64);
-            Color[] cols = new Color[64 * 64];
+            Color32[] cols = new Color32[64 * 64];
             for (int y = 0; y < 64; y++)
             {
                 for (int x = 0; x < 64; x++)
@@ -78,7 +104,7 @@ namespace Blanketmen.Hypnos.Editor
                 }
             }
 
-            tex.SetPixels(cols);
+            tex.SetPixels32(cols, 0);
             tex.wrapMode = TextureWrapMode.Repeat;
             tex.filterMode = FilterMode.Bilinear;
             tex.name = "Grid";
@@ -86,7 +112,7 @@ namespace Blanketmen.Hypnos.Editor
             return tex;
         }
 
-        public static Texture2D GenerateGridTextureUE4Style()
+        public static Texture2D CreateGridTextureWithUe4Style()
         {
             Color OutLine = Color.black;
             Color InLine = Color.grey;
@@ -122,7 +148,7 @@ namespace Blanketmen.Hypnos.Editor
             return tex;
         }
 
-        public static Texture2D GenerateCrossTexture(Color line)
+        public static Texture2D CreateCrossTexture(Color line)
         {
             Texture2D tex = new Texture2D(64, 64);
             Color[] cols = new Color[64 * 64];
@@ -148,10 +174,9 @@ namespace Blanketmen.Hypnos.Editor
             return tex;
         }
 
-        public static Texture2D GenerateCrossTextureUE4Style()
+        public static Texture2D CreateCrossTextureWithUe4Style()
         {
             Color line = Color.black;
-
             Texture2D tex = new Texture2D(512, 512);
             Color[] cols = new Color[512 * 512];
             for (int y = 0; y < 512; y++)
@@ -290,13 +315,13 @@ namespace Blanketmen.Hypnos.Editor
             return false;
         }
 
-        public static void GetRenderableBoundsRecursively(ref Bounds bounds, GameObject go)
+        public static void GetRenderableBoundsRecursive(ref Bounds bounds, GameObject go)
         {
             if (!go.TryGetComponent<Renderer>(out Renderer curRenderer))
             {
                 foreach (Transform transform in go.transform)
                 {
-                    GetRenderableBoundsRecursively(ref bounds, transform.gameObject);
+                    GetRenderableBoundsRecursive(ref bounds, transform.gameObject);
                 }
                 return;
             }
@@ -341,7 +366,7 @@ namespace Blanketmen.Hypnos.Editor
 
             foreach (Transform transform in go.transform)
             {
-                GetRenderableBoundsRecursively(ref bounds, transform.gameObject);
+                GetRenderableBoundsRecursive(ref bounds, transform.gameObject);
             }
         }
     }

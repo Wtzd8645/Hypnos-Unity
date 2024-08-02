@@ -2,11 +2,14 @@
     "name": "Blanketmen.Hypnos.Editor",
     "rootNamespace": "Blanketmen.Hypnos.Editor",
     "references": [
+        "Blanketmen.Hypnos.Core",
         "Blanketmen.Hypnos",
         "Unity.TextMeshPro",
         "Unity.TextMeshPro.Editor",
         "Unity.ScriptableBuildPipeline",
-        "Unity.ScriptableBuildPipeline.Editor"
+        "Unity.ScriptableBuildPipeline.Editor",
+        "Unity.Timeline",
+        "Unity.Timeline.Editor"
     ],
     "includePlatforms": [
         "Editor"
