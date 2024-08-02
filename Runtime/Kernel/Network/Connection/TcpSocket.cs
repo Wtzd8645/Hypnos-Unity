@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 using System.Net.Sockets;
 
 namespace Morpheus.Network
@@ -150,7 +149,7 @@ namespace Morpheus.Network
                 if (readState.isWaitingPacketSize)
                 {
                     readState.isWaitingPacketSize = false;
-                    readState.waitingBytes = BitConverter.ToUInt16(evtArgs.Buffer, readState.processedBytes);
+                    readState.waitingBytes = BitConverter.ToInt16(evtArgs.Buffer, readState.processedBytes);
                     readState.pendingBytes -= NetworkManager.PacketLengthSize;
                     readState.processedBytes += NetworkManager.PacketLengthSize;
                     continue;
