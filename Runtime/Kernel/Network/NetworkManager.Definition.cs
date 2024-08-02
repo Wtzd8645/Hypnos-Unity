@@ -4,18 +4,18 @@ using System.Text;
 
 namespace Morpheus.Network
 {
-    internal delegate void ConnectionAoHandler(IConnection conn, SocketAsyncOperation operation, SocketError socketError);
+    public delegate void ConnectionAoHandler(IConnection conn, SocketAsyncOperation operation, SocketError socketError);
 
     public partial class NetworkManager
     {
-        public const int PacketLengthSize = sizeof(ushort);
+        public const int PacketLengthSize = sizeof(short);
         public const int SerialNumberSize = sizeof(byte);
         public const int MessageIdSize = sizeof(ushort);
         public static readonly Encoding StringEncoder = new UTF8Encoding(false, true);
 
-        internal const int DefalutPort = 27015;
-        internal const ushort DefalutMaxPacketSize = 1024; // byte
-        internal const int DefalutSendTimeout = 4096; // ms
+        public const int DefalutPort = 27015;
+        public const ushort DefalutMaxPacketSize = 1024; // byte
+        public const int DefalutSendTimeout = 4096; // ms
     }
 
     public enum TransportProtocol
