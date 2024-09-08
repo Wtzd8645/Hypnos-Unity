@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Reflection;
 using UnityEditor;
@@ -19,7 +19,7 @@ namespace Blanketmen.Hypnos.Editor
             }
         }
 
-        [MenuItem(EditorEnvironmentSettings.FrameworkPath + EditorName, false, (int)EditorId.ScriptableObjectFactory)]
+        [MenuItem(EnvironmentConfig.ProjectDir + EditorName, false, (int)EditorId.ScriptableObjectFactory)]
         public static void ShowWindow()
         {
             GetWindow<ScriptableObjectFactoryEditor>();
@@ -43,7 +43,7 @@ namespace Blanketmen.Hypnos.Editor
         {
             serializedObject = new SerializedObject(this);
             assamblyNamesProp = serializedObject.FindProperty("assemblyNames");
-            SetAssemblies(EditorEnvironmentSettings.Instance.usedAssamblyNames);
+            SetAssemblies(EnvironmentConfig.Instance.usedAssamblyNames);
         }
 
         private void OnGUI()
@@ -58,7 +58,7 @@ namespace Blanketmen.Hypnos.Editor
 
             if (GUILayout.Button("Save Assemblies"))
             {
-                EditorEnvironmentSettings.Instance.usedAssamblyNames = assemblyNames.ToArray();
+                EnvironmentConfig.Instance.usedAssamblyNames = assemblyNames.ToArray();
             }
 
             if (selectIndex == -1)
@@ -74,7 +74,7 @@ namespace Blanketmen.Hypnos.Editor
                 ProjectWindowUtil.StartNameEditingIfProjectWindowExists(
                     so.GetInstanceID(),
                     CreateInstance<ScriptableObjectEndNameEditAction>(),
-                    scriptableObjectTypeNames[selectIndex] + EditorEnvironmentSettings.ScriptableObjectExt,
+                    scriptableObjectTypeNames[selectIndex] + EnvironmentConfig.ScriptableObjectExt,
                     AssetPreview.GetMiniThumbnail(so),
                     null);
             }

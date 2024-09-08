@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using UnityEditor;
 using UnityEngine;
 
@@ -11,34 +11,35 @@ namespace Blanketmen.Hypnos.Editor
         ScriptableObjectFactory
     }
 
-    public class EditorEnvironmentSettings : ScriptableObject
+    public class EnvironmentConfig : ScriptableObject
     {
+        public const string RootDir = "Assets/Editor Default Resources/";
+        public const string ProjectDir = "Blanketmen/Hypnos/";
+        public const string EditorResourceDir = RootDir + ProjectDir;
+
+        public const string ConfigurationFileName = nameof(EnvironmentConfig) + ScriptableObjectExt;
+
         public const string UnityEditorAssemblyName = "Assembly-CSharp-Editor";
         public const string FrameworkEditorAssemblyName = "Blanketmen.Hypnos.Editor";
 
         public const string ScriptableObjectExt = ".asset";
 
-        public const string EditorBuiltInResourcePath = "Assets/Editor Default Resources/";
-        public const string FrameworkPath = "Blanketmen/Hypnos/";
+        private static EnvironmentConfig instance;
 
-        public const string EditorConfigPath = FrameworkPath + nameof(EditorEnvironmentSettings) + ScriptableObjectExt;
-
-        private static EditorEnvironmentSettings instance;
-
-        public static EditorEnvironmentSettings Instance
+        public static EnvironmentConfig Instance
         { 
             get
             {
                 if (instance == null)
                 {
-                    instance = EditorGUIUtility.Load(EditorConfigPath) as EditorEnvironmentSettings;
+                    instance = EditorGUIUtility.Load(ProjectDir + ConfigurationFileName) as EnvironmentConfig;
                 }
 
                 if (instance == null)
                 {
-                    instance = CreateInstance<EditorEnvironmentSettings>();
-                    Directory.CreateDirectory(EditorBuiltInResourcePath + FrameworkPath);
-                    AssetDatabase.CreateAsset(Instance, EditorBuiltInResourcePath + EditorConfigPath);
+                    instance = CreateInstance<EnvironmentConfig>();
+                    Directory.CreateDirectory(EditorResourceDir);
+                    AssetDatabase.CreateAsset(instance, EditorResourceDir + ConfigurationFileName);
                     AssetDatabase.Refresh();
                 }
                 return instance;

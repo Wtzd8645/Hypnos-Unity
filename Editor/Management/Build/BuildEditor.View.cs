@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
@@ -10,7 +10,7 @@ namespace Blanketmen.Hypnos.Editor.Build
 {
     internal partial class BuildEditor : EditorWindow
     {
-        private const string EditorViewName = "Build Editor";
+        private const string EditorName = "Build Editor";
         private const string VisualTreeAssetName = "BuildEditor";
 
         private const string EditionListContainerName = "EditionListContainer";
@@ -25,7 +25,7 @@ namespace Blanketmen.Hypnos.Editor.Build
         private const string AssetConfigEditBtnName = "AssetConfigEditBtn";
         private const string EditionBuildBtnName = "EditionBuildBtn";
 
-        [MenuItem(EditorEnvironmentSettings.FrameworkPath + EditorViewName, false, (int)EditorId.Build)]
+        [MenuItem(EnvironmentConfig.ProjectDir + EditorName, false, (int)EditorId.Build)]
         private static void ShowWindow()
         {
             GetWindow<BuildEditor>();
@@ -45,7 +45,7 @@ namespace Blanketmen.Hypnos.Editor.Build
 
         private void OnEnable()
         {
-            titleContent.text = EditorViewName;
+            titleContent.text = EditorName;
             VisualTreeAsset visualTree = Resources.Load<VisualTreeAsset>(VisualTreeAssetName);
             if (visualTree == null)
             {
