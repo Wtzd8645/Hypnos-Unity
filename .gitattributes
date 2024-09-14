@@ -1,0 +1,61 @@
+################################
+# Binary Files
+################################
+*.dll binary
+*.exe binary
+*.so binary
+
+################################
+# Compressed Archives
+################################
+*.gz binary
+*.tar binary
+*.zip binary
+
+################################
+# Document Files
+################################
+*.pdf binary
+
+################################
+# Image Files
+################################
+*.gif binary
+*.jpg binary
+*.jpeg binary
+*.png binary
+
+################################
+# Audio and Video Files
+################################
+*.mov binary
+*.mp3 binary
+*.mp4 binary
+*.ogg binary
+*.wav binary
+
+################################
+# Font Files
+################################
+*.otf binary
+*.ttf binary
+
+################################
+# Default Line Endings for Text Files
+################################
+* text=auto eol=lf
+
+################################
+# Windows-Specific Text Files
+################################
+*.bat eol=crlf
+*.ps1 eol=crlf
+
+################################
+# Unity-Specific Files (Text Mode)
+################################
+*.asset text eol=lf
+*.mat text eol=lf
+*.meta text eol=lf
+*.prefab text eol=lf
+*.unity text eol=lf
