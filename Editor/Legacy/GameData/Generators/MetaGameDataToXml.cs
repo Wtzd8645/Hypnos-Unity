@@ -1,4 +1,4 @@
-﻿using System.Xml;
+using System.Xml;
 
 namespace Blanketmen.Hypnos.Editor.GameData
 {
@@ -41,7 +41,7 @@ namespace Blanketmen.Hypnos.Editor.GameData
             rootElement.SetAttribute("Length", metadata.rowValues.Count.ToString());
 
             xmlDoc.Save(setting.bytesOutputPath + "/" + metadata.sheetName + XmlExtension);
-            Logging.Info("[MetaGameDataToXml] Generate XML successfully.");
+            Logging.Info("Generate XML successfully.");
         }
     }
 }

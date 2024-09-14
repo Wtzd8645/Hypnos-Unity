@@ -20,7 +20,7 @@ namespace Blanketmen.Hypnos
 
         public override void Reset()
         {
-            Logging.Info($"[UdpSocket] Reset. Id: {id}", (int)LogChannel.Network);
+            Logging.Info($"Reset. Id: {id}", (int)LogChannel.Network);
             socket.Close(); // NOTE: https://docs.microsoft.com/zh-tw/dotnet/api/system.net.sockets.socket.close
             CreateSocket();
             CreateReceiveEventArgs();
@@ -60,7 +60,7 @@ namespace Blanketmen.Hypnos
 
         public override void ReceiveAsync()
         {
-            Logging.Info($"[UdpSocket] ReceiveAsync. Id: {id}", (int)LogChannel.Network);
+            Logging.Info($"ReceiveAsync. Id: {id}", (int)LogChannel.Network);
             receiveEventArgs.SetBuffer(0, receiveBufferSize);
             ReceiveInternalAsync(socket, receiveEventArgs);
         }

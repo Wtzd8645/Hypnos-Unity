@@ -1,4 +1,4 @@
-﻿using Blanketmen.Hypnos.Encryption;
+using Blanketmen.Hypnos.Encryption;
 using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.IO;
@@ -193,7 +193,7 @@ namespace Blanketmen.Hypnos.Editor.GameData
                 provider.GenerateCodeFromCompileUnit(compileUnit, sw, options);
             }
 
-            Logging.Info("[ExcelHandler] Generate C# code successfully.");
+            Logging.Info("Generate C# code successfully.");
         }
     }
 }

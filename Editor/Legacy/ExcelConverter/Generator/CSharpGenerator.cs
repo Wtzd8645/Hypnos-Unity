@@ -1,4 +1,4 @@
-﻿using System.CodeDom;
+using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.IO;
 
@@ -196,7 +196,7 @@ namespace Blanketmen.Hypnos.Editor
                 provider.GenerateCodeFromCompileUnit(compileUnit, sw, options);
             }
 
-            Logging.Info("[ExcelHandler] Generate C# code successfully.");
+            Logging.Info("Generate C# code successfully.");
         }
     }
 }

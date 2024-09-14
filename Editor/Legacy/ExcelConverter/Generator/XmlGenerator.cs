@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Xml;
 
 namespace Blanketmen.Hypnos.Editor
@@ -42,7 +42,7 @@ namespace Blanketmen.Hypnos.Editor
             rootElement.SetAttribute("Length", sheetInfo.totalValueRowCount.ToString());
 
             xmlDoc.Save(outputPath + "/" + sheetInfo.sheetName + XmlExtension);
-            Logging.Info("[XmlGenerator] Generate XML successfully.");
+            Logging.Info("Generate XML successfully.");
         }
     }
 }

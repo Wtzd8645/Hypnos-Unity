@@ -206,7 +206,7 @@ namespace Blanketmen.Hypnos.Editor.Build
                     CoreUtil.CreateCompressor(ResourceManager.AssetConfigCompressor),
                     CoreUtil.CreateEncryptor(ResourceManager.AssetConfigEncryptor));
                 archiver.Save(config, outputPath);
-                Logging.Info($"[AssetEditor] Build FastEditor AssetConfig successfully. OutputPath: {outputPath}");
+                Logging.Info($"Build FastEditor AssetConfig successfully. OutputPath: {outputPath}", (int)LogChannel.Resource);
                 return true;
             }
             catch (Exception e)
@@ -239,7 +239,7 @@ namespace Blanketmen.Hypnos.Editor.Build
             {
                 File.Copy(file, Path.Combine(targetDirectory, Path.GetFileName(file)));
             }
-            Logging.Info($"[AssetEditor] Copy AssetBundles successfully. Version: {editorConfig.version}, Path: {targetDirectory}");
+            Logging.Info($"Copy AssetBundles successfully. Version: {editorConfig.version}, Path: {targetDirectory}", (int)LogChannel.Resource);
         }
 
         private static void CleanAssetBundlesCopy(string targetDirectory)
@@ -248,7 +248,7 @@ namespace Blanketmen.Hypnos.Editor.Build
             {
                 Directory.Delete(targetDirectory, true);
             }
-            Logging.Info($"[AssetEditor] Clean AssetBundles copy successfully. Path: {targetDirectory}");
+            Logging.Info($"Clean AssetBundles copy successfully. Path: {targetDirectory}", (int)LogChannel.Resource);
         }
 
         private static void BuildAssetConfig(AssetEditorConfig editorConfig, EditionConfig editionConfig, IBundleBuildResults buildResults)
@@ -330,7 +330,7 @@ namespace Blanketmen.Hypnos.Editor.Build
             }
 
             BuildAssetConfig(editorConfig, editionConfig, results);
-            Logging.Info($"[AssetEditor] Build AssetBundles successfully. OutputPath: {outputPath}");
+            Logging.Info($"Build AssetBundles successfully. OutputPath: {outputPath}", (int)LogChannel.Resource);
             return true;
         }
     }

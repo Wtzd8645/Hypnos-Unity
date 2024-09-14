@@ -241,7 +241,7 @@ namespace Blanketmen.Hypnos.UI
                 canvasSize.x * safeAreaRatio.width,
                 canvasSize.y * safeAreaRatio.height);
 
-            Logging.Info($"[UiManager] CanvasSafeArea: {CanvasSafeArea}", (int)LogChannel.UI);
+            Logging.Info($"CanvasSafeArea: {CanvasSafeArea}", (int)LogChannel.UI);
         }
     }
 }

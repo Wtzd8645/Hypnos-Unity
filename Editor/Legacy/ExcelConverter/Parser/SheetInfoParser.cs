@@ -36,7 +36,7 @@ namespace Blanketmen.Hypnos.Editor
         {
             if (workbook == null)
             {
-                Logging.Info("[ExcelParser] Workbook is null.");
+                Logging.Info("Workbook is null.");
                 return new List<SheetInfo>();
             }
 

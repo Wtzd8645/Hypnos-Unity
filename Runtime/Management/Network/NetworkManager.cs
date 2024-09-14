@@ -138,7 +138,7 @@ namespace Blanketmen.Hypnos
             connectionMap.TryGetValue(connectionId, out IConnection conn);
             if (conn == null)
             {
-                Logging.Info($"[NetworkManager] Can't find socket to connect. ConnectionId: {connectionId}", (int)LogChannel.Network);
+                Logging.Info($"Can't find socket to connect. ConnectionId: {connectionId}", (int)LogChannel.Network);
                 return;
             }
 
@@ -150,7 +150,7 @@ namespace Blanketmen.Hypnos
             connectionMap.TryGetValue(connectionId, out IConnection conn);
             if (conn == null)
             {
-                Logging.Info($"[NetworkManager] Can't find socket to disconnect. ConnectionId: {connectionId}", (int)LogChannel.Network);
+                Logging.Info($"Can't find socket to disconnect. ConnectionId: {connectionId}", (int)LogChannel.Network);
                 return;
             }
 
@@ -162,7 +162,7 @@ namespace Blanketmen.Hypnos
             connectionMap.TryGetValue(connectionId, out IConnection conn);
             if (conn == null)
             {
-                Logging.Info($"[NetworkManager] Can't find socket to send request. ConnectionId: {connectionId}", (int)LogChannel.Network);
+                Logging.Info($"Can't find socket to send request. ConnectionId: {connectionId}", (int)LogChannel.Network);
                 return;
             }
 
@@ -172,7 +172,7 @@ namespace Blanketmen.Hypnos
         // NOTE: May be called by multiple threads.
         private void OnConnectionAoComplete(IConnection conn, SocketAsyncOperation operation, SocketError socketError)
         {
-            Logging.Info($"[NetworkManager] OnConnectionAoComplete. ConnectionId: {conn.Id}, Operation: {operation}, Error: {socketError}", (int)LogChannel.Network);
+            Logging.Info($"OnConnectionAoComplete. ConnectionId: {conn.Id}, Operation: {operation}, Error: {socketError}", (int)LogChannel.Network);
             ConnectionEventArgs args = new ConnectionEventArgs()
             {
                 connection = conn,

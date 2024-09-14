@@ -133,14 +133,14 @@ namespace Blanketmen.Hypnos.Editor
                 ICell cell = iRow.GetCell(i);
                 if (cell == null)
                 {
-                    Logging.Info("[ExcelHandler] Type row has " + (i - 1) + " column.");
+                    Logging.Info("Type row has " + (i - 1) + " column.");
                     return;
                 }
 
                 str = GetCellString(cell);
                 if (string.IsNullOrEmpty(str))
                 {
-                    Logging.Info("[ExcelHandler] Type row has " + (i - 1) + " column.");
+                    Logging.Info("Type row has " + (i - 1) + " column.");
                     return;
                 }
 
@@ -166,14 +166,14 @@ namespace Blanketmen.Hypnos.Editor
                 ICell cell = iRow.GetCell(i);
                 if (cell == null)
                 {
-                    Logging.Info("[ExcelHandler] Name row has " + (i - 1) + " column.");
+                    Logging.Info("Name row has " + (i - 1) + " column.");
                     return;
                 }
 
                 str = GetCellString(cell);
                 if (string.IsNullOrEmpty(str))
                 {
-                    Logging.Info("[ExcelHandler] Name row has " + (i - 1) + " column.");
+                    Logging.Info("Name row has " + (i - 1) + " column.");
                     return;
                 }
 
@@ -370,12 +370,12 @@ namespace Blanketmen.Hypnos.Editor
                     using FileStream fs = new FileStream(bytesOutputPath + "/" + mainSheet.SheetName + ".bytes", FileMode.Create);
                     //EncryptionUtil.EncodeByAES(fs, ms);
                 }
-                Logging.Info("[ExcelHandler] Generate encrypted XML successfully.");
+                Logging.Info("Generate encrypted XML successfully.");
             }
             else
             {
                 iXMLDoc.Save(bytesOutputPath + "/" + mainSheet.SheetName + ".xml");
-                Logging.Info("[ExcelHandler] Generate XML successfully.");
+                Logging.Info("Generate XML successfully.");
             }
         }
 
@@ -557,7 +557,7 @@ namespace Blanketmen.Hypnos.Editor
                 using StreamWriter sw = new StreamWriter(fs);
                 provider.GenerateCodeFromCompileUnit(compileUnit, sw, options);
             }
-            Logging.Info("[ExcelHandler] Generate C# code successfully.");
+            Logging.Info("Generate C# code successfully.");
         }
     }
 }

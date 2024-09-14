@@ -41,7 +41,7 @@ namespace Blanketmen.Hypnos.Audio
         {
             if (Microphone.IsRecording(deviceName))
             {
-                Logging.Info($"[AudioManager] Device is recording. Device: {deviceName}", (int)LogChannel.Audio);
+                Logging.Info($"Device is recording. Device: {deviceName}", (int)LogChannel.Audio);
                 return;
             }
 
@@ -58,7 +58,7 @@ namespace Blanketmen.Hypnos.Audio
         {
             if (!Microphone.IsRecording(deviceName))
             {
-                Logging.Info($"[AudioManager] Device isn't recording. Device: {deviceName}", (int)LogChannel.Audio);
+                Logging.Info($"Device isn't recording. Device: {deviceName}", (int)LogChannel.Audio);
                 return new byte[0];
             }
 

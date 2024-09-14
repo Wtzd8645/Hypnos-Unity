@@ -35,7 +35,7 @@ namespace Blanketmen.Hypnos
 
         public override void Reset()
         {
-            Logging.Info($"[TcpSocket] Reset. Id: {id}", (int)LogChannel.Network);
+            Logging.Info($"Reset. Id: {id}", (int)LogChannel.Network);
             socket.Close(); // NOTE: https://docs.microsoft.com/zh-tw/dotnet/api/system.net.sockets.socket.close
             CreateSocket();
             CreateReceiveEventArgs();
@@ -57,7 +57,7 @@ namespace Blanketmen.Hypnos
         {
             try
             {
-                Logging.Info($"[TcpSocket] ConnectAsync. Id: {id}", (int)LogChannel.Network);
+                Logging.Info($"ConnectAsync. Id: {id}", (int)LogChannel.Network);
                 if (socket.Connected)
                 {
                     onConnectionAoComplete(this, SocketAsyncOperation.Connect, SocketError.IsConnected);
@@ -80,7 +80,7 @@ namespace Blanketmen.Hypnos
         {
             try
             {
-                Logging.Info($"[TcpSocket] DisconnectAsync. Id: {id}", (int)LogChannel.Network);
+                Logging.Info($"DisconnectAsync. Id: {id}", (int)LogChannel.Network);
                 if (!socket.Connected)
                 {
                     onConnectionAoComplete(this, SocketAsyncOperation.Disconnect, SocketError.NotConnected);
@@ -107,7 +107,7 @@ namespace Blanketmen.Hypnos
 
         public override void ReceiveAsync()
         {
-            Logging.Info($"[TcpSocket] ReceiveAsync. Id: {id}", (int)LogChannel.Network);
+            Logging.Info($"ReceiveAsync. Id: {id}", (int)LogChannel.Network);
             ReceiveInternalAsync(socket, receiveEventArgs);
         }
 

@@ -64,7 +64,7 @@ namespace Blanketmen.Hypnos.Editor.GameData
 
             if (workbook == null)
             {
-                Logging.Info("[ExcelToMetaGameData] Workbook is null.");
+                Logging.Info("Workbook is null.");
                 return;
             }
 
