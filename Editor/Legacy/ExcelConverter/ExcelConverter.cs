@@ -1,4 +1,4 @@
-﻿using NPOI.HSSF.UserModel;
+using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System;
@@ -46,7 +46,7 @@ namespace Blanketmen.Hypnos.Editor
                         workbook = new XSSFWorkbook(fs);
                         break;
                     default:
-                        Logging.Error($"[ExcelConverter] The file is not xls or xlsx format. File: {fileName}");
+                        Logging.Error($"The file is not xls or xlsx format. File: {fileName}", nameof(ExcelConverter));
                         return null;
                 }
 
@@ -54,7 +54,7 @@ namespace Blanketmen.Hypnos.Editor
             }
             catch (Exception e)
             {
-                Logging.Error($"[ExcelConverter] {e.Message}");
+                Logging.Error($"{e.Message}", nameof(ExcelConverter));
                 return null;
             }
             finally

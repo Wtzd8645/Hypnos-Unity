@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net.Sockets;
 
 namespace Blanketmen.Hypnos
@@ -76,7 +76,7 @@ namespace Blanketmen.Hypnos
             }
             catch (Exception e)
             {
-                Logging.Error($"[UdpSocket] ReceiveAsync failed. Id: {id}, Exception: {e.Message}");
+                Logging.Error($"ReceiveAsync failed. Id: {id}, Exception: {e.Message}", nameof(UdpSocket));
                 onConnectionAoComplete(this, SocketAsyncOperation.Receive, evtArgs.SocketError);
             }
         }
@@ -104,7 +104,7 @@ namespace Blanketmen.Hypnos
             }
             catch (Exception e)
             {
-                Logging.Error($"[UdpSocket] Socket {id} create message failed. Exception: {e.Message}");
+                Logging.Error($"Socket {id} create message failed. Exception: {e.Message}", nameof(UdpSocket));
                 onConnectionAoComplete(this, SocketAsyncOperation.Receive, SocketError.TypeNotFound);
             }
 
@@ -158,7 +158,7 @@ namespace Blanketmen.Hypnos
             }
             catch (Exception e)
             {
-                Logging.Error($"[UdpSocket] SendAsync failed. Id: {id}, Exception: {e.Message}");
+                Logging.Error($"SendAsync failed. Id: {id}, Exception: {e.Message}", nameof(UdpSocket));
                 onConnectionAoComplete(this, SocketAsyncOperation.Send, SocketError.SocketError);
             }
         }

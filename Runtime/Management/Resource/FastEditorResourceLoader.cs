@@ -1,4 +1,4 @@
-﻿#if UNITY_EDITOR
+#if UNITY_EDITOR
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
@@ -37,7 +37,7 @@ namespace Blanketmen.Hypnos
             assetInstMap.TryGetValue(assetId, out AssetInst assetInst);
             if (assetInst == null)
             {
-                Logging.Error($"[FastEditorResourceLoader] Can't find AssetInst. AssetId: {assetId}");
+                Logging.Error($"Can't find AssetInst. AssetId: {assetId}", nameof(FastEditorResourceLoader));
                 return null;
             }
 
@@ -55,7 +55,7 @@ namespace Blanketmen.Hypnos
             assetInstMap.TryGetValue(assetId, out AssetInst assetInst);
             if (assetInst == null)
             {
-                Logging.Error($"[FastEditorResourceLoader] Can't find AssetInst. AssetId: {assetId}");
+                Logging.Error($"Can't find AssetInst. AssetId: {assetId}", nameof(FastEditorResourceLoader));
                 completeCb?.Invoke(null);
                 yield break;
             }
@@ -75,7 +75,7 @@ namespace Blanketmen.Hypnos
             assetInstMap.TryGetValue(assetId, out AssetInst assetInst);
             if (assetInst == null)
             {
-                Logging.Error($"[FastEditorResourceLoader] AssetInst is in an error state. AssetId: {assetId}");
+                Logging.Error($"AssetInst is in an error state. AssetId: {assetId}", nameof(FastEditorResourceLoader));
                 return;
             }
 

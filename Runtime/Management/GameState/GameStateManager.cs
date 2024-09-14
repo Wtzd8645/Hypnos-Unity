@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -29,16 +29,15 @@ namespace Blanketmen.Hypnos
             for (int i = 0; i < config.gameStates.Length; ++i)
             {
                 GameStateBase state = config.gameStates[i];
-                ClassIdentityAttribute attr = Attribute.GetCustomAttribute(state.GetType(), attrType) as ClassIdentityAttribute;
-                if (attr == null)
+                if (Attribute.GetCustomAttribute(state.GetType(), attrType) is not ClassIdentityAttribute attr)
                 {
-                    Logging.Error($"[GameStateManager] GameState has no attribute. Class: {state}");
+                    Logging.Error($"There is no ClassIdentityAttribute on GameState. Class: {state}", nameof(GameStateManager));
                     continue;
                 }
 
                 if (stateMap.ContainsKey(attr.Id))
                 {
-                    Logging.Error($"[GameStateManager] Duplicated GameState Id: {attr.Id}");
+                    Logging.Error($"Duplicated GameState Id: {attr.Id}", nameof(GameStateManager));
                     continue;
                 }
 
@@ -52,7 +51,7 @@ namespace Blanketmen.Hypnos
         {
             if (currentState != null)
             {
-                Logging.Error($"[GameStateManager] GameStateManager has started.");
+                Logging.Error($"GameStateManager has started.", nameof(GameStateManager));
                 return;
             }
 
@@ -73,7 +72,7 @@ namespace Blanketmen.Hypnos
         {
             if (isTransiting)
             {
-                Logging.Error($"[GameStateManager] GameState is transiting. TargetState: {stateId}");
+                Logging.Error($"GameState is transiting. TargetState: {stateId}", nameof(GameStateManager));
                 return;
             }
 

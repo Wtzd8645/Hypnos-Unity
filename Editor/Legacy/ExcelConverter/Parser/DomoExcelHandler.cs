@@ -1,4 +1,4 @@
-﻿using Blanketmen.Hypnos.Encryption;
+using Blanketmen.Hypnos.Encryption;
 using NPOI.SS.UserModel;
 using System;
 using System.CodeDom;
@@ -63,7 +63,7 @@ namespace Blanketmen.Hypnos.Editor
 
             if (mainSheet == null)
             {
-                Logging.Error("[ExcelHandler] Can't find main sheet.");
+                Logging.Error("Can't find main sheet.", nameof(DomoExcelHandler));
                 return false;
             }
 
@@ -108,13 +108,13 @@ namespace Blanketmen.Hypnos.Editor
 
             if ((varTypeList.Count != varNameList.Count) || (varTypeList.Count == 0) || (varNameList.Count == 0))
             {
-                Logging.Error("[ExcelHandler] Column num not valid. Type: " + varTypeList.Count + " Name: " + varNameList.Count);
+                Logging.Error("Column num not valid. Type: " + varTypeList.Count + " Name: " + varNameList.Count, nameof(DomoExcelHandler));
                 return false;
             }
 
             if (rowCount > lastRowNumber)
             {
-                Logging.Error("[ExcelHandler] No data row to parse. LastRowNum: " + lastRowNumber);
+                Logging.Error("No data row to parse. LastRowNum: " + lastRowNumber, nameof(DomoExcelHandler));
                 return false;
             }
 
@@ -147,7 +147,7 @@ namespace Blanketmen.Hypnos.Editor
                 Type type = Type.GetType("System." + str);
                 if (type == null)
                 {
-                    Logging.Error("[ExcelHandler] Can't find type at column " + (i - 1));
+                    Logging.Error("Can't find type at column " + (i - 1), nameof(DomoExcelHandler));
                     return;
                 }
 
@@ -179,7 +179,7 @@ namespace Blanketmen.Hypnos.Editor
 
                 if (varNameList.Contains(str))
                 {
-                    Logging.Error("[ExcelHandler] Name is duplicate at " + (i - 1) + " column.");
+                    Logging.Error("Name is duplicate at " + (i - 1) + " column.", nameof(DomoExcelHandler));
                     return;
                 }
 
@@ -191,13 +191,13 @@ namespace Blanketmen.Hypnos.Editor
         {
             if ((varTypeList.Count != varNameList.Count) || (varTypeList.Count == 0) || (varNameList.Count == 0))
             {
-                Logging.Error("[ExcelHandler] Column num not valid. Type: " + varTypeList.Count + " Name: " + varNameList.Count);
+                Logging.Error("Column num not valid. Type: " + varTypeList.Count + " Name: " + varNameList.Count, nameof(DomoExcelHandler));
                 return;
             }
 
             if (firstValueRow > lastRowNumber)
             {
-                Logging.Error("[ExcelHandler] No data row to parse. LastRowNum: " + lastRowNumber);
+                Logging.Error("No data row to parse. LastRowNum: " + lastRowNumber, nameof(DomoExcelHandler));
                 return;
             }
 
@@ -243,7 +243,7 @@ namespace Blanketmen.Hypnos.Editor
 
                 if (!VerificateValue(KeyType, key))
                 {
-                    Logging.Error("[ExcelHandler] Verificate value failed. [" + rowCount + ", " + 0 + "]");
+                    Logging.Error("Verificate value failed. [" + rowCount + ", " + 0 + "]", nameof(DomoExcelHandler));
                     return;
                 }
 
@@ -269,7 +269,7 @@ namespace Blanketmen.Hypnos.Editor
                     }
                     else
                     {
-                        Logging.Error("[ExcelHandler] Verificate value failed at [" + rowCount + ", " + i + "]");
+                        Logging.Error("Verificate value failed at [" + rowCount + ", " + i + "]", nameof(DomoExcelHandler));
                         return;
                     }
                 }

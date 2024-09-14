@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -163,7 +163,7 @@ namespace Blanketmen.Hypnos.UI
             BindingResourceAttribute attr = GetBindingResourceAttribute(uiType);
             if (attr == null)
             {
-                Logging.Error($"[UiManager] The type does not have BindingResourceAttribute. Type: {uiType}");
+                Logging.Error($"The type does not have BindingResourceAttribute. Type: {uiType}", nameof(UiManager));
                 loadedCb(null);
                 return;
             }
@@ -202,7 +202,7 @@ namespace Blanketmen.Hypnos.UI
             BindingResourceAttribute attr = GetBindingResourceAttribute(uiType);
             if (attr == null)
             {
-                Logging.Error($"[UiManager] The type does not have BindingResourceAttribute. Type: {uiType}");
+                Logging.Error($"The type does not have BindingResourceAttribute. Type: {uiType}", nameof(UiManager));
                 completeCb(null);
                 return;
             }

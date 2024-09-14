@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
-using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -210,7 +209,7 @@ namespace Blanketmen.Hypnos.Editor.Build
         {
             if (selectedEditionitem == null)
             {
-                Logging.Error($"[BuildEditor] There is no edition seleted.");
+                Logging.Error($"There is no edition seleted.", nameof(BuildEditor));
                 return;
             }
 

@@ -1,4 +1,4 @@
-﻿using NPOI.SS.UserModel;
+using NPOI.SS.UserModel;
 using System;
 using System.Collections.Generic;
 
@@ -160,7 +160,7 @@ namespace Blanketmen.Hypnos.Editor
 
                 if (fieldInfos.Contains(fieldInfo))
                 {
-                    Logging.Error($"[ExcelParser] FieldName is duplicate at column {i - 1}. Sheet: {sheetInfo.sheetName}");
+                    Logging.Error($"FieldName is duplicate at column {i - 1}. Sheet: {sheetInfo.sheetName}", nameof(SheetInfoParser));
                     continue;
                 }
 

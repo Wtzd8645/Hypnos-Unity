@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -51,7 +51,7 @@ namespace Blanketmen.Hypnos.Editor.Build
             }
             catch (Exception e)
             {
-                Logging.Error($"[AssetEditor] Save AssetConfig failed. Exception: {e.Message}");
+                Logging.Error($"Save AssetConfig failed. Exception: {e.Message}", nameof(AssetEditor));
             }
         }
 
@@ -211,7 +211,7 @@ namespace Blanketmen.Hypnos.Editor.Build
             }
             catch (Exception e)
             {
-                Logging.Error($"[AssetEditor] Build FastEditor AssetConfig failed. Exception: {e.Message}");
+                Logging.Error($"Build FastEditor AssetConfig failed. Exception: {e.Message}", nameof(AssetEditor));
                 return false;
             }
         }
@@ -220,14 +220,14 @@ namespace Blanketmen.Hypnos.Editor.Build
         {
             if (editorConfig == null || editionConfig == null)
             {
-                Logging.Error("[AssetEditor] AssetEditorConfig or EditionConfig is null.");
+                Logging.Error("AssetEditorConfig or EditionConfig is null.", nameof(AssetEditor));
                 return;
             }
 
             string assetBundlesDir = GetAssetBundlesOutputPath(editorConfig, editionConfig);
             if (!Directory.Exists(assetBundlesDir))
             {
-                Logging.Error($"[AssetEditor] Assetbundles directory does not exist. Version: {editorConfig.version}, Path: {assetBundlesDir}");
+                Logging.Error($"Assetbundles directory does not exist. Version: {editorConfig.version}, Path: {assetBundlesDir}", nameof(AssetEditor));
                 return;
             }
 
@@ -301,7 +301,7 @@ namespace Blanketmen.Hypnos.Editor.Build
             }
             catch (Exception e)
             {
-                Logging.Error($"[AssetEditor] Build AssetConfig failed. Exception: {e.Message}");
+                Logging.Error($"Build AssetConfig failed. Exception: {e.Message}", nameof(AssetEditor));
             }
         }
 
@@ -325,7 +325,7 @@ namespace Blanketmen.Hypnos.Editor.Build
                 GetAssetBundleBuildTasks());
             if (errorCode != ReturnCode.Success)
             {
-                Logging.Error($"[AssetEditor] Build AssetBundles failed. ErrorCode: {errorCode}");
+                Logging.Error($"Build AssetBundles failed. ErrorCode: {errorCode}", nameof(AssetEditor));
                 return false;
             }
 

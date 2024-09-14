@@ -1,4 +1,4 @@
-﻿namespace Blanketmen.Hypnos
+namespace Blanketmen.Hypnos
 {
     internal class AssetInst
     {
@@ -17,7 +17,7 @@
 
             if (refCount < 0)
             {
-                Logging.Error($"[AssetInst] Reference count is abnormal. AssetId: {assetId}");
+                Logging.Error($"Reference count is abnormal. AssetId: {assetId}", nameof(AssetInst));
                 asset = null;
                 refCount = 0;
                 return false;

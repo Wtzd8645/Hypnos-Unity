@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -168,7 +168,7 @@ namespace Blanketmen.Hypnos.Editor
         {
             if (setting == null)
             {
-                Logging.Error("[ExcelConverterWindow] setting is null.");
+                Logging.Error("setting is null.", nameof(ExcelConverterWindow));
                 return;
             }
 
@@ -180,7 +180,7 @@ namespace Blanketmen.Hypnos.Editor
             }
             catch (Exception e)
             {
-                Logging.Error($"[ExcelConverterWindow] {e.Message}");
+                Logging.Error($"{e.Message}", nameof(ExcelConverterWindow));
                 return;
             }
 
@@ -202,7 +202,7 @@ namespace Blanketmen.Hypnos.Editor
         {
             if (string.IsNullOrEmpty(setting.bytesOutputPath))
             {
-                Logging.Error("[ExcelConverterWindow] Output path is empty.");
+                Logging.Error("Output path is empty.", nameof(ExcelConverterWindow));
                 return;
             }
 

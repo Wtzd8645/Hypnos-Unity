@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Net.Sockets;
 
 namespace Blanketmen.Hypnos
@@ -71,7 +71,7 @@ namespace Blanketmen.Hypnos
             }
             catch (Exception e)
             {
-                Logging.Error($"[TcpSocket] ConnectAsync failed. Id: {id}, Exception: {e.Message}");
+                Logging.Error($"ConnectAsync failed. Id: {id}, Exception: {e.Message}", nameof(TcpSocket));
                 onConnectionAoComplete(this, SocketAsyncOperation.Connect, SocketError.SocketError);
             }
         }
@@ -95,7 +95,7 @@ namespace Blanketmen.Hypnos
             }
             catch (Exception e)
             {
-                Logging.Error($"[TcpSocket] DisconnectAsync failed. Id: {id}, Exception: {e.Message}");
+                Logging.Error($"DisconnectAsync failed. Id: {id}, Exception: {e.Message}", nameof(TcpSocket));
                 onConnectionAoComplete(this, SocketAsyncOperation.Disconnect, SocketError.SocketError);
             }
         }
@@ -122,7 +122,7 @@ namespace Blanketmen.Hypnos
             }
             catch (Exception e)
             {
-                Logging.Error($"[TcpSocket] ReceiveAsync failed. Id: {id}, Exception: {e.Message}");
+                Logging.Error($"ReceiveAsync failed. Id: {id}, Exception: {e.Message}", nameof(TcpSocket));
                 onConnectionAoComplete(this, SocketAsyncOperation.Receive, SocketError.SocketError);
             }
         }
@@ -162,7 +162,7 @@ namespace Blanketmen.Hypnos
                 }
                 catch (Exception e)
                 {
-                    Logging.Error($"[TcpSocket] Socket {id} create message failed. Exception: {e.Message}");
+                    Logging.Error($"Socket {id} create message failed. Exception: {e.Message}", nameof(TcpSocket));
                     onConnectionAoComplete(this, SocketAsyncOperation.Receive, SocketError.TypeNotFound);
                 }
                 finally
@@ -235,7 +235,7 @@ namespace Blanketmen.Hypnos
             }
             catch (Exception e)
             {
-                Logging.Error($"[TcpSocket] SendAsync failed. Id: {id}, Exception: {e.Message}");
+                Logging.Error($"SendAsync failed. Id: {id}, Exception: {e.Message}", nameof(TcpSocket));
                 onConnectionAoComplete(this, SocketAsyncOperation.Send, evtArgs.SocketError);
             }
         }

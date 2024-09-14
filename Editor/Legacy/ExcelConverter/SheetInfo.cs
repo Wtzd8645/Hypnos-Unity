@@ -1,4 +1,4 @@
-﻿using NPOI.SS.UserModel;
+using NPOI.SS.UserModel;
 using System;
 using System.Collections.Generic;
 
@@ -47,13 +47,13 @@ namespace Blanketmen.Hypnos.Editor
         {
             if (string.IsNullOrEmpty(className))
             {
-                Logging.Error($"[SheetInfo] Class name is not valid. Sheet: {sheetName}");
+                Logging.Error($"Class name is not valid. Sheet: {sheetName}", nameof(SheetInfo));
                 return false;
             }
 
             if (fieldInfos.Count == 0)
             {
-                Logging.Error($"[SheetInfo] Field info is not valid. Sheet: {sheetName}");
+                Logging.Error($"Field info is not valid. Sheet: {sheetName}", nameof(SheetInfo));
                 return false;
             }
 
@@ -65,7 +65,7 @@ namespace Blanketmen.Hypnos.Editor
         {
             if (firstValueRowIndex > LastRowIndex)
             {
-                Logging.Error($"[SheetInfo] {sheetName} No data row to parse. LastRowNum: {LastRowIndex}");
+                Logging.Error($"{sheetName} No data row to parse. LastRowNum: {LastRowIndex}", nameof(SheetInfo));
                 return false;
             }
             return true;

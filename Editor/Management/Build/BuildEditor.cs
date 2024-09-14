@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -43,7 +43,7 @@ namespace Blanketmen.Hypnos.Editor.Build
             }
             catch (Exception e)
             {
-                Logging.Error($"[BuildEditor] Save BuildConfig failed. Exception: {e.Message}");
+                Logging.Error($"Save BuildConfig failed. Exception: {e.Message}", nameof(BuildEditor));
             }
         }
 

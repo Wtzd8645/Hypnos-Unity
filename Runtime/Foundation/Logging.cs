@@ -47,9 +47,9 @@ namespace Blanketmen.Hypnos
             }
         }
 
-        public static void Error(string msg, [CallerMemberName] string name = "", [CallerFilePath] string filePath = "", [CallerLineNumber] int lineNum = 0)
+        public static void Error(string msg, string caller, [CallerMemberName] string menberName = "")
         {
-            UnityEngine.Debug.LogError($"{msg}\n{name}\n{filePath}:{lineNum}");
+            UnityEngine.Debug.LogError($"[{caller.GetType().FullName}][{menberName}] {msg}");
         }
 
         public static void Assert(bool condition, string message)

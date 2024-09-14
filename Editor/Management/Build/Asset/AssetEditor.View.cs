@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using UnityEditor;
 using UnityEditor.IMGUI.Controls;
 using UnityEditor.UIElements;
@@ -52,14 +52,14 @@ namespace Blanketmen.Hypnos.Editor.Build
         {
             if (editionConfig == null)
             {
-                Logging.Error("[AssetEditor] EditionConfig is null.");
+                Logging.Error("EditionConfig is null.", nameof(AssetEditor));
                 return null;
             }
 
             AssetEditorConfig editorConfig = new AssetEditorConfig();
             if (!int.TryParse(versionField.value, out editorConfig.version))
             {
-                Logging.Error("[AssetEditor] AssetEditorConfig version can only be an integer.");
+                Logging.Error("AssetEditorConfig version can only be an integer.", nameof(AssetEditor));
             }
             editorConfig.groupDatas = assetGroupTreeView.FetchData();
             return editorConfig;
@@ -171,7 +171,7 @@ namespace Blanketmen.Hypnos.Editor.Build
         {
             if (editionConfig == null)
             {
-                Logging.Error("[AssetEditor] The editionData is null, please reopen the window.");
+                Logging.Error("The edition config is null, please reopen the window.", nameof(AssetEditor));
                 return;
             }
 
@@ -201,7 +201,7 @@ namespace Blanketmen.Hypnos.Editor.Build
             AssetEditorConfig editorConfig = new AssetEditorConfig();
             if (!int.TryParse(versionField.value, out editorConfig.version))
             {
-                Logging.Error("[AssetEditor] AssetEditorConfig version can only be an integer.");
+                Logging.Error("AssetEditorConfig version can only be an integer.", nameof(AssetEditor));
                 return;
             }
 
@@ -222,7 +222,7 @@ namespace Blanketmen.Hypnos.Editor.Build
             AssetEditorConfig editorConfig = new AssetEditorConfig();
             if (!int.TryParse(versionField.value, out editorConfig.version))
             {
-                Logging.Error("[AssetEditor] AssetEditorConfig version can only be an integer.");
+                Logging.Error("AssetEditorConfig version can only be an integer.", nameof(AssetEditor));
                 return;
             }
 

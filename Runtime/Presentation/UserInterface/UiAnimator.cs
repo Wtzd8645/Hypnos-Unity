@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 
 namespace Blanketmen.Hypnos.UI
@@ -77,7 +77,7 @@ namespace Blanketmen.Hypnos.UI
                 }
                 default:
                 {
-                    Logging.Error($"[UiAnimator] Unexpected clip: {clip.ToString() + suffix}");
+                    Logging.Error($"Unexpected clip: {clip.ToString() + suffix}", nameof(UiAnimator));
                     return;
                 }
             }

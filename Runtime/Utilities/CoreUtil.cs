@@ -1,4 +1,4 @@
-﻿using Blanketmen.Hypnos.Compression;
+using Blanketmen.Hypnos.Compression;
 using Blanketmen.Hypnos.Encryption;
 using Blanketmen.Hypnos.Serialization;
 
@@ -46,7 +46,7 @@ namespace Blanketmen.Hypnos
                 }
                 default:
                 {
-                    Logging.Error($"[Utility] Serializer not implemented. Type: {type}");
+                    Logging.Error($"Serializer not implemented. Type: {type}", nameof(CoreUtil));
                     return null;
                 }
             }
@@ -62,7 +62,7 @@ namespace Blanketmen.Hypnos
                 }
                 default:
                 {
-                    Logging.Error($"[Utility] Compressor not implemented. Type: {type}");
+                    Logging.Error($"Compressor not implemented. Type: {type}", nameof(CoreUtil));
                     return null;
                 }
             }
@@ -78,7 +78,7 @@ namespace Blanketmen.Hypnos
                 }
                 default:
                 {
-                    Logging.Error($"[Utility] Encryptor not implemented. Type: {type}");
+                    Logging.Error($"Encryptor not implemented. Type: {type}", nameof(CoreUtil));
                     return null;
                 }
             }

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEditor;
@@ -208,7 +208,7 @@ namespace Blanketmen.Hypnos.Editor.Build
 
                 if (!groupIdSet.Add(args.newName))
                 {
-                    Logging.Error($"[AssetTreeView] GroupId can't be duplicate. GroupId: {args.newName}");
+                    Logging.Error($"GroupId can't be duplicate. GroupId: {args.newName}", nameof(AssetTreeView));
                     return;
                 }
 
@@ -226,7 +226,7 @@ namespace Blanketmen.Hypnos.Editor.Build
 
                 if (!assetIdSet.Add(args.newName))
                 {
-                    Logging.Error($"[AssetTreeView] AssetId can't be duplicate. AssetId: {args.newName}");
+                    Logging.Error($"AssetId can't be duplicate. AssetId: {args.newName}", nameof(AssetTreeView));
                     return;
                 }
 
@@ -337,7 +337,7 @@ namespace Blanketmen.Hypnos.Editor.Build
         {
             if (!groupIdSet.Add(data.groupId))
             {
-                Logging.Error($"Duplicate group id are not allowed. GroupId: {data.groupId}");
+                Logging.Error($"Duplicate group id are not allowed. GroupId: {data.groupId}", nameof(AssetTreeView));
                 return;
             }
 
@@ -429,7 +429,7 @@ namespace Blanketmen.Hypnos.Editor.Build
         {
             if (!assetPathSet.Add(data.assetPath))
             {
-                Logging.Error($"Duplicate assets are not allowed. AssetPath: {data.assetPath}");
+                Logging.Error($"Duplicate assets are not allowed. AssetPath: {data.assetPath}", nameof(AssetTreeView));
                 return;
             }
 

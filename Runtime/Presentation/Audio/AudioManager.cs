@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -66,7 +66,7 @@ namespace Blanketmen.Hypnos.Audio
             microphoneClipMap.TryGetValue(deviceName, out AudioClip clip);
             if (clip == null)
             {
-                Logging.Error($"[AudioManager] The recorded audio clip is null. Device: {deviceName}");
+                Logging.Error($"The recorded audio clip is null. Device: {deviceName}", nameof(AudioManager));
                 return new byte[0];
             }
 

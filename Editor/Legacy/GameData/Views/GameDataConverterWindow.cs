@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEditor;
@@ -170,7 +170,7 @@ namespace Blanketmen.Hypnos.Editor.GameData
         {
             if (setting == null)
             {
-                Logging.Error("[GameDataConverterWindow] GameDataConverterSetting is null.");
+                Logging.Error("GameDataConverterSetting is null.", nameof(GameDataConverterWindow));
                 return;
             }
 
@@ -182,7 +182,7 @@ namespace Blanketmen.Hypnos.Editor.GameData
             }
             catch (Exception e)
             {
-                Logging.Error($"[GameDataConverterWindow] {e.Message}");
+                Logging.Error($"{e.Message}", nameof(GameDataConverterWindow));
                 return;
             }
 
@@ -196,7 +196,7 @@ namespace Blanketmen.Hypnos.Editor.GameData
         {
             if (setting == null)
             {
-                Logging.Error("[GameDataConverterWindow] GameDataConverterSetting is null.");
+                Logging.Error("GameDataConverterSetting is null.", nameof(GameDataConverterWindow));
                 return;
             }
 

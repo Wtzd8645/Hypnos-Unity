@@ -1,4 +1,4 @@
-﻿using Blanketmen.Hypnos.Mediation;
+using Blanketmen.Hypnos.Mediation;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
@@ -80,7 +80,7 @@ namespace Blanketmen.Hypnos
         {
             if (connectionMap.ContainsKey(config.id))
             {
-                Logging.Error($"[NetworkManager] Connection is duplicate. ConnectionId: {config.id}");
+                Logging.Error($"Connection is duplicate. ConnectionId: {config.id}", nameof(NetworkManager));
                 return;
             }
 
@@ -115,7 +115,7 @@ namespace Blanketmen.Hypnos
                 }
                 default:
                 {
-                    Logging.Error($"[NetworkManager] Protocol not implemented. ConnectionId: {config.id}, Protocol: {transportConfig.protocol}");
+                    Logging.Error($"Protocol not implemented. ConnectionId: {config.id}, Protocol: {transportConfig.protocol}", nameof(NetworkManager));
                     break;
                 }
             }

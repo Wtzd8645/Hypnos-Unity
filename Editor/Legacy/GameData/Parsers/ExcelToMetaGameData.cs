@@ -1,4 +1,4 @@
-﻿using NPOI.HSSF.UserModel;
+using NPOI.HSSF.UserModel;
 using NPOI.SS.UserModel;
 using NPOI.XSSF.UserModel;
 using System;
@@ -57,7 +57,7 @@ namespace Blanketmen.Hypnos.Editor.GameData
                         workbook = new XSSFWorkbook(fs);
                         break;
                     default:
-                        Logging.Error($"[ExcelToMetaGameData] The file is not xls or xlsx format. File: {fileName}");
+                        Logging.Error($"The file is not xls or xlsx format. File: {fileName}", nameof(ExcelToMetaGameData));
                         break;
                 }
             }

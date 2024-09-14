@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using UnityEngine;
 
 namespace Blanketmen.Hypnos
@@ -23,14 +23,14 @@ namespace Blanketmen.Hypnos
 
             if (isLoading)
             {
-                Logging.Error($"[AssetGroupInst] AssetBundle is already loading asynchronously. GroupId: {groupId}");
+                Logging.Error($"The assetBundle is already loading asynchronously. GroupId: {groupId}", nameof(AssetGroupInst));
                 return;
             }
 
             bundle = AssetBundle.LoadFromFile(filePath, 0u, fileOffset);
             if (bundle == null)
             {
-                Logging.Error($"[AssetGroupInst] Can't load AssetBundle from file. GroupId: {groupId}, FilePath: {filePath}, FileOffset: {fileOffset}");
+                Logging.Error($"Can't load AssetBundle from file. GroupId: {groupId}, FilePath: {filePath}, FileOffset: {fileOffset}", nameof(AssetGroupInst));
             }
         }
 
@@ -54,7 +54,7 @@ namespace Blanketmen.Hypnos
             bundle = bundleLoadAo.assetBundle;
             if (bundle == null)
             {
-                Logging.Error($"[AssetGroupInst] Can't load AssetBundle from file. GroupId: {groupId}, FilePath: {filePath}, FileOffset: {fileOffset}");
+                Logging.Error($"Can't load AssetBundle from file. GroupId: {groupId}, FilePath: {filePath}, FileOffset: {fileOffset}", nameof(AssetGroupInst));
             }
         }
 
@@ -95,7 +95,7 @@ namespace Blanketmen.Hypnos
         {
             if (isLoading)
             {
-                Logging.Error($"[AssetGroupInst] Can't dereference when bundle is loading. GroupId: {groupId}");
+                Logging.Error($"Can't dereference when bundle is loading. GroupId: {groupId}", nameof(AssetGroupInst));
             }
 
             if (--refCount > 0)
@@ -105,7 +105,7 @@ namespace Blanketmen.Hypnos
 
             if (refCount < 0)
             {
-                Logging.Error($"[AssetGroupInst] Reference count is abnormal. GroupId: {groupId}");
+                Logging.Error($"Reference count is abnormal. GroupId: {groupId}", nameof(AssetGroupInst));
             }
 
             Unload();

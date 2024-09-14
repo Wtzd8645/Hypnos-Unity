@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 
@@ -49,14 +49,14 @@ namespace Blanketmen.Hypnos
             assetInstMap.TryGetValue(assetId, out AssetInst assetInst);
             if (assetInst == null)
             {
-                Logging.Error($"[AssetBundleResourceLoader] Can't find AssetInst. AssetId: {assetId}");
+                Logging.Error($"Can't find AssetInst. AssetId: {assetId}", nameof(AssetBundleResourceLoader));
                 return false;
             }
 
             assetGroupInstMap.TryGetValue(assetInst.groupId, out AssetGroupInst groupInst);
             if (groupInst == null)
             {
-                Logging.Error($"[AssetBundleResourceLoader] Can't find AssetGroupInst. GroupId: {assetInst.groupId}, AssetId: {assetId}");
+                Logging.Error($"Can't find AssetGroupInst. GroupId: {assetInst.groupId}, AssetId: {assetId}", nameof(AssetBundleResourceLoader));
                 return false;
             }
 
@@ -68,7 +68,7 @@ namespace Blanketmen.Hypnos
             assetInstMap.TryGetValue(assetId, out AssetInst assetInst);
             if (assetInst == null)
             {
-                Logging.Error($"[AssetBundleResourceLoader] Can't find AssetInst. AssetId: {assetId}");
+                Logging.Error($"Can't find AssetInst. AssetId: {assetId}", nameof(AssetBundleResourceLoader));
                 return null;
             }
 
@@ -77,7 +77,7 @@ namespace Blanketmen.Hypnos
                 assetGroupInstMap.TryGetValue(assetInst.groupId, out AssetGroupInst groupInst);
                 if (groupInst == null)
                 {
-                    Logging.Error($"[AssetBundleResourceLoader] Can't find AssetGroupInst. GroupId: {assetInst.groupId}, AssetId: {assetId}");
+                    Logging.Error($"Can't find AssetGroupInst. GroupId: {assetInst.groupId}, AssetId: {assetId}", nameof(AssetBundleResourceLoader));
                     return null;
                 }
 
@@ -89,7 +89,7 @@ namespace Blanketmen.Hypnos
                         assetGroupInstMap.TryGetValue(depGroupId, out AssetGroupInst depGroupInst);
                         if (depGroupInst == null)
                         {
-                            Logging.Error($"[AssetBundleResourceLoader] Can't find dependent AssetGroupInst. GroupId: {assetInst.groupId}, DependenctGroupId: {depGroupId}");
+                            Logging.Error($"Can't find dependent AssetGroupInst. GroupId: {assetInst.groupId}, DependenctGroupId: {depGroupId}", nameof(AssetBundleResourceLoader));
                             continue;
                         }
 
@@ -113,7 +113,7 @@ namespace Blanketmen.Hypnos
             assetInstMap.TryGetValue(assetId, out AssetInst assetInst);
             if (assetInst == null)
             {
-                Logging.Error($"[AssetBundleResourceLoader] Can't find AssetInst. AssetId: {assetId}");
+                Logging.Error($"Can't find AssetInst. AssetId: {assetId}", nameof(AssetBundleResourceLoader));
                 completeCb?.Invoke(null);
                 yield break;
             }
@@ -123,7 +123,7 @@ namespace Blanketmen.Hypnos
                 assetGroupInstMap.TryGetValue(assetInst.groupId, out AssetGroupInst groupInst);
                 if (groupInst == null)
                 {
-                    Logging.Error($"[AssetBundleResourceLoader] Can't find AssetGroupInst. GroupId: {assetInst.groupId}, AssetId: {assetId}");
+                    Logging.Error($"Can't find AssetGroupInst. GroupId: {assetInst.groupId}, AssetId: {assetId}", nameof(AssetBundleResourceLoader));
                     yield break;
                 }
 
@@ -135,7 +135,7 @@ namespace Blanketmen.Hypnos
                         assetGroupInstMap.TryGetValue(depGroupId, out AssetGroupInst depGroupInst);
                         if (depGroupInst == null)
                         {
-                            Logging.Error($"[AssetBundleResourceLoader] Can't find dependent AssetGroupInst. GroupId: {assetInst.groupId}, DependenctGroupId: {depGroupId}");
+                            Logging.Error($"Can't find dependent AssetGroupInst. GroupId: {assetInst.groupId}, DependenctGroupId: {depGroupId}", nameof(AssetBundleResourceLoader));
                             continue;
                         }
 
@@ -159,7 +159,7 @@ namespace Blanketmen.Hypnos
             assetInstMap.TryGetValue(assetId, out AssetInst assetInst);
             if (assetInst == null)
             {
-                Logging.Error($"[AssetBundleResourceLoader] Can't find AssetInst. AssetId: {assetId}");
+                Logging.Error($"Can't find AssetInst. AssetId: {assetId}", nameof(AssetBundleResourceLoader));
                 return;
             }
 
@@ -176,7 +176,7 @@ namespace Blanketmen.Hypnos
             assetGroupInstMap.TryGetValue(groupId, out AssetGroupInst groupInst);
             if (groupInst == null)
             {
-                Logging.Error($"[AssetBundleResourceLoader] Can't find AssetGroupInst. GroupId: {groupId}");
+                Logging.Error($"Can't find AssetGroupInst. GroupId: {groupId}", nameof(AssetBundleResourceLoader));
                 return;
             }
 
@@ -191,7 +191,7 @@ namespace Blanketmen.Hypnos
                 assetGroupInstMap.TryGetValue(depGroupId, out AssetGroupInst depGroupInst);
                 if (depGroupInst == null)
                 {
-                    Logging.Error($"[AssetBundleResourceLoader] Can't find dependent AssetGroupInst. GroupId: {groupId}, DependenctGroupId: {depGroupId}");
+                    Logging.Error($"Can't find dependent AssetGroupInst. GroupId: {groupId}, DependenctGroupId: {depGroupId}", nameof(AssetBundleResourceLoader));
                     continue;
                 }
                 depGroupInst.Dereference();

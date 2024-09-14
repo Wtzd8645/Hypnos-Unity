@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -72,7 +72,7 @@ namespace Blanketmen.Hypnos
                 }
                 default:
                 {
-                    Logging.Error($"[ResourceManager] The ResourceLoader type is not supported. {config.resourceLoader}");
+                    Logging.Error($"The ResourceLoader type is not supported. {config.resourceLoader}", nameof(ResourceManager));
                     break;
                 }
             }
@@ -89,7 +89,7 @@ namespace Blanketmen.Hypnos
             dataArchiverMap.TryGetValue(archiverId, out DataArchiver archiver);
             if (archiver == null)
             {
-                Logging.Error($"[ResourceManager] DataArchiver is null. Id: {archiverId}");
+                Logging.Error($"DataArchiver is null. Id: {archiverId}", nameof(ResourceManager));
                 return;
             }
 
@@ -102,7 +102,7 @@ namespace Blanketmen.Hypnos
             }
             catch (Exception e)
             {
-                Logging.Error($"[ResourceManager] Save file failed. Exception: {e.Message}");
+                Logging.Error($"Save file failed. Exception: {e.Message}", nameof(ResourceManager));
                 RestoreArchive(filePath);
             }
         }
@@ -120,7 +120,7 @@ namespace Blanketmen.Hypnos
             }
             catch (Exception e)
             {
-                Logging.Error($"[ResourceManager] Back up file failed. Exception: {e.Message}");
+                Logging.Error($"Back up file failed. Exception: {e.Message}", nameof(ResourceManager));
             }
         }
 
@@ -132,7 +132,7 @@ namespace Blanketmen.Hypnos
             }
             catch (Exception e)
             {
-                Logging.Error($"[ResourceManager] Restore file failed. Exception: {e.Message}");
+                Logging.Error($"Restore file failed. Exception: {e.Message}", nameof(ResourceManager));
             }
         }
 
@@ -141,7 +141,7 @@ namespace Blanketmen.Hypnos
             dataArchiverMap.TryGetValue(archiverId, out DataArchiver archiver);
             if (archiver == null)
             {
-                Logging.Error($"[ResourceManager] DataArchiver is null. Id: {archiverId}");
+                Logging.Error($"DataArchiver is null. Id: {archiverId}", nameof(ResourceManager));
                 return default;
             }
 
@@ -152,7 +152,7 @@ namespace Blanketmen.Hypnos
             }
             catch (Exception e)
             {
-                Logging.Error($"[ResourceManager] Load file failed, use backup instead. Exception: {e.Message}");
+                Logging.Error($"Load file failed, use backup instead. Exception: {e.Message}", nameof(ResourceManager));
                 return LoadBackupArchive<T>(archiver, filePath);
             }
         }
@@ -165,7 +165,7 @@ namespace Blanketmen.Hypnos
             }
             catch (Exception e)
             {
-                Logging.Error($"[ResourceManager] Load backup file failed. Exception: {e.Message}");
+                Logging.Error($"Load backup file failed. Exception: {e.Message}", nameof(ResourceManager));
                 return default;
             }
         }
@@ -184,7 +184,7 @@ namespace Blanketmen.Hypnos
             }
             catch (Exception e)
             {
-                Logging.Error($"[ResourceManager] Can't load AssetConfig. Exception: {e.Message}");
+                Logging.Error($"Can't load AssetConfig. Exception: {e.Message}", nameof(ResourceManager));
             }
         }
 

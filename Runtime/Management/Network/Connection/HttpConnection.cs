@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Concurrent;
 using System.Net.Http;
 using System.Net.Sockets;
@@ -94,17 +94,17 @@ namespace Blanketmen.Hypnos
             }
             catch (HttpRequestException e)
             {
-                Logging.Error(e.Message);
+                Logging.Error($"Send HttpRequest exception. Exception: {e.Message}", nameof(HttpConnection));
                 onConnectionAoComplete(this, SocketAsyncOperation.Send, SocketError.Fault);
             }
             catch (TaskCanceledException e)
             {
-                Logging.Error(e.Message);
+                Logging.Error($"Send HttpRequest exception. Exception: {e.Message}", nameof(HttpConnection));
                 onConnectionAoComplete(this, SocketAsyncOperation.Send, SocketError.OperationAborted);
             }
             catch (Exception e)
             {
-                Logging.Error(e.Message);
+                Logging.Error($"Send HttpRequest exception. Exception: {e.Message}", nameof(HttpConnection));
                 onConnectionAoComplete(this, SocketAsyncOperation.Send, SocketError.SocketError);
             }
         }
