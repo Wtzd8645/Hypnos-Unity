@@ -2,35 +2,15 @@
     "name": "Blanketmen.Hypnos.Tests",
     "rootNamespace": "Blanketmen.Hypnos.Tests",
     "references": [
-        "Blanketmen.Hypnos.Core",
         "Blanketmen.Hypnos",
         "UnityEngine.TestRunner"
     ],
     "includePlatforms": [],
-    "excludePlatforms": [
-        "Android",
-        "EmbeddedLinux",
-        "GameCoreScarlett",
-        "GameCoreXboxOne",
-        "iOS",
-        "LinuxStandalone64",
-        "CloudRendering",
-        "Lumin",
-        "macOSStandalone",
-        "PS4",
-        "PS5",
-        "Stadia",
-        "Switch",
-        "tvOS",
-        "WSA",
-        "WebGL",
-        "WindowsStandalone32",
-        "WindowsStandalone64",
-        "XboxOne"
-    ],
+    "excludePlatforms": [],
     "allowUnsafeCode": true,
     "overrideReferences": true,
     "precompiledReferences": [
+        "Blanketmen.Hypnos.Core.dll",
         "nunit.framework.dll"
     ],
     "autoReferenced": true,

@@ -10,7 +10,7 @@ namespace Blanketmen.Hypnos
         private Dictionary<string, AssetInst> assetInstMap;
         private Dictionary<string, string> assetPathMap;
 
-        public override void SetAssetConfig(AssetConfig config)
+        public override void SetAssetConfig(AssetRegistry config)
         {
             AssetData[] assetDatas = config.assetManifest.assetDatas;
             assetInstMap = new Dictionary<string, AssetInst>(assetDatas.Length);

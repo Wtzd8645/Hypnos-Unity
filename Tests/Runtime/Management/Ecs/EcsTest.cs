@@ -8,9 +8,9 @@ namespace Blanketmen.Hypnos.Tests.Ecs
         [Test]
         public void EntityCreateTest()
         {
-            ComponentManager.CreateInstance();
-            SystemManager.CreateInstance();
-            EntityManager.CreateInstance();
+            //ComponentManager.CreateInstance();
+            //SystemManager.CreateInstance();
+            //EntityManager.CreateInstance();
 
             SystemManager.Instance.Init(new SystemConfig(
                 updateSystems: new Type[] { typeof(TestSystem) }

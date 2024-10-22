@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 
 namespace Blanketmen.Hypnos
 {
@@ -8,10 +8,7 @@ namespace Blanketmen.Hypnos
         public string persistentDataPath;
         public string streamingDataPath;
 
-        public string archiveFileExt = ".dat";
-        public string archiveBackupFileExt = ".bak";
-        public DataArchiverConfig[] dataArchiverConfigs;
-
         public ResourceLoader resourceLoader;
+        public ArchiverConfig assetRegistryArchiverConfig;
     }
 }

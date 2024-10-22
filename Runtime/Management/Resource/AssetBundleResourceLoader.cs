@@ -15,7 +15,7 @@ namespace Blanketmen.Hypnos
             this.resourcePath = resourcePath;
         }
 
-        public override void SetAssetConfig(AssetConfig config)
+        public override void SetAssetConfig(AssetRegistry config)
         {
             AssetGroupData[] groupDatas = config.assetGroupManifest.assetGroupDatas;
             assetGroupInstMap = new Dictionary<string, AssetGroupInst>(groupDatas.Length);

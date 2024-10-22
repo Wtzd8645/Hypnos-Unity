@@ -46,8 +46,7 @@ namespace Blanketmen.Hypnos.Editor.Build
         {
             try
             {
-                DataArchiver archiver = new DataArchiver(CoreUtil.CreateSerializer(CoreSerializer.DotNetXml));
-                archiver.Save(editorConfig, GetAssetEditorConfigPath(editionConfig));
+                ResourceManager.AssetConfigArchiver.Save(editorConfig, GetAssetEditorConfigPath(editionConfig));
             }
             catch (Exception e)
             {
@@ -59,8 +58,7 @@ namespace Blanketmen.Hypnos.Editor.Build
         {
             try
             {
-                DataArchiver archiver = new DataArchiver(CoreUtil.CreateSerializer(CoreSerializer.DotNetXml));
-                return archiver.Load<AssetEditorConfig>(GetAssetEditorConfigPath(editionConfig));
+                return ResourceManager.AssetConfigArchiver.Load<AssetEditorConfig>(GetAssetEditorConfigPath(editionConfig));
             }
             catch (Exception e)
             {
@@ -192,7 +190,7 @@ namespace Blanketmen.Hypnos.Editor.Build
             {
                 assetDatas = assetDatas.ToArray()
             };
-            AssetConfig config = new AssetConfig
+            AssetRegistry config = new AssetRegistry
             {
                 version = editorConfig.version,
                 assetManifest = assetManifest
@@ -201,11 +199,7 @@ namespace Blanketmen.Hypnos.Editor.Build
             try
             {
                 string outputPath = Path.Combine(Application.persistentDataPath, ResourceManager.ResourcesDirectoryName, ResourceManager.AssetConfigFileName);
-                DataArchiver archiver = new DataArchiver(
-                    CoreUtil.CreateSerializer(ResourceManager.AssetConfigSerializer),
-                    CoreUtil.CreateCompressor(ResourceManager.AssetConfigCompressor),
-                    CoreUtil.CreateEncryptor(ResourceManager.AssetConfigEncryptor));
-                archiver.Save(config, outputPath);
+                ResourceManager.AssetConfigArchiver.Save(config, outputPath);
                 Logging.Info($"Build FastEditor AssetConfig successfully. OutputPath: {outputPath}", (int)LogChannel.Resource);
                 return true;
             }
@@ -283,7 +277,7 @@ namespace Blanketmen.Hypnos.Editor.Build
             {
                 assetDatas = assetDatas.ToArray()
             };
-            AssetConfig config = new AssetConfig
+            AssetRegistry config = new AssetRegistry
             {
                 version = editorConfig.version,
                 assetGroupManifest = groupManifest,
@@ -293,11 +287,7 @@ namespace Blanketmen.Hypnos.Editor.Build
             try
             {
                 string outputPath = GetAssetConfigOutputPath(editorConfig, editionConfig);
-                DataArchiver archiver = new DataArchiver(
-                   CoreUtil.CreateSerializer(ResourceManager.AssetConfigSerializer),
-                   CoreUtil.CreateCompressor(ResourceManager.AssetConfigCompressor),
-                   CoreUtil.CreateEncryptor(ResourceManager.AssetConfigEncryptor));
-                archiver.Save(config, outputPath);
+                ResourceManager.AssetConfigArchiver.Save(config, outputPath);
             }
             catch (Exception e)
             {
