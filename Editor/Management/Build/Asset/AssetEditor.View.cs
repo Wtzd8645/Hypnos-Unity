@@ -41,7 +41,7 @@ namespace Blanketmen.Hypnos.Editor.Build
                 return;
             }
 
-            rootVisualElement.Add(visualTree.CloneTree());
+            visualTree.CloneTree(rootVisualElement);
             SetAssetOperations();
             SetAssetGroupColumns();
             SetAssetGroupView();

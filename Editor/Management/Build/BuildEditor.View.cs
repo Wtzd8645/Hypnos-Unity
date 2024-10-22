@@ -18,7 +18,7 @@ namespace Blanketmen.Hypnos.Editor.Build
         private const string EditionRemoveBtnName = "EditionRemoveBtn";
         private const string EditionConfigGroupName = "EditionConfigGroup";
         private const string EditionIdFieldName = "EditionIdField";
-        private const string CustomVersionFieldName = "CustomVersionField";
+        private const string VersionFieldName = "VersionField";
         private const string BuildVersionFieldName = "BuildVersionField";
         private const string PlatformEnumFieldName = "PlatformEnumField";
         private const string AssetConfigEditBtnName = "AssetConfigEditBtn";
@@ -35,7 +35,7 @@ namespace Blanketmen.Hypnos.Editor.Build
 
         private VisualElement editionConfigView;
         private IntegerField editionIdField;
-        private TextInputBaseField<string> customVersionField;
+        private TextInputBaseField<string> versionField;
         private IntegerField buildVersionField;
         private EnumField platformField;
 
@@ -51,7 +51,7 @@ namespace Blanketmen.Hypnos.Editor.Build
                 return;
             }
 
-            rootVisualElement.Add(visualTree.CloneTree());
+            visualTree.CloneTree(rootVisualElement);
             config = LoadConfig();
             SetEditionlListView();
             SetEditionOperationButtons();
@@ -75,7 +75,7 @@ namespace Blanketmen.Hypnos.Editor.Build
             else
             {
                 editionIdField.value = selectedEditionitem.Data.id;
-                customVersionField.value = selectedEditionitem.Data.customVersion;
+                versionField.value = selectedEditionitem.Data.version;
                 buildVersionField.value = selectedEditionitem.Data.buildVersion;
                 platformField.SetValueWithoutNotify(selectedEditionitem.Data.platform);
             }
@@ -107,8 +107,8 @@ namespace Blanketmen.Hypnos.Editor.Build
         {
             editionConfigView = rootVisualElement.Q<VisualElement>(EditionConfigGroupName);
             editionIdField = rootVisualElement.Q<IntegerField>(EditionIdFieldName);
-            customVersionField = rootVisualElement.Q<TextInputBaseField<string>>(CustomVersionFieldName);
-            customVersionField.RegisterValueChangedCallback(OnCustomVersionChanged);
+            versionField = rootVisualElement.Q<TextInputBaseField<string>>(VersionFieldName);
+            versionField.RegisterValueChangedCallback(OnCustomVersionChanged);
             buildVersionField = rootVisualElement.Q<IntegerField>(BuildVersionFieldName);
             buildVersionField.RegisterValueChangedCallback(OnBuildVersionChanged);
             platformField = rootVisualElement.Q<EnumField>(PlatformEnumFieldName);
@@ -177,7 +177,7 @@ namespace Blanketmen.Hypnos.Editor.Build
                 return;
             }
 
-            selectedEditionitem.Data.customVersion = evt.newValue;
+            selectedEditionitem.Data.version = evt.newValue;
         }
 
         private void OnBuildVersionChanged(ChangeEvent<int> evt)

@@ -4,7 +4,7 @@ namespace Blanketmen.Hypnos
 {
     internal abstract class ResourceLoaderBase
     {
-        public abstract void SetAssetConfig(AssetConfig config);
+        public abstract void SetAssetConfig(AssetRegistry config);
 
         public abstract bool IsBundleExists(string assetId);
 

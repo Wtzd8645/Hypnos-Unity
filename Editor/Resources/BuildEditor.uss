@@ -1,3 +1,5 @@
-.unity-text-field__label {
-    min-width: 150px;
+.unity-base-field__label {
+    font-size: 12px;
+    -unity-text-align: middle-left;
+    white-space: nowrap;
 }

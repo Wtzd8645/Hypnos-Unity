@@ -3,8 +3,10 @@ using System.Collections.Generic;
 
 namespace Blanketmen.Hypnos
 {
-    public partial class ComponentManager : Singleton<ComponentManager>
+    public partial class ComponentManager
     {
+        public static ComponentManager Instance { get; private set; }
+
         public delegate void onComponentChange(EcsComponent component);
         public event onComponentChange OnComponentAdd;
         public event onComponentChange OnComponentRemove;

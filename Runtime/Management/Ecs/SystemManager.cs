@@ -18,8 +18,10 @@ namespace Blanketmen.Hypnos
         }
     }
 
-    public class SystemManager : Singleton<SystemManager>
+    public class SystemManager
     {
+        public static SystemManager Instance {  get; private set; }
+
         private Dictionary<Type, EcsSystem> systemWithBelongNodeDict = new Dictionary<Type, EcsSystem>();
         private OrderedSet<EcsSystem> updateSystems = new OrderedSet<EcsSystem>();
         private OrderedSet<EcsSystem> lateUpdateSystems = new OrderedSet<EcsSystem>();

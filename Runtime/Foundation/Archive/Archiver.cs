@@ -1,4 +1,4 @@
-﻿using Blanketmen.Hypnos.Compression;
+using Blanketmen.Hypnos.Compression;
 using Blanketmen.Hypnos.Encryption;
 using Blanketmen.Hypnos.Serialization;
 using System;
@@ -6,13 +6,13 @@ using System.IO;
 
 namespace Blanketmen.Hypnos
 {
-    public class DataArchiver
+    public class Archiver
     {
         private readonly ISerializer serializer;
         private readonly ICompressor compressor;
         private readonly IEncryptor encryptor;
 
-        public DataArchiver(ISerializer serializer, ICompressor compressor = null, IEncryptor encryptor = null)
+        public Archiver(ISerializer serializer, ICompressor compressor = null, IEncryptor encryptor = null)
         {
             this.serializer = serializer;
             this.compressor = compressor;
@@ -35,12 +35,12 @@ namespace Blanketmen.Hypnos
                 }
 
                 Directory.CreateDirectory(Path.GetDirectoryName(filePath));
-                using FileStream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.Read);
-                fileStream.Write(data, 0, data.Length);
+                using FileStream fs = new FileStream(filePath, FileMode.Create, FileAccess.Write, FileShare.Read);
+                fs.Write(data, 0, data.Length);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                throw e;
+                throw;
             }
         }
 
@@ -49,26 +49,26 @@ namespace Blanketmen.Hypnos
             try
             {
                 byte[] data;
-                using (FileStream fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
+                using (FileStream fs = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
                 {
                     int offset = 0;
-                    if (fileStream.Length > int.MaxValue)
+                    if (fs.Length > int.MaxValue)
                     {
                         throw new IOException("File length exceeds 2GB");
                     }
 
-                    int unreadLength = (int)fileStream.Length;
-                    data = new byte[unreadLength];
-                    while (unreadLength > 0)
+                    int unreadLen = (int)fs.Length;
+                    data = new byte[unreadLen];
+                    while (unreadLen > 0)
                     {
-                        int readLength = fileStream.Read(data, offset, unreadLength);
+                        int readLength = fs.Read(data, offset, unreadLen);
                         if (readLength == 0)
                         {
                             throw new EndOfStreamException("Read beyond EOF");
                         }
 
                         offset += readLength;
-                        unreadLength -= readLength;
+                        unreadLen -= readLength;
                     }
                 }
 
@@ -84,9 +84,9 @@ namespace Blanketmen.Hypnos
 
                 return serializer.Deserialize<T>(data);
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                throw e;
+                throw;
             }
         }
     }

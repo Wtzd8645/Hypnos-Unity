@@ -2,16 +2,15 @@
     "name": "Blanketmen.Hypnos",
     "rootNamespace": "Blanketmen.Hypnos",
     "references": [
-        "Blanketmen.Hypnos.Core",
         "Unity.InputSystem",
         "Unity.TextMeshPro"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": true,
-    "overrideReferences": false,
+    "overrideReferences": true,
     "precompiledReferences": [
-        ""
+        "Blanketmen.Hypnos.Core.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],

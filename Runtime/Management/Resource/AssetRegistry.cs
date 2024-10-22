@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 
 namespace Blanketmen.Hypnos
@@ -35,7 +35,7 @@ namespace Blanketmen.Hypnos
     }
 
     [Serializable]
-    public class AssetConfig
+    public class AssetRegistry
     {
         public int version;
         public AssetGroupManifest assetGroupManifest;

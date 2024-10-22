@@ -15,7 +15,7 @@ namespace Blanketmen.Hypnos.Editor.Build
 
         public const string BuildConfigDirectoryName = "Build";
         public const string BuildConfigFileName = "BuildConfig.xml";
-        public const string ReleaseDirectoryName = "Release";
+        public const string ReleaseDirectoryName = "Releases";
         public const string EditionDirectoryName = "{0}_{1}"; // 0: ID, 1: Name.
         public const string ExecutableDirectoryName = "Executable";
 
@@ -31,15 +31,14 @@ namespace Blanketmen.Hypnos.Editor.Build
                 ReleaseDirectoryName,
                 string.Format(EditionDirectoryName, config.id.ToString(), config.name),
                 ExecutableDirectoryName,
-                $"{config.customVersion}.{config.buildVersion}");
+                $"{config.version}.{config.buildVersion}");
         }
 
         public static void SaveConfig(BuildConfig config)
         {
             try
             {
-                DataArchiver archiver = new DataArchiver(CoreUtil.CreateSerializer(CoreSerializer.DotNetXml));
-                archiver.Save(config, GetBuildConfigPath());
+                ResourceManager.AssetConfigArchiver.Save(config, GetBuildConfigPath());
             }
             catch (Exception e)
             {
@@ -51,8 +50,7 @@ namespace Blanketmen.Hypnos.Editor.Build
         {
             try
             {
-                DataArchiver archiver = new DataArchiver(CoreUtil.CreateSerializer(CoreSerializer.DotNetXml));
-                return archiver.Load<BuildConfig>(GetBuildConfigPath());
+                return ResourceManager.AssetConfigArchiver.Load<BuildConfig>(GetBuildConfigPath());
             }
             catch (Exception e)
             {

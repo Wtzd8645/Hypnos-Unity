@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Blanketmen.Hypnos
 {
-    public partial class ComponentManager : Singleton<ComponentManager>
+    public partial class ComponentManager
     {
         private Dictionary<Type, ObjectPool<EcsComponent>> componentPools = new Dictionary<Type, ObjectPool<EcsComponent>>();
 

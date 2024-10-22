@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using UnityEditor;
 
@@ -9,7 +9,7 @@ namespace Blanketmen.Hypnos.Editor.Build
     {
         public int id;
         public string name = "New Edition";
-        public string customVersion = "0.0.0";
+        public string version = "0.0.0";
         public int buildVersion;
         public BuildTarget platform = BuildTarget.Android;
     }
