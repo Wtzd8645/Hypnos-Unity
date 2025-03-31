@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using UnityEngine;
 
 namespace Blanketmen.Hypnos
@@ -20,7 +20,7 @@ namespace Blanketmen.Hypnos
             {
                 transportConfig = new TransportConfig
                 {
-                    ip = NetworkUtil.GetLocalPrivateIp(),
+                    ip = NetworkUtils.GetLocalPrivateIp(),
                     port = NetworkManager.DefalutPort
                 }
             };

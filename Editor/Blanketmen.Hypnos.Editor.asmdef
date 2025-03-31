@@ -2,7 +2,6 @@
     "name": "Blanketmen.Hypnos.Editor",
     "rootNamespace": "Blanketmen.Hypnos.Editor",
     "references": [
-        "Blanketmen.Hypnos.Core",
         "Blanketmen.Hypnos",
         "Unity.TextMeshPro",
         "Unity.TextMeshPro.Editor",
@@ -18,8 +17,7 @@
     "allowUnsafeCode": true,
     "overrideReferences": false,
     "precompiledReferences": [
-        "NPOI.dll",
-        ""
+        "NPOI.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],

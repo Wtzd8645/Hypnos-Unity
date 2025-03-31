@@ -1,10 +1,10 @@
-﻿using System;
+using System;
 using System.Reflection;
 using UnityEngine;
 
 namespace Blanketmen.Hypnos
 {
-    public static class UnityEngineUtil
+    public static class UnityEngineUtils
     {
         public static Vector3 GetBodyPosition(Animator animator)
         {

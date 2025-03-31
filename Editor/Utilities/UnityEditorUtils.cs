@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Reflection;
 using UnityEditor;
 using UnityEngine;
@@ -6,7 +6,7 @@ using Object = UnityEngine.Object;
 
 namespace Blanketmen.Hypnos.Editor
 {
-    public static class UnityEditorUtil
+    public static class UnityEditorUtils
     {
         public struct ClipScope : IDisposable
         {

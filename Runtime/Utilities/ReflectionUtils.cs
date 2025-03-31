@@ -4,7 +4,7 @@ using System.Reflection;
 
 namespace Blanketmen.Hypnos
 {
-    public static class ReflectionUtil
+    public static class ReflectionUtils
     {
         public static void GetTypesFromAssembly(List<Type> result, Type baseType, Assembly asm)
         {

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 2d63990b908b5ca47b907a5806f40a8c
+guid: 13614ff1e0ebb13458741c822bc41b68
 PluginImporter:
   externalObjects: {}
   serializedVersion: 3
@@ -9,7 +9,7 @@ PluginImporter:
   isPreloaded: 0
   isOverridable: 1
   isExplicitlyReferenced: 0
-  validateReferences: 1
+  validateReferences: 0
   platformData:
     Android:
       enabled: 1
@@ -26,7 +26,6 @@ PluginImporter:
         Exclude OSXUniversal: 0
         Exclude Win: 0
         Exclude Win64: 0
-        Exclude iOS: 0
     Editor:
       enabled: 1
       settings:
@@ -53,13 +52,6 @@ PluginImporter:
       enabled: 0
       settings:
         CPU: AnyCPU
-    iOS:
-      enabled: 1
-      settings:
-        AddToEmbeddedBinaries: false
-        CPU: AnyCPU
-        CompileFlags: 
-        FrameworkDependencies: 
   userData: 
   assetBundleName: 
   assetBundleVariant: 

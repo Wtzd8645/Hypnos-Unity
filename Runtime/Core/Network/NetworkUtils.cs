@@ -1,8 +1,8 @@
-﻿using System.Net;
+using System.Net;
 
 namespace Blanketmen.Hypnos
 {
-    public static class NetworkUtil
+    public static class NetworkUtils
     {
         // NOTE: 只是使用簡易判斷
         public static string GetLocalPrivateIp()

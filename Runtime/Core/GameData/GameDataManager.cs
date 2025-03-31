@@ -60,7 +60,7 @@ namespace Blanketmen.Hypnos
             const int TableOffsetField = 8;
             const int NextOffsetField = 20;
 
-            uint hash = HashUtil.BkdrHash(StringEncoder.GetBytes(tableName));
+            uint hash = HashUtils.BkdrHash(StringEncoder.GetBytes(tableName));
             int capacity = *(int*)dataMmapPtr;
             int slot = (int)(hash % (uint)capacity);
             int offset = TableCapacitySize + slot * InfoTableEntrySize;
