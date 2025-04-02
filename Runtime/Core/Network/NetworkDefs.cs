@@ -3,7 +3,7 @@ using System.Net.Sockets;
 
 namespace Blanketmen.Hypnos.Network
 {
-    public delegate void ConnectionAoHandler(IConnection conn, SocketAsyncOperation op, SocketError err);
+    public delegate void SocketAoHandler(ISocket conn, SocketAsyncOperation op, SocketError err);
 
     public static class NetworkDefs
     {
@@ -55,11 +55,11 @@ namespace Blanketmen.Hypnos.Network
         }
     }
 
-    internal class ConnectionEventArgs
+    internal class SocketEventArgs
     {
-        public IConnection connection;
-        public int version;
-        public SocketAsyncOperation operation;
+        public ISocket socket;
+        public uint version;
+        public SocketAsyncOperation op;
         public SocketError result; // Note: https://docs.microsoft.com/zh-tw/windows/win32/winsock/windows-sockets-error-codes-2
     }
 

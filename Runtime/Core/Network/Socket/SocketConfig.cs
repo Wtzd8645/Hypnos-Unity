@@ -15,14 +15,14 @@ namespace Blanketmen.Hypnos.Network
 
     public class HandlerConfig
     {
-        public ConnectionAoHandler onConnectionAoCompleteHandler;
+        public SocketAoHandler onSocketAoCompleteHandler;
         public IResponseProducer responseProducer;
     }
 
     [Serializable]
-    public class ConnectionConfig
+    public class SocketConfig
     {
-        public int id;
+        public uint id;
         public TransportConfig transportConfig;
         public int responseProducerId;
     }

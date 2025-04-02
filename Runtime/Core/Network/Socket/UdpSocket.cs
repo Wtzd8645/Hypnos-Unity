@@ -5,7 +5,7 @@ namespace Blanketmen.Hypnos.Network
 {
     internal class UdpSocket : SocketBase
     {
-        public UdpSocket(int id, TransportConfig transportConfig, HandlerConfig handlerConfig) : base(id, transportConfig, handlerConfig)
+        public UdpSocket(uint id, TransportConfig transportConfig, HandlerConfig handlerConfig) : base(id, transportConfig, handlerConfig)
         {
             CreateSocket();
             CreateReceiveEventArgs();
@@ -15,13 +15,13 @@ namespace Blanketmen.Hypnos.Network
         public override void Dispose()
         {
             heartbeatTimer.Dispose();
-            socket.Close();
+            sock.Close();
         }
 
         public override void Reset()
         {
             Logging.Info($"Reset. Id: {id}", (int)LogChannel.Network);
-            socket.Close(); // NOTE: https://docs.microsoft.com/zh-tw/dotnet/api/system.net.sockets.socket.close
+            sock.Close(); // NOTE: https://docs.microsoft.com/zh-tw/dotnet/api/system.net.sockets.socket.close
             CreateSocket();
             CreateReceiveEventArgs();
             CreateSendEventArgs();
@@ -30,7 +30,7 @@ namespace Blanketmen.Hypnos.Network
 
         private void CreateSocket()
         {
-            socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            sock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             ++version;
         }
 
@@ -48,12 +48,12 @@ namespace Blanketmen.Hypnos.Network
 
         public override void ConnectAsync()
         {
-            onConnectionAoComplete(this, SocketAsyncOperation.Connect, SocketError.Success);
+            onSocketAoComplete(this, SocketAsyncOperation.Connect, SocketError.Success);
         }
 
         public override void DisconnectAsync()
         {
-            onConnectionAoComplete(this, SocketAsyncOperation.Disconnect, SocketError.Success);
+            onSocketAoComplete(this, SocketAsyncOperation.Disconnect, SocketError.Success);
         }
 
         protected override void OnConnectAsyncComplete(object sender, SocketAsyncEventArgs evtArgs) { }
@@ -62,7 +62,7 @@ namespace Blanketmen.Hypnos.Network
         {
             Logging.Info($"ReceiveAsync. Id: {id}", (int)LogChannel.Network);
             receiveEventArgs.SetBuffer(0, receiveBufferSize);
-            ReceiveInternalAsync(socket, receiveEventArgs);
+            ReceiveInternalAsync(sock, receiveEventArgs);
         }
 
         private void ReceiveInternalAsync(Socket connSocket, SocketAsyncEventArgs evtArgs)
@@ -77,7 +77,7 @@ namespace Blanketmen.Hypnos.Network
             catch (Exception e)
             {
                 Logging.Error($"ReceiveAsync failed. Id: {id}, Exception: {e.Message}", nameof(UdpSocket));
-                onConnectionAoComplete(this, SocketAsyncOperation.Receive, evtArgs.SocketError);
+                onSocketAoComplete(this, SocketAsyncOperation.Receive, evtArgs.SocketError);
             }
         }
 
@@ -85,13 +85,13 @@ namespace Blanketmen.Hypnos.Network
         {
             if (evtArgs.SocketError != SocketError.Success) // Abnormal shutdown.
             {
-                onConnectionAoComplete(this, SocketAsyncOperation.Receive, evtArgs.SocketError);
+                onSocketAoComplete(this, SocketAsyncOperation.Receive, evtArgs.SocketError);
                 return;
             }
 
             if (evtArgs.BytesTransferred == 0) // Normal shutdown.
             {
-                onConnectionAoComplete(this, SocketAsyncOperation.Receive, SocketError.Disconnecting);
+                onSocketAoComplete(this, SocketAsyncOperation.Receive, SocketError.Disconnecting);
                 return;
             }
 
@@ -105,7 +105,7 @@ namespace Blanketmen.Hypnos.Network
             catch (Exception e)
             {
                 Logging.Error($"Socket {id} create message failed. Exception: {e.Message}", nameof(UdpSocket));
-                onConnectionAoComplete(this, SocketAsyncOperation.Receive, SocketError.TypeNotFound);
+                onSocketAoComplete(this, SocketAsyncOperation.Receive, SocketError.TypeNotFound);
             }
 
             evtArgs.SetBuffer(0, receiveBufferSize);
@@ -123,7 +123,7 @@ namespace Blanketmen.Hypnos.Network
                     int pendingBytes = sendState.packetBuf.offset + packetBytes;
                     if (packetBytes > maxPacketSize || pendingBytes > sendState.packetBuf.final.Length)
                     {
-                        onConnectionAoComplete(this, SocketAsyncOperation.Send, SocketError.NoBufferSpaceAvailable);
+                        onSocketAoComplete(this, SocketAsyncOperation.Send, SocketError.NoBufferSpaceAvailable);
                         return;
                     }
 
@@ -138,13 +138,13 @@ namespace Blanketmen.Hypnos.Network
             sendState.processedBytes = 0;
             if (sendState.pendingBytes > maxPacketSize)
             {
-                onConnectionAoComplete(this, SocketAsyncOperation.Send, SocketError.NoBufferSpaceAvailable);
+                onSocketAoComplete(this, SocketAsyncOperation.Send, SocketError.NoBufferSpaceAvailable);
                 return;
             }
 
             Logging.Trace($"[UdpSocket] Socket {id} send {sendState.pendingBytes} bytes.", (int)LogChannel.Network);
             sendEventArgs.SetBuffer(0, sendState.pendingBytes);
-            SendInternalAsync(socket, sendEventArgs);
+            SendInternalAsync(sock, sendEventArgs);
         }
 
         private void SendInternalAsync(Socket connSocket, SocketAsyncEventArgs evtArgs)
@@ -159,7 +159,7 @@ namespace Blanketmen.Hypnos.Network
             catch (Exception e)
             {
                 Logging.Error($"SendAsync failed. Id: {id}, Exception: {e.Message}", nameof(UdpSocket));
-                onConnectionAoComplete(this, SocketAsyncOperation.Send, SocketError.SocketError);
+                onSocketAoComplete(this, SocketAsyncOperation.Send, SocketError.SocketError);
             }
         }
 
@@ -169,7 +169,7 @@ namespace Blanketmen.Hypnos.Network
             PacketSendState sendState = evtArgs.UserToken as PacketSendState;
             if (evtArgs.SocketError != SocketError.Success)
             {
-                onConnectionAoComplete(this, SocketAsyncOperation.Send, evtArgs.SocketError);
+                onSocketAoComplete(this, SocketAsyncOperation.Send, evtArgs.SocketError);
                 return;
             }
 

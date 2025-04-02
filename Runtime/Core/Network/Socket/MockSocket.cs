@@ -3,9 +3,9 @@ using System.Net.Sockets;
 
 namespace Blanketmen.Hypnos.Network
 {
-    internal class LocalSocket : SocketBase
+    internal class MockSocket : SocketBase
     {
-        public LocalSocket(int id, HandlerConfig handlerConfig) : base(id, handlerConfig) { }
+        public MockSocket(uint id, HandlerConfig handlerConfig) : base(id, handlerConfig) { }
 
         public override void Dispose() { }
 
@@ -13,17 +13,17 @@ namespace Blanketmen.Hypnos.Network
 
         public override void ConnectAsync()
         {
-            onConnectionAoComplete(this, SocketAsyncOperation.Connect, SocketError.Success);
+            onSocketAoComplete(this, SocketAsyncOperation.Connect, SocketError.Success);
         }
 
         public override void DisconnectAsync()
         {
-            onConnectionAoComplete(this, SocketAsyncOperation.Disconnect, SocketError.Success);
+            onSocketAoComplete(this, SocketAsyncOperation.Disconnect, SocketError.Success);
         }
 
         protected override void OnConnectAsyncComplete(object sender, SocketAsyncEventArgs e)
         {
-            onConnectionAoComplete(this, e.LastOperation, SocketError.Success);
+            onSocketAoComplete(this, e.LastOperation, SocketError.Success);
         }
 
         public override void ReceiveAsync() { }

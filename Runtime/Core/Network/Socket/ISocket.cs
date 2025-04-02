@@ -1,9 +1,9 @@
 namespace Blanketmen.Hypnos.Network
 {
-    public interface IConnection
+    public interface ISocket
     {
-        public int Id { get; }
-        public int Version { get; }
+        public uint Id { get; }
+        public uint Version { get; }
 
         public void Dispose();
         public void Reset();

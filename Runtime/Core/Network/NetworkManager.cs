@@ -3,6 +3,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
 
 namespace Blanketmen.Hypnos.Network
 {
@@ -14,40 +15,41 @@ namespace Blanketmen.Hypnos.Network
         private NetworkManager() { }
         #endregion
 
-        private readonly Dictionary<int, IConnection> connectionMap = new Dictionary<int, IConnection>(3);
-        private readonly ConcurrentQueue<ConnectionEventArgs> socketEventArgs = new ConcurrentQueue<ConnectionEventArgs>();
+        private ISocket[] sockets;
+        private readonly ConcurrentQueue<SocketEventArgs> socketEventArgs = new ConcurrentQueue<SocketEventArgs>();
 
         private IResponseProducer[] responseProducers;
         private readonly Dictionary<ushort, Action<IResponse>> responseHandlerMap = new Dictionary<ushort, Action<IResponse>>(521);
 
         public void Initialize(NetworkConfig config)
         {
+            sockets = new ISocket[config.socketConfigs.Length];
             responseProducers = config.responseProducers;
-            for (int i = 0; i < config.connectionConfigs.Length; ++i)
+            for (int i = 0; i < config.socketConfigs.Length; ++i)
             {
-                AddConnection(config.connectionConfigs[i]);
+                AddConnection(config.socketConfigs[i]);
             }
         }
 
         public void Release()
         {
-            foreach (IConnection conn in connectionMap.Values)
+            foreach (ISocket socket in sockets)
             {
-                conn.Dispose();
+                socket.Dispose();
             }
         }
 
         public void Update()
         {
-            while (socketEventArgs.TryDequeue(out ConnectionEventArgs arg))
+            while (socketEventArgs.TryDequeue(out SocketEventArgs arg))
             {
-                ProcessConnectionEventArg(arg);
+                ProcessSocketEventArg(arg);
             }
 
             // Dispatch responses
-            foreach (IConnection conn in connectionMap.Values)
+            foreach (ISocket socket in sockets)
             {
-                while (conn.TryGetResponse(out IResponse resp))
+                while (socket.TryGetResponse(out IResponse resp))
                 {
                     responseHandlerMap.TryGetValue(resp.Id, out Action<IResponse> responseHandler);
                     if (responseHandler == null)
@@ -76,9 +78,9 @@ namespace Blanketmen.Hypnos.Network
             }
         }
 
-        public void AddConnection(ConnectionConfig config)
+        public void AddConnection(SocketConfig config)
         {
-            if (connectionMap.ContainsKey(config.id))
+            if (config.id >= sockets.Length)
             {
                 Logging.Error($"Connection is duplicate. ConnectionId: {config.id}", nameof(NetworkManager));
                 return;
@@ -86,7 +88,7 @@ namespace Blanketmen.Hypnos.Network
 
             HandlerConfig handlerConfig = new HandlerConfig
             {
-                onConnectionAoCompleteHandler = OnConnectionAoComplete,
+                onSocketAoCompleteHandler = OnSocketAoComplete,
                 responseProducer = responseProducers[config.responseProducerId]
             };
 
@@ -95,103 +97,94 @@ namespace Blanketmen.Hypnos.Network
             {
                 case TransportProtocol.LocalSimulation:
                 {
-                    connectionMap[config.id] = new LocalSocket(config.id, handlerConfig);
+                    sockets[config.id] = new MockSocket(config.id, handlerConfig);
                     break;
                 }
                 case TransportProtocol.TCP:
                 {
-                    connectionMap[config.id] = new TcpSocket(config.id, transportConfig, handlerConfig);
+                    sockets[config.id] = new TcpSocket(config.id, transportConfig, handlerConfig);
                     break;
                 }
                 case TransportProtocol.UDP:
                 {
-                    connectionMap[config.id] = new UdpSocket(config.id, transportConfig, handlerConfig);
+                    sockets[config.id] = new UdpSocket(config.id, transportConfig, handlerConfig);
                     break;
                 }
                 case TransportProtocol.HTTP:
                 {
-                    connectionMap[config.id] = new HttpConnection(config.id, handlerConfig);
+                    sockets[config.id] = new HttpSocketAdap(config.id, handlerConfig);
                     break;
                 }
                 default:
                 {
-                    Logging.Error($"Protocol not implemented. ConnectionId: {config.id}, Protocol: {transportConfig.protocol}", nameof(NetworkManager));
+                    Logging.Error($"Protocol not implemented. SocketId: {config.id}, Protocol: {transportConfig.protocol}", nameof(NetworkManager));
                     break;
                 }
             }
         }
 
-        public void RemoveConnection(int id)
+        public void RemoveConnection(uint id)
         {
-            connectionMap.TryGetValue(id, out IConnection conn);
-            if (conn == null)
+            if (id >= sockets.Length)
             {
+                Logging.Error($"Invalid socket id. SocketId: {id}", nameof(NetworkManager));
                 return;
             }
 
-            connectionMap.Remove(id);
-            conn.Dispose();
+            sockets[id]?.Dispose();
         }
 
-        public void ConnectAsync(int connectionId)
+        public void ConnectAsync(uint id)
         {
-            connectionMap.TryGetValue(connectionId, out IConnection conn);
-            if (conn == null)
+            if (id >= sockets.Length)
             {
-                Logging.Info($"Can't find socket to connect. ConnectionId: {connectionId}", (int)LogChannel.Network);
+                Logging.Error($"Invalid socket id. SocketId: {id}", nameof(NetworkManager));
                 return;
             }
 
-            conn.ConnectAsync();
+            sockets[id].ConnectAsync();
         }
 
-        public void DisconnectAsync(int connectionId)
+        public void DisconnectAsync(uint id)
         {
-            connectionMap.TryGetValue(connectionId, out IConnection conn);
-            if (conn == null)
+            if (id >= sockets.Length)
             {
-                Logging.Info($"Can't find socket to disconnect. ConnectionId: {connectionId}", (int)LogChannel.Network);
+                Logging.Error($"Invalid socket id. SocketId: {id}", nameof(NetworkManager));
                 return;
             }
 
-            conn.DisconnectAsync();
+            sockets[id].DisconnectAsync();
         }
 
-        public void SendRequest(int connectionId, IRequest request)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void Send(uint Id, IRequest request)
         {
-            connectionMap.TryGetValue(connectionId, out IConnection conn);
-            if (conn == null)
-            {
-                Logging.Info($"Can't find socket to send request. ConnectionId: {connectionId}", (int)LogChannel.Network);
-                return;
-            }
-
-            conn.SendAsync(request);
+            sockets[Id].SendAsync(request);
         }
 
         // NOTE: May be called by multiple threads.
-        private void OnConnectionAoComplete(IConnection conn, SocketAsyncOperation operation, SocketError socketError)
+        private void OnSocketAoComplete(ISocket conn, SocketAsyncOperation op, SocketError err)
         {
-            Logging.Info($"OnConnectionAoComplete. ConnectionId: {conn.Id}, Operation: {operation}, Error: {socketError}", (int)LogChannel.Network);
-            ConnectionEventArgs args = new ConnectionEventArgs()
+            Logging.Info($"OnSocketAoComplete. SocketId: {conn.Id}, Operation: {op}, Error: {err}", (int)LogChannel.Network);
+            SocketEventArgs args = new SocketEventArgs()
             {
-                connection = conn,
+                socket = conn,
                 version = conn.Version,
-                operation = operation,
-                result = socketError
+                op = op,
+                result = err
             };
             socketEventArgs.Enqueue(args);
         }
 
         // NOTE: Only called by main thread.
-        private void ProcessConnectionEventArg(ConnectionEventArgs args)
+        private void ProcessSocketEventArg(SocketEventArgs args)
         {
-            if (args.version != args.connection.Version)
+            if (args.version != args.socket.Version)
             {
                 return;
             }
 
-            switch (args.operation)
+            switch (args.op)
             {
                 case SocketAsyncOperation.Connect:
                 {
@@ -203,11 +196,11 @@ namespace Blanketmen.Hypnos.Network
                         }
                         case SocketError.Success:
                         {
-                            args.connection.ReceiveAsync();
+                            args.socket.ReceiveAsync();
                             break;
                         }
                     }
-                    Notify((int)NetworkEvent.ConnectComplete, args.connection.Id, args.result);
+                    Notify((int)NetworkEvent.ConnectComplete, args.socket.Id, args.result);
                     return;
                 }
                 case SocketAsyncOperation.Disconnect:
@@ -220,11 +213,11 @@ namespace Blanketmen.Hypnos.Network
                         }
                         case SocketError.Success:
                         {
-                            args.connection.Reset();
+                            args.socket.Reset();
                             break;
                         }
                     }
-                    Notify((int)NetworkEvent.DisconnectComplete, args.connection.Id, args.result);
+                    Notify((int)NetworkEvent.DisconnectComplete, args.socket.Id, args.result);
                     return;
                 }
                 case SocketAsyncOperation.Receive:
@@ -239,11 +232,11 @@ namespace Blanketmen.Hypnos.Network
                         }
                         default:
                         {
-                            args.connection.Reset();
+                            args.socket.Reset();
                             break;
                         }
                     }
-                    Notify((int)NetworkEvent.ReceiveError, args.connection.Id);
+                    Notify((int)NetworkEvent.ReceiveError, args.socket.Id);
                     return;
                 }
                 case SocketAsyncOperation.Send:
@@ -259,11 +252,11 @@ namespace Blanketmen.Hypnos.Network
                         case SocketError.NoBufferSpaceAvailable:
                         case SocketError.TimedOut:
                         {
-                            args.connection.Reset();
+                            args.socket.Reset();
                             break;
                         }
                     }
-                    Notify((int)NetworkEvent.SendError, args.connection.Id);
+                    Notify((int)NetworkEvent.SendError, args.socket.Id);
                     return;
                 }
             }

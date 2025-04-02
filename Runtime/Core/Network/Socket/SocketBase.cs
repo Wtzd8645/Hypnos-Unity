@@ -7,14 +7,14 @@ using System.Threading;
 
 namespace Blanketmen.Hypnos.Network
 {
-    internal abstract class SocketBase : IConnection, IDisposable
+    internal abstract class SocketBase : ISocket, IDisposable
     {
-        protected int id;
-        protected int version;
+        protected uint id;
+        protected uint version;
 
-        protected Socket socket;
+        protected Socket sock;
         protected EndPoint bindingEndPoint;
-        protected readonly ConnectionAoHandler onConnectionAoComplete; // NOTE: When ReceiveAsync & SendAsync successfully will not send events.
+        protected readonly SocketAoHandler onSocketAoComplete; // NOTE: When ReceiveAsync & SendAsync successfully will not send events.
         protected readonly int maxPacketSize;
 
         // Receive Related
@@ -28,22 +28,22 @@ namespace Blanketmen.Hypnos.Network
         protected Timer heartbeatTimer;
         protected int sendTimeout;
 
-        public int Id => id;
-        public int Version => version;
+        public uint Id => id;
+        public uint Version => version;
 
-        protected SocketBase(int id, HandlerConfig handlerConfig)
+        protected SocketBase(uint id, HandlerConfig handlerConfig)
         {
             this.id = id;
-            onConnectionAoComplete = handlerConfig.onConnectionAoCompleteHandler;
+            onSocketAoComplete = handlerConfig.onSocketAoCompleteHandler;
             responseProducer = handlerConfig.responseProducer;
         }
 
-        protected SocketBase(int id, TransportConfig transportConfig, HandlerConfig handlerConfig)
+        protected SocketBase(uint id, TransportConfig transportConfig, HandlerConfig handlerConfig)
         {
             this.id = id;
             IPAddress.TryParse(transportConfig.ip, out IPAddress ip);
             bindingEndPoint = new IPEndPoint(ip, transportConfig.port);
-            onConnectionAoComplete = handlerConfig.onConnectionAoCompleteHandler;
+            onSocketAoComplete = handlerConfig.onSocketAoCompleteHandler;
             maxPacketSize = transportConfig.maxPacketSize;
             responseProducer = handlerConfig.responseProducer;
             pendingResponses = new ConcurrentQueue<IResponse>();
@@ -128,7 +128,7 @@ namespace Blanketmen.Hypnos.Network
 
         private void OnSendAsyncTimeout(object state)
         {
-            onConnectionAoComplete(this, SocketAsyncOperation.Send, SocketError.TimedOut);
+            onSocketAoComplete(this, SocketAsyncOperation.Send, SocketError.TimedOut);
         }
     }
 }

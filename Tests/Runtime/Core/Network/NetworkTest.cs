@@ -9,12 +9,12 @@ namespace Blanketmen.Hypnos.Tests.Network
     internal class NetworkTest : MonoBehaviour, IMonoBehaviourTest
     {
         [UnityTest]
-        public static IEnumerator TcpConnectionPasses()
+        public static IEnumerator TcpSocketPasses()
         {
             yield return new MonoBehaviourTest<NetworkTest>();
         }
 
-        private int connId = 0;
+        private uint connId = 0;
         private bool isConnected = false;
         private bool isSendFinished = false;
         private bool isReceiveFinished = false;
@@ -32,14 +32,14 @@ namespace Blanketmen.Hypnos.Tests.Network
                 port = 27015,
                 maxPacketSize = 1024
             };
-            ConnectionConfig connCfg = new ConnectionConfig
+            SocketConfig connCfg = new SocketConfig
             {
                 id = connId,
                 transportConfig = transCfg,
                 responseProducerId = 0
             };
             NetworkConfig networkCfg = ScriptableObject.CreateInstance<NetworkConfig>();
-            networkCfg.connectionConfigs = new ConnectionConfig[] { connCfg };
+            networkCfg.socketConfigs = new SocketConfig[] { connCfg };
             networkCfg.responseProducers = new IResponseProducer[] { new ResponseProducer() };
 
             NetworkManager.Instance.Initialize(networkCfg);
@@ -91,7 +91,7 @@ namespace Blanketmen.Hypnos.Tests.Network
 
             for (int i = 0; i < totalRequestNum; ++i)
             {
-                NetworkManager.Instance.SendRequest(connId, req);
+                NetworkManager.Instance.Send(connId, req);
                 ++req.a;
             }
             isSendFinished = true;

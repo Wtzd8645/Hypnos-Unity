@@ -5,18 +5,18 @@ namespace Blanketmen.Hypnos.Network
 {
     public class NetworkConfig : ScriptableObject
     {
-        public ConnectionConfig[] connectionConfigs;
+        public SocketConfig[] socketConfigs;
 
         [NonSerialized] public IResponseProducer[] responseProducers;
 
         private void Awake()
         {
-            if (connectionConfigs != null && connectionConfigs.Length != 0)
+            if (socketConfigs != null && socketConfigs.Length != 0)
             {
                 return;
             }
 
-            ConnectionConfig config = new ConnectionConfig
+            SocketConfig config = new SocketConfig
             {
                 transportConfig = new TransportConfig
                 {
@@ -24,7 +24,7 @@ namespace Blanketmen.Hypnos.Network
                     port = 27015
                 }
             };
-            connectionConfigs = new ConnectionConfig[] { config };
+            socketConfigs = new SocketConfig[] { config };
         }
     }
 }

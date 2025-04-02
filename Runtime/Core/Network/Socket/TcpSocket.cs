@@ -16,9 +16,9 @@ namespace Blanketmen.Hypnos.Network
 
         private readonly SocketAsyncEventArgs connectEventArgs = new SocketAsyncEventArgs();
 
-        public bool IsConnected => socket.Connected; // NOTE: Socket.Connected只會反應上一次的操作情況
+        public bool IsConnected => sock.Connected; // NOTE: Socket.Connected只會反應上一次的操作情況
 
-        public TcpSocket(int id, TransportConfig transportConfig, HandlerConfig handlerConfig) : base(id, transportConfig, handlerConfig)
+        public TcpSocket(uint id, TransportConfig transportConfig, HandlerConfig handlerConfig) : base(id, transportConfig, handlerConfig)
         {
             CreateSocket();
             CreateReceiveEventArgs();
@@ -30,13 +30,13 @@ namespace Blanketmen.Hypnos.Network
         public override void Dispose()
         {
             heartbeatTimer.Dispose();
-            socket.Close();
+            sock.Close();
         }
 
         public override void Reset()
         {
             Logging.Info($"Reset. Id: {id}", (int)LogChannel.Network);
-            socket.Close(); // NOTE: https://docs.microsoft.com/zh-tw/dotnet/api/system.net.sockets.socket.close
+            sock.Close(); // NOTE: https://docs.microsoft.com/zh-tw/dotnet/api/system.net.sockets.socket.close
             CreateSocket();
             CreateReceiveEventArgs();
             CreateSendEventArgs();
@@ -45,7 +45,7 @@ namespace Blanketmen.Hypnos.Network
 
         private void CreateSocket()
         {
-            socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
+            sock = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp)
             {
                 NoDelay = true
             };
@@ -58,13 +58,13 @@ namespace Blanketmen.Hypnos.Network
             try
             {
                 Logging.Info($"ConnectAsync. Id: {id}", (int)LogChannel.Network);
-                if (socket.Connected)
+                if (sock.Connected)
                 {
-                    onConnectionAoComplete(this, SocketAsyncOperation.Connect, SocketError.IsConnected);
+                    onSocketAoComplete(this, SocketAsyncOperation.Connect, SocketError.IsConnected);
                     return;
                 }
 
-                if (!socket.ConnectAsync(connectEventArgs))
+                if (!sock.ConnectAsync(connectEventArgs))
                 {
                     OnConnectAsyncComplete(null, connectEventArgs);
                 }
@@ -72,7 +72,7 @@ namespace Blanketmen.Hypnos.Network
             catch (Exception e)
             {
                 Logging.Error($"ConnectAsync failed. Id: {id}, Exception: {e.Message}", nameof(TcpSocket));
-                onConnectionAoComplete(this, SocketAsyncOperation.Connect, SocketError.SocketError);
+                onSocketAoComplete(this, SocketAsyncOperation.Connect, SocketError.SocketError);
             }
         }
 
@@ -81,14 +81,14 @@ namespace Blanketmen.Hypnos.Network
             try
             {
                 Logging.Info($"DisconnectAsync. Id: {id}", (int)LogChannel.Network);
-                if (!socket.Connected)
+                if (!sock.Connected)
                 {
-                    onConnectionAoComplete(this, SocketAsyncOperation.Disconnect, SocketError.NotConnected);
+                    onSocketAoComplete(this, SocketAsyncOperation.Disconnect, SocketError.NotConnected);
                     return;
                 }
 
-                socket.Shutdown(SocketShutdown.Both);
-                if (!socket.DisconnectAsync(connectEventArgs))
+                sock.Shutdown(SocketShutdown.Both);
+                if (!sock.DisconnectAsync(connectEventArgs))
                 {
                     OnConnectAsyncComplete(null, connectEventArgs);
                 }
@@ -96,19 +96,19 @@ namespace Blanketmen.Hypnos.Network
             catch (Exception e)
             {
                 Logging.Error($"DisconnectAsync failed. Id: {id}, Exception: {e.Message}", nameof(TcpSocket));
-                onConnectionAoComplete(this, SocketAsyncOperation.Disconnect, SocketError.SocketError);
+                onSocketAoComplete(this, SocketAsyncOperation.Disconnect, SocketError.SocketError);
             }
         }
 
         protected override void OnConnectAsyncComplete(object sender, SocketAsyncEventArgs evtArgs)
         {
-            onConnectionAoComplete(this, evtArgs.LastOperation, evtArgs.SocketError);
+            onSocketAoComplete(this, evtArgs.LastOperation, evtArgs.SocketError);
         }
 
         public override void ReceiveAsync()
         {
             Logging.Info($"ReceiveAsync. Id: {id}", (int)LogChannel.Network);
-            ReceiveInternalAsync(socket, receiveEventArgs);
+            ReceiveInternalAsync(sock, receiveEventArgs);
         }
 
         private void ReceiveInternalAsync(Socket connSocket, SocketAsyncEventArgs evtArgs)
@@ -123,7 +123,7 @@ namespace Blanketmen.Hypnos.Network
             catch (Exception e)
             {
                 Logging.Error($"ReceiveAsync failed. Id: {id}, Exception: {e.Message}", nameof(TcpSocket));
-                onConnectionAoComplete(this, SocketAsyncOperation.Receive, SocketError.SocketError);
+                onSocketAoComplete(this, SocketAsyncOperation.Receive, SocketError.SocketError);
             }
         }
 
@@ -131,13 +131,13 @@ namespace Blanketmen.Hypnos.Network
         {
             if (evtArgs.SocketError != SocketError.Success) // Abnormal shutdown.
             {
-                onConnectionAoComplete(this, SocketAsyncOperation.Receive, evtArgs.SocketError);
+                onSocketAoComplete(this, SocketAsyncOperation.Receive, evtArgs.SocketError);
                 return;
             }
 
             if (evtArgs.BytesTransferred == 0) // Normal shutdown.
             {
-                onConnectionAoComplete(this, SocketAsyncOperation.Receive, SocketError.Disconnecting);
+                onSocketAoComplete(this, SocketAsyncOperation.Receive, SocketError.Disconnecting);
                 return;
             }
 
@@ -163,7 +163,7 @@ namespace Blanketmen.Hypnos.Network
                 catch (Exception e)
                 {
                     Logging.Error($"Socket {id} create message failed. Exception: {e.Message}", nameof(TcpSocket));
-                    onConnectionAoComplete(this, SocketAsyncOperation.Receive, SocketError.TypeNotFound);
+                    onSocketAoComplete(this, SocketAsyncOperation.Receive, SocketError.TypeNotFound);
                 }
                 finally
                 {
@@ -200,7 +200,7 @@ namespace Blanketmen.Hypnos.Network
                     int pendingBytes = sendState.packetBuf.offset + packetBytes;
                     if (packetBytes > maxPacketSize || pendingBytes > sendState.packetBuf.final.Length)
                     {
-                        onConnectionAoComplete(this, SocketAsyncOperation.Send, SocketError.NoBufferSpaceAvailable);
+                        onSocketAoComplete(this, SocketAsyncOperation.Send, SocketError.NoBufferSpaceAvailable);
                         return;
                     }
 
@@ -215,13 +215,13 @@ namespace Blanketmen.Hypnos.Network
             sendState.processedBytes = 0;
             if (sendState.pendingBytes > maxPacketSize)
             {
-                onConnectionAoComplete(this, SocketAsyncOperation.Send, SocketError.NoBufferSpaceAvailable);
+                onSocketAoComplete(this, SocketAsyncOperation.Send, SocketError.NoBufferSpaceAvailable);
                 return;
             }
 
             Logging.Trace($"[TcpSocket] Socket {id} send {sendState.pendingBytes} bytes.", (int)LogChannel.Network);
             sendEventArgs.SetBuffer(0, sendState.pendingBytes);
-            SendInternalAsync(socket, sendEventArgs);
+            SendInternalAsync(sock, sendEventArgs);
         }
 
         private void SendInternalAsync(Socket connSocket, SocketAsyncEventArgs evtArgs)
@@ -236,7 +236,7 @@ namespace Blanketmen.Hypnos.Network
             catch (Exception e)
             {
                 Logging.Error($"SendAsync failed. Id: {id}, Exception: {e.Message}", nameof(TcpSocket));
-                onConnectionAoComplete(this, SocketAsyncOperation.Send, evtArgs.SocketError);
+                onSocketAoComplete(this, SocketAsyncOperation.Send, evtArgs.SocketError);
             }
         }
 
@@ -246,7 +246,7 @@ namespace Blanketmen.Hypnos.Network
             PacketSendState sendState = evtArgs.UserToken as PacketSendState;
             if (evtArgs.SocketError != SocketError.Success)
             {
-                onConnectionAoComplete(this, SocketAsyncOperation.Send, evtArgs.SocketError);
+                onSocketAoComplete(this, SocketAsyncOperation.Send, evtArgs.SocketError);
                 return;
             }
 

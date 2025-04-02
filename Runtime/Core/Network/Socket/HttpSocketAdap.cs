@@ -19,21 +19,21 @@ namespace Blanketmen.Hypnos.Network
         Trace
     }
 
-    internal class HttpConnection : IConnection
+    internal class HttpSocketAdap : ISocket
     {
         private HttpClient client = new HttpClient();
-        private readonly ConnectionAoHandler onConnectionAoComplete;
+        private readonly SocketAoHandler onConnectionAoComplete;
         private readonly IResponseProducer responseProducer;
         private readonly ConcurrentQueue<IResponse> pendingResponses = new ConcurrentQueue<IResponse>();
 
-        public int Id { get; private set; }
+        public uint Id { get; private set; }
 
-        public int Version { get; private set; }
+        public uint Version { get; private set; }
 
-        public HttpConnection(int id, HandlerConfig handlerConfig)
+        public HttpSocketAdap(uint id, HandlerConfig handlerConfig)
         {
             Id = id;
-            onConnectionAoComplete = handlerConfig.onConnectionAoCompleteHandler;
+            onConnectionAoComplete = handlerConfig.onSocketAoCompleteHandler;
             responseProducer = handlerConfig.responseProducer;
         }
 
@@ -94,17 +94,17 @@ namespace Blanketmen.Hypnos.Network
             }
             catch (HttpRequestException e)
             {
-                Logging.Error($"Send HttpRequest exception. Exception: {e.Message}", nameof(HttpConnection));
+                Logging.Error($"Send HttpRequest exception. Exception: {e.Message}", nameof(HttpSocketAdap));
                 onConnectionAoComplete(this, SocketAsyncOperation.Send, SocketError.Fault);
             }
             catch (TaskCanceledException e)
             {
-                Logging.Error($"Send HttpRequest exception. Exception: {e.Message}", nameof(HttpConnection));
+                Logging.Error($"Send HttpRequest exception. Exception: {e.Message}", nameof(HttpSocketAdap));
                 onConnectionAoComplete(this, SocketAsyncOperation.Send, SocketError.OperationAborted);
             }
             catch (Exception e)
             {
-                Logging.Error($"Send HttpRequest exception. Exception: {e.Message}", nameof(HttpConnection));
+                Logging.Error($"Send HttpRequest exception. Exception: {e.Message}", nameof(HttpSocketAdap));
                 onConnectionAoComplete(this, SocketAsyncOperation.Send, SocketError.SocketError);
             }
         }
