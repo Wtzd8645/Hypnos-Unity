@@ -1,7 +1,7 @@
 using System;
 using System.Net.Sockets;
 
-namespace Blanketmen.Hypnos
+namespace Blanketmen.Hypnos.Network
 {
     internal class UdpSocket : SocketBase
     {
@@ -99,7 +99,7 @@ namespace Blanketmen.Hypnos
             try
             {
                 PacketReadState readState = evtArgs.UserToken as PacketReadState;
-                readState.packetBuf.offset = NetworkManager.PacketLengthSize;
+                readState.packetBuf.offset = NetworkDefs.PACKET_SIZE_LENGTH;
                 pendingResponses.Enqueue(responseProducer.Produce(readState.packetBuf));
             }
             catch (Exception e)

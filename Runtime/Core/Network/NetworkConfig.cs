@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Blanketmen.Hypnos
+namespace Blanketmen.Hypnos.Network
 {
     public class NetworkConfig : ScriptableObject
     {
@@ -21,7 +21,7 @@ namespace Blanketmen.Hypnos
                 transportConfig = new TransportConfig
                 {
                     ip = NetworkUtils.GetLocalPrivateIp(),
-                    port = NetworkManager.DefalutPort
+                    port = 27015
                 }
             };
             connectionConfigs = new ConnectionConfig[] { config };

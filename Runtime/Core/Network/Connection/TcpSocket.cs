@@ -1,7 +1,7 @@
 using System;
 using System.Net.Sockets;
 
-namespace Blanketmen.Hypnos
+namespace Blanketmen.Hypnos.Network
 {
     internal class TcpSocket : SocketBase
     {
@@ -150,8 +150,8 @@ namespace Blanketmen.Hypnos
                 {
                     readState.isWaitingPacketSize = false;
                     readState.waitingBytes = BitConverter.ToInt16(evtArgs.Buffer, readState.processedBytes);
-                    readState.pendingBytes -= NetworkManager.PacketLengthSize;
-                    readState.processedBytes += NetworkManager.PacketLengthSize;
+                    readState.pendingBytes -= NetworkDefs.PACKET_SIZE_LENGTH;
+                    readState.processedBytes += NetworkDefs.PACKET_SIZE_LENGTH;
                     continue;
                 }
 
@@ -170,7 +170,7 @@ namespace Blanketmen.Hypnos
                     readState.pendingBytes -= readState.waitingBytes;
                     readState.processedBytes += readState.waitingBytes;
                     readState.isWaitingPacketSize = true;
-                    readState.waitingBytes = NetworkManager.PacketLengthSize;
+                    readState.waitingBytes = NetworkDefs.PACKET_SIZE_LENGTH;
                 }
             }
 

@@ -1,3 +1,5 @@
+using Blanketmen.Hypnos.Network;
+
 namespace Blanketmen.Hypnos.Tests.Network
 {
     public class EchoRequest : IRequest
@@ -31,11 +33,11 @@ namespace Blanketmen.Hypnos.Tests.Network
 
                 fixed (char* strPtr = b)
                 {
-                    int strLen = NetworkManager.StringEncoder.GetByteCount(strPtr, b.Length);
+                    int strLen = NetworkDefs.StringEncoder.GetByteCount(strPtr, b.Length);
                     *(int*)(buf + offset) = strLen;
                     offset += sizeof(int);
 
-                    NetworkManager.StringEncoder.GetBytes(strPtr, b.Length, buf + offset, strLen);
+                    NetworkDefs.StringEncoder.GetBytes(strPtr, b.Length, buf + offset, strLen);
                     offset += strLen;
                 }
 
@@ -73,7 +75,7 @@ namespace Blanketmen.Hypnos.Tests.Network
                     int strLen = *(int*)(buf + offset);
                     offset += sizeof(int);
 
-                    b = NetworkManager.StringEncoder.GetString(buf + offset, strLen);
+                    b = NetworkDefs.StringEncoder.GetString(buf + offset, strLen);
                     offset += strLen;
                 }
 

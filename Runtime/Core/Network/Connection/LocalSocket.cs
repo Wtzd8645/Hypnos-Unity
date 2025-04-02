@@ -1,7 +1,7 @@
-﻿using System;
+using System;
 using System.Net.Sockets;
 
-namespace Blanketmen.Hypnos
+namespace Blanketmen.Hypnos.Network
 {
     internal class LocalSocket : SocketBase
     {

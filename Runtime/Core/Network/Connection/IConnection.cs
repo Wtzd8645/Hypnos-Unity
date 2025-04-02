@@ -1,4 +1,4 @@
-﻿namespace Blanketmen.Hypnos
+namespace Blanketmen.Hypnos.Network
 {
     public interface IConnection
     {

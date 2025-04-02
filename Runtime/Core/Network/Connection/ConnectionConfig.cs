@@ -1,16 +1,16 @@
-﻿using System;
+using System;
 
-namespace Blanketmen.Hypnos
+namespace Blanketmen.Hypnos.Network
 {
     [Serializable]
     public class TransportConfig
     {
         public TransportProtocol protocol;
         public string ip;
-        public int port = NetworkManager.DefalutPort;
+        public int port = 27015;
 
-        public ushort maxPacketSize = NetworkManager.DefalutMaxPacketSize;
-        public int sendTimeout = NetworkManager.DefalutSendTimeout;
+        public ushort maxPacketSize = NetworkDefs.MAX_PACKET_SIZE;
+        public int sendTimeout = NetworkDefs.DEFAULT_SEND_TIMEOUT;
     }
 
     public class HandlerConfig

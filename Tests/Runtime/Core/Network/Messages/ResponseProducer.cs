@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using Blanketmen.Hypnos.Network;
 
 namespace Blanketmen.Hypnos.Tests.Network
 {
@@ -13,7 +14,7 @@ namespace Blanketmen.Hypnos.Tests.Network
         {
             PacketBuffer buffer = source as PacketBuffer;
             ushort msgId = BitConverter.ToUInt16(buffer.final, buffer.offset);
-            buffer.offset += NetworkManager.MessageIdSize;
+            buffer.offset += NetworkDefs.MESSAGE_ID_LENGTH;
 
             IResponse response = msgId switch
             {

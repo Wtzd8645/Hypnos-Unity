@@ -1,7 +1,8 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Net.Sockets;
 using UnityEngine;
 using UnityEngine.TestTools;
+using Blanketmen.Hypnos.Network;
 
 namespace Blanketmen.Hypnos.Tests.Network
 {
@@ -28,7 +29,7 @@ namespace Blanketmen.Hypnos.Tests.Network
             {
                 protocol = TransportProtocol.TCP,
                 ip = "", // TODO: Get server IP.
-                port = NetworkManager.DefalutPort,
+                port = 27015,
                 maxPacketSize = 1024
             };
             ConnectionConfig connCfg = new ConnectionConfig
