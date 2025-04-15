@@ -1,47 +1,54 @@
 using Blanketmen.Hypnos.Network;
+using System;
 
 namespace Blanketmen.Hypnos.Tests.Network
 {
     public class EchoRequest : IRequest
     {
-        public ushort msgId;
+        public ushort gid;
+        public ushort id;
         public int a;
         public string b;
         public double c;
 
-        private int offset;
+        private ushort offset;
+        
+        public ushort Gid
+        {
+            get => gid;
+        }
 
         public ushort Id
         {
-            get => msgId;
+            get => id;
         }
 
         public EchoRequest()
         {
-            msgId = 65535;
+            id = 65535;
         }
 
-        public unsafe int Pack(PacketBuffer result)
+        public unsafe ushort Pack(Span<byte> buf)
         {
-            fixed (byte* buf = &result.final[result.offset])
+            fixed (byte* ptr = buf)
             {
-                *(ushort*)(buf + offset) = msgId;
+                *(ushort*)(ptr + offset) = Id;
                 offset += sizeof(ushort);
 
-                *(int*)(buf + offset) = a;
+                *(int*)(ptr + offset) = a;
                 offset += sizeof(int);
 
                 fixed (char* strPtr = b)
                 {
-                    int strLen = NetworkDefs.StringEncoder.GetByteCount(strPtr, b.Length);
-                    *(int*)(buf + offset) = strLen;
+                    ushort strLen = (ushort)NetworkDefs.StringEncoder.GetByteCount(strPtr, b.Length);
+                    *(int*)(ptr + offset) = strLen;
                     offset += sizeof(int);
 
-                    NetworkDefs.StringEncoder.GetBytes(strPtr, b.Length, buf + offset, strLen);
+                    NetworkDefs.StringEncoder.GetBytes(strPtr, b.Length, ptr + offset, strLen);
                     offset += strLen;
                 }
 
-                *(double*)(buf + offset) = c;
+                *(double*)(ptr + offset) = c;
                 offset += sizeof(double);
             }
             return offset;
@@ -50,36 +57,43 @@ namespace Blanketmen.Hypnos.Tests.Network
 
     public class EchoResponse : IResponse
     {
-        public ushort msgId;
+        public byte gid;
+        public ushort id;
         public int a;
         public string b;
         public double c;
 
         private int offset;
 
-        public ushort Id
+        public byte Gid
         {
-            get => msgId;
-            set => msgId = value;
+            get => gid;
+            set => gid = value;
         }
 
-        public unsafe void Unpack(PacketBuffer source)
+        public ushort Id
         {
-            fixed (byte* buf = &source.final[source.offset])
+            get => id;
+            set => id = value;
+        }
+
+        public unsafe void Unpack(Span<byte> buf)
+        {
+            fixed (byte* ptr = buf)
             {
-                a = *(int*)(buf + offset);
+                a = *(int*)(ptr + offset);
                 offset += sizeof(int);
 
                 fixed (char* strPtr = b)
                 {
-                    int strLen = *(int*)(buf + offset);
+                    int strLen = *(int*)(ptr + offset);
                     offset += sizeof(int);
 
-                    b = NetworkDefs.StringEncoder.GetString(buf + offset, strLen);
+                    b = NetworkDefs.StringEncoder.GetString(ptr + offset, strLen);
                     offset += strLen;
                 }
 
-                c = *(double*)(buf + offset);
+                c = *(double*)(ptr + offset);
                 offset += sizeof(double);
             }
         }

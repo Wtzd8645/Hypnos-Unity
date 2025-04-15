@@ -12,7 +12,7 @@ namespace Blanketmen.Hypnos.Network
 
         public ushort Id => id;
 
-        public int Pack(PacketBuffer result)
+        public ushort Pack(Span<byte> buf)
         {
             throw new NotImplementedException();
         }

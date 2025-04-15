@@ -8,22 +8,30 @@ namespace Blanketmen.Hypnos.Tests.Network
         Echo = 65535
     }
 
-    internal class ResponseProducer : IResponseProducer
+    internal class TestResponseAllocator : IResponseAllocator
     {
-        public IResponse Produce(object source)
+        public IResponse Acquire(byte gid, ushort id)
         {
-            PacketBuffer buffer = source as PacketBuffer;
-            ushort msgId = BitConverter.ToUInt16(buffer.final, buffer.offset);
-            buffer.offset += NetworkDefs.MESSAGE_ID_LENGTH;
+            throw new NotImplementedException();
+        }
 
+        public IResponse Acquire(Span<byte> buf)
+        {
+            ushort msgId = BitConverter.ToUInt16(buf);
             IResponse response = msgId switch
             {
                 (ushort)ResponseId.Echo => new EchoResponse(),
                 _ => throw new NotImplementedException(msgId.ToString()),
             };
+
             response.Id = msgId;
-            response.Unpack(buffer);
+            response.Unpack(buf.Slice(NetworkDefs.MESSAGE_ID_LENGTH));
             return response;
+        }
+
+        public void Release(IResponse resp)
+        {
+
         }
     }
 }

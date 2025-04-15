@@ -7,15 +7,11 @@ namespace Blanketmen.Hypnos.Network
 {
     public class HttpResponse : IResponse
     {
-        public ushort id;
         public HttpStatusCode statusCode;
         public Stream stream;
 
-        ushort IResponse.Id
-        {
-            get => id;
-            set => id = value;
-        }
+        public byte Gid { get; set; }
+        public ushort Id { get; set; }
 
         public HttpResponse(HttpResponseMessage resp)
         {
@@ -23,9 +19,9 @@ namespace Blanketmen.Hypnos.Network
             stream = resp.Content.ReadAsStreamAsync().Result;
         }
 
-        public void Unpack(PacketBuffer source)
+        public void Unpack(Span<byte> buf)
         {
-            throw new NotImplementedException();
+
         }
     }
 }

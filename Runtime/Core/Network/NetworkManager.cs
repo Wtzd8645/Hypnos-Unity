@@ -1,9 +1,7 @@
 using Blanketmen.Hypnos.Mediation;
-using System;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Net.Sockets;
 using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace Blanketmen.Hypnos.Network
 {
@@ -16,250 +14,217 @@ namespace Blanketmen.Hypnos.Network
         #endregion
 
         private ISocket[] sockets;
-        private readonly ConcurrentQueue<SocketEventArgs> socketEventArgs = new ConcurrentQueue<SocketEventArgs>();
+        private IClientSocket[] clients;
+        private IServerSocket[] servers;
 
-        private IResponseProducer[] responseProducers;
-        private readonly Dictionary<ushort, Action<IResponse>> responseHandlerMap = new Dictionary<ushort, Action<IResponse>>(521);
+        private bool running;
+        private Thread ioThread;
+        private readonly IOContext ioContext = new IOContext();
 
-        public void Initialize(NetworkConfig config)
+        public void SetConfig(NetworkConfig cfg)
         {
-            sockets = new ISocket[config.socketConfigs.Length];
-            responseProducers = config.responseProducers;
-            for (int i = 0; i < config.socketConfigs.Length; ++i)
+            // TODO: Create sockets
+        }
+
+        public void Initialize()
+        {
+            // TODO: Need to check if the sockets are available.
+            if (running)
             {
-                AddConnection(config.socketConfigs[i]);
+                Logging.Error("NetworkManager is already initialized.", nameof(NetworkManager));
+                return;
             }
+
+            running = true;
+            ioThread = new Thread(ProcessIOEvents)
+            {
+                IsBackground = true,
+                Name = "Network"
+            };
+            ioThread.Start();
         }
 
         public void Release()
         {
+            if (!running)
+            {
+                Logging.Error("NetworkManager is not initialized.", nameof(NetworkManager));
+                return;
+            }
+
+            running = false; // TODO: Use atomic.
+            ioContext.signal.Set();
+            ioThread.Join();
+
             foreach (ISocket socket in sockets)
             {
-                socket.Dispose();
+                socket?.Stop();
             }
         }
 
         public void Update()
         {
-            while (socketEventArgs.TryDequeue(out SocketEventArgs arg))
-            {
-                ProcessSocketEventArg(arg);
-            }
-
-            // Dispatch responses
             foreach (ISocket socket in sockets)
             {
-                while (socket.TryGetResponse(out IResponse resp))
-                {
-                    responseHandlerMap.TryGetValue(resp.Id, out Action<IResponse> responseHandler);
-                    if (responseHandler == null)
-                    {
-                        Logging.Warning($"[NetworkManager] Response handler is null. MsgId: {resp.Id}");
-                    }
-                    else
-                    {
-                        responseHandler(resp);
-                    }
-                }
+                socket.Dispatch();
             }
         }
 
-        public void Register(ushort msgId, Action<IResponse> handler)
+        private void ProcessIOEvents()
         {
-            responseHandlerMap.TryGetValue(msgId, out Action<IResponse> handlers);
-            responseHandlerMap[msgId] = handlers + handler;
-        }
-
-        public void Unregister(ushort msgId, Action<IResponse> handler)
-        {
-            if (responseHandlerMap.TryGetValue(msgId, out Action<IResponse> handlers))
+            while (running)
             {
-                responseHandlerMap[msgId] = handlers - handler;
+                ioContext.signal.WaitOne();
+                while (ioContext.events.TryDequeue(out IOEventArgs args))
+                {
+                    args.Process();
+                }
+                ioContext.signal.Reset();
             }
         }
 
-        public void AddConnection(SocketConfig config)
+        public void StartServer(uint id)
         {
-            if (config.id >= sockets.Length)
-            {
-                Logging.Error($"Connection is duplicate. ConnectionId: {config.id}", nameof(NetworkManager));
-                return;
-            }
-
-            HandlerConfig handlerConfig = new HandlerConfig
-            {
-                onSocketAoCompleteHandler = OnSocketAoComplete,
-                responseProducer = responseProducers[config.responseProducerId]
-            };
-
-            TransportConfig transportConfig = config.transportConfig;
-            switch (transportConfig.protocol)
-            {
-                case TransportProtocol.LocalSimulation:
-                {
-                    sockets[config.id] = new MockSocket(config.id, handlerConfig);
-                    break;
-                }
-                case TransportProtocol.TCP:
-                {
-                    sockets[config.id] = new TcpSocket(config.id, transportConfig, handlerConfig);
-                    break;
-                }
-                case TransportProtocol.UDP:
-                {
-                    sockets[config.id] = new UdpSocket(config.id, transportConfig, handlerConfig);
-                    break;
-                }
-                case TransportProtocol.HTTP:
-                {
-                    sockets[config.id] = new HttpSocketAdap(config.id, handlerConfig);
-                    break;
-                }
-                default:
-                {
-                    Logging.Error($"Protocol not implemented. SocketId: {config.id}, Protocol: {transportConfig.protocol}", nameof(NetworkManager));
-                    break;
-                }
-            }
-        }
-
-        public void RemoveConnection(uint id)
-        {
-            if (id >= sockets.Length)
+            if (id >= servers.Length)
             {
                 Logging.Error($"Invalid socket id. SocketId: {id}", nameof(NetworkManager));
                 return;
             }
 
-            sockets[id]?.Dispose();
+            servers[id].Start();
         }
 
-        public void ConnectAsync(uint id)
+        public void StopServer(uint id)
         {
-            if (id >= sockets.Length)
+            if (id >= servers.Length)
             {
                 Logging.Error($"Invalid socket id. SocketId: {id}", nameof(NetworkManager));
                 return;
             }
 
-            sockets[id].ConnectAsync();
+            servers[id].Stop();
         }
 
-        public void DisconnectAsync(uint id)
+        public void StartClient(uint id)
         {
-            if (id >= sockets.Length)
+            if (id >= clients.Length)
             {
                 Logging.Error($"Invalid socket id. SocketId: {id}", nameof(NetworkManager));
                 return;
             }
 
-            sockets[id].DisconnectAsync();
+            clients[id].Start();
+        }
+
+        public void StopClient(uint id)
+        {
+            if (id >= clients.Length)
+            {
+                Logging.Error($"Invalid socket id. SocketId: {id}", nameof(NetworkManager));
+                return;
+            }
+
+            clients[id].Stop();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public void Send(uint Id, IRequest request)
+        public void Send(uint id, IResponse req, IEnumerable<ConnectionHandle> conns)
         {
-            sockets[Id].SendAsync(request);
+            servers[id].Send(req, conns);
         }
 
-        // NOTE: May be called by multiple threads.
-        private void OnSocketAoComplete(ISocket conn, SocketAsyncOperation op, SocketError err)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void Send(uint id, IRequest req)
         {
-            Logging.Info($"OnSocketAoComplete. SocketId: {conn.Id}, Operation: {op}, Error: {err}", (int)LogChannel.Network);
-            SocketEventArgs args = new SocketEventArgs()
-            {
-                socket = conn,
-                version = conn.Version,
-                op = op,
-                result = err
-            };
-            socketEventArgs.Enqueue(args);
+            clients[id].Send(req);
         }
 
-        // NOTE: Only called by main thread.
-        private void ProcessSocketEventArg(SocketEventArgs args)
+        public void Register(uint id, ServerEventHandler handler)
         {
-            if (args.version != args.socket.Version)
+            if (id >= servers.Length)
             {
+                Logging.Error($"Invalid socket id. SocketId: {id}", nameof(NetworkManager));
                 return;
             }
 
-            switch (args.op)
+            servers[id].Register(handler);
+        }
+
+        public void Unregister(uint id, ServerEventHandler handler)
+        {
+            if (id >= servers.Length)
             {
-                case SocketAsyncOperation.Connect:
-                {
-                    switch (args.result)
-                    {
-                        case SocketError.IsConnected:
-                        {
-                            break;
-                        }
-                        case SocketError.Success:
-                        {
-                            args.socket.ReceiveAsync();
-                            break;
-                        }
-                    }
-                    Notify((int)NetworkEvent.ConnectComplete, args.socket.Id, args.result);
-                    return;
-                }
-                case SocketAsyncOperation.Disconnect:
-                {
-                    switch (args.result)
-                    {
-                        case SocketError.NotConnected:
-                        {
-                            break;
-                        }
-                        case SocketError.Success:
-                        {
-                            args.socket.Reset();
-                            break;
-                        }
-                    }
-                    Notify((int)NetworkEvent.DisconnectComplete, args.socket.Id, args.result);
-                    return;
-                }
-                case SocketAsyncOperation.Receive:
-                {
-                    switch (args.result)
-                    {
-                        case SocketError.OperationAborted:
-                        case SocketError.NetworkReset:
-                        case SocketError.ConnectionReset:
-                        {
-                            break;
-                        }
-                        default:
-                        {
-                            args.socket.Reset();
-                            break;
-                        }
-                    }
-                    Notify((int)NetworkEvent.ReceiveError, args.socket.Id);
-                    return;
-                }
-                case SocketAsyncOperation.Send:
-                {
-                    switch (args.result)
-                    {
-                        case SocketError.OperationAborted:
-                        case SocketError.NetworkReset:
-                        case SocketError.ConnectionReset:
-                        {
-                            return;
-                        }
-                        case SocketError.NoBufferSpaceAvailable:
-                        case SocketError.TimedOut:
-                        {
-                            args.socket.Reset();
-                            break;
-                        }
-                    }
-                    Notify((int)NetworkEvent.SendError, args.socket.Id);
-                    return;
-                }
+                Logging.Error($"Invalid socket id. SocketId: {id}", nameof(NetworkManager));
+                return;
             }
+
+            servers[id].Unregister(handler);
+        }
+
+        public void Register(uint id, ClientEventHandler handler)
+        {
+            if (id >= clients.Length)
+            {
+                Logging.Error($"Invalid socket id. SocketId: {id}", nameof(NetworkManager));
+                return;
+            }
+
+            clients[id].Register(handler);
+        }
+
+        public void Unregister(uint id, ClientEventHandler handler)
+        {
+            if (id >= clients.Length)
+            {
+                Logging.Error($"Invalid socket id. SocketId: {id}", nameof(NetworkManager));
+                return;
+            }
+
+            clients[id].Unregister(handler);
+        }
+
+        public void Register(uint id, ushort gid, RequestHandler handler)
+        {
+            if (id >= servers.Length)
+            {
+                Logging.Error($"Invalid socket id. SocketId: {id}", nameof(NetworkManager));
+                return;
+            }
+
+            servers[id].Register(gid, handler);
+        }
+
+        public void Unregister(uint id, ushort gid, RequestHandler handler)
+        {
+            if (id >= servers.Length)
+            {
+                Logging.Error($"Invalid socket id. SocketId: {id}", nameof(NetworkManager));
+                return;
+            }
+
+            servers[id].Unregister(gid, handler);
+        }
+
+        public void Register(uint id, ushort gid, ResponseHandler handler)
+        {
+            if (id >= clients.Length)
+            {
+                Logging.Error($"Invalid socket id. SocketId: {id}", nameof(NetworkManager));
+                return;
+            }
+
+            clients[id].Register(gid, handler);
+        }
+
+        public void Unregister(uint id, ushort gid, ResponseHandler handler)
+        {
+            if (id >= clients.Length)
+            {
+                Logging.Error($"Invalid message id. MessageId: {id}", nameof(NetworkManager));
+                return;
+            }
+
+            clients[id].Unregister(gid, handler);
         }
     }
 }

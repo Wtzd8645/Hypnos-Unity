@@ -25,27 +25,22 @@ namespace Blanketmen.Hypnos.Tests.Network
 
         public void Awake()
         {
-            TransportConfig transCfg = new TransportConfig
-            {
-                protocol = TransportProtocol.TCP,
-                ip = "", // TODO: Get server IP.
-                port = 27015,
-                maxPacketSize = 1024
-            };
             SocketConfig connCfg = new SocketConfig
             {
                 id = connId,
-                transportConfig = transCfg,
-                responseProducerId = 0
+                protocol = TransportProtocol.TCP,
+                ip = "",
+                port = 27015,
+                responseAllocator = new TestResponseAllocator(),
             };
             NetworkConfig networkCfg = ScriptableObject.CreateInstance<NetworkConfig>();
-            networkCfg.socketConfigs = new SocketConfig[] { connCfg };
-            networkCfg.responseProducers = new IResponseProducer[] { new ResponseProducer() };
+            networkCfg.clientConfigs = new SocketConfig[] { connCfg };
 
-            NetworkManager.Instance.Initialize(networkCfg);
-            NetworkManager.Instance.Register<int, SocketError>((int)NetworkEvent.ConnectComplete, OnConnectComplete);
-            NetworkManager.Instance.Register((ushort)ResponseId.Echo, OnEchoResponse);
-            NetworkManager.Instance.ConnectAsync(connId);
+            NetworkManager.Instance.SetConfig(networkCfg);
+            NetworkManager.Instance.Initialize();
+            //NetworkManager.Instance.Register<int, SocketError>((int)NetworkEventType.ConnectComplete, OnConnectComplete);
+            NetworkManager.Instance.Register(0, (ushort)ResponseId.Echo, OnEchoResponse);
+            NetworkManager.Instance.StartServer(connId);
         }
 
         private void Update()
@@ -59,8 +54,8 @@ namespace Blanketmen.Hypnos.Tests.Network
 
         private void OnDestroy()
         {
-            NetworkManager.Instance.Unregister<int, SocketError>((int)NetworkEvent.ConnectComplete, OnConnectComplete);
-            NetworkManager.Instance.Unregister((ushort)ResponseId.Echo, OnEchoResponse);
+            //NetworkManager.Instance.Unregister<int, SocketError>((int)NetworkEventType.ConnectComplete, OnConnectComplete);
+            NetworkManager.Instance.Unregister(0, (ushort)ResponseId.Echo, OnEchoResponse);
         }
 
         private void OnConnectComplete(int id, SocketError result)

@@ -1,16 +1,14 @@
 namespace Blanketmen.Hypnos.Network
 {
-    public interface ISocket
+    internal interface ISocket
     {
         public uint Id { get; }
         public uint Version { get; }
 
-        public void Dispose();
-        public void Reset();
-        public void ConnectAsync();
-        public void DisconnectAsync();
-        public void ReceiveAsync();
-        public bool TryGetResponse(out IResponse response);
-        public void SendAsync(IRequest request);
+        public void Start();
+        public void Stop();
+
+        public void Dispatch();
+        public void Process(IOEventArgs args);
     }
 }

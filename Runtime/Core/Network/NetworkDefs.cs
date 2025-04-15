@@ -1,9 +1,17 @@
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Net.Sockets;
+using System.Runtime.CompilerServices;
+using System.Threading;
 
 namespace Blanketmen.Hypnos.Network
 {
-    public delegate void SocketAoHandler(ISocket conn, SocketAsyncOperation op, SocketError err);
+    // SocketError: https://docs.microsoft.com/zh-tw/windows/win32/winsock/windows-sockets-error-codes-2
+
+    public delegate void ServerEventHandler(ServerEvent evt);
+    public delegate void ClientEventHandler(ClientEvent evt);
+    public delegate void RequestHandler(IRequest req);
+    public delegate void ResponseHandler(IResponse resp);
 
     public static class NetworkDefs
     {
@@ -34,58 +42,80 @@ namespace Blanketmen.Hypnos.Network
         HTTP
     }
 
-    public enum NetworkEvent
+    public struct ServerEvent
     {
-        ConnectComplete,
-        DisconnectComplete,
-        ReceiveError,
-        SendError
-    }
-
-    internal class NetworkEventComparer : IEqualityComparer<NetworkEvent>
-    {
-        public bool Equals(NetworkEvent x, NetworkEvent y)
+        public enum Type
         {
-            return x == y;
+            Connect,
+            Disconnect,
         }
 
-        public int GetHashCode(NetworkEvent obj)
-        {
-            return obj.GetHashCode();
-        }
+        public Type type;
+        public SocketError error;
+        public ConnectionHandle handle;
     }
 
-    internal class SocketEventArgs
+    public struct ClientEvent
     {
-        public ISocket socket;
+        public enum Type
+        {
+            Connect,
+            Disconnect
+        }
+
+        public Type type;
+        public SocketError error;
+    }
+
+    internal struct SocketHandle
+    {
+        public ISocket sock;
         public uint version;
-        public SocketAsyncOperation op;
-        public SocketError result; // Note: https://docs.microsoft.com/zh-tw/windows/win32/winsock/windows-sockets-error-codes-2
+
+        public readonly bool IsValid() => sock != null && sock.Version == version;
     }
 
-    public class PacketBuffer
+    internal class IOEventArgs
     {
-        public int offset;
-        public byte[] final;
-        public byte[] compress;
-        public byte[] encrypt;
+        public enum Operation
+        {
+            None,
+            Accept,
+            Connect,
+            Receive,
+            Send
+        }
+
+        public SocketHandle sockHandle;
+        public ConnectionHandle connHandle;
+        public Operation op;
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public void Process()
+        {
+            if (sockHandle.IsValid())
+            {
+                sockHandle.sock.Process(this);
+            }
+        }
     }
 
-    internal class PacketReadState
+    internal class IOContext
     {
-        public bool isWaitingPacketSize;
-        public int waitingBytes;
-        public int pendingBytes;
-        public int processedBytes;
-        public PacketBuffer packetBuf;
+        public ManualResetEvent signal = new ManualResetEvent(false);
+        public ConcurrentQueue<IOEventArgs> events = new ConcurrentQueue<IOEventArgs>();
     }
 
-    internal class PacketSendState
+    internal struct RequestEventArgs
     {
-        public bool isSending;
-        public int pendingBytes;
-        public int processedBytes;
-        public PacketBuffer sendBuf;
-        public PacketBuffer packetBuf;
+        public byte[] buffer;
+        public ushort length;
+    }
+
+    internal struct ResponseEventArg
+    {
+        public List<ConnectionHandle> conns;
+        public byte[] buffer;
+        public ushort length;
     }
 }

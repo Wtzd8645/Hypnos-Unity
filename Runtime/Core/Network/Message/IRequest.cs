@@ -1,9 +1,11 @@
+using System;
+
 namespace Blanketmen.Hypnos.Network
 {
     public interface IRequest
     {
         public ushort Id { get; }
 
-        public unsafe int Pack(PacketBuffer result);
+        public unsafe ushort Pack(Span<byte> buf);
     }
 }

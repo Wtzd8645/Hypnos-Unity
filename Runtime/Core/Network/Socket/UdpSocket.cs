@@ -3,204 +3,224 @@ using System.Net.Sockets;
 
 namespace Blanketmen.Hypnos.Network
 {
-    internal class UdpSocket : SocketBase
+    internal class UdpSocket : ClientSocketBase
     {
-        public UdpSocket(uint id, TransportConfig transportConfig, HandlerConfig handlerConfig) : base(id, transportConfig, handlerConfig)
+        public UdpSocket(SocketConfig cfg) : base(cfg)
         {
             CreateSocket();
-            CreateReceiveEventArgs();
-            CreateSendEventArgs();
+            //CreateReceiveEventArgs();
+            //CreateSendEventArgs();
         }
 
-        public override void Dispose()
+        public void Dispose()
         {
-            heartbeatTimer.Dispose();
-            sock.Close();
+            //heartbeatTimer.Dispose();
+            socket.Close();
         }
 
-        public override void Reset()
+        public void Reset()
         {
             Logging.Info($"Reset. Id: {id}", (int)LogChannel.Network);
-            sock.Close(); // NOTE: https://docs.microsoft.com/zh-tw/dotnet/api/system.net.sockets.socket.close
+            socket.Close(); // NOTE: https://docs.microsoft.com/zh-tw/dotnet/api/system.net.sockets.socket.close
             CreateSocket();
-            CreateReceiveEventArgs();
-            CreateSendEventArgs();
-            // heartbeatTimer.Change(Timeout.Infinite, Timeout.Infinite);
+            //CreateReceiveEventArgs();
+            //CreateSendEventArgs();
+            //heartbeatTimer.Change(Timeout.Infinite, Timeout.Infinite);
         }
 
         private void CreateSocket()
         {
-            sock = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
+            socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp);
             ++version;
         }
 
-        protected override void CreateReceiveEventArgs()
+        //protected override void CreateReceiveEventArgs()
+        //{
+        //    base.CreateReceiveEventArgs();
+        //    recvEventArgs.RemoteEndPoint = bindingEndPoint;
+        //}
+
+        //protected override void CreateSendEventArgs()
+        //{
+        //    base.CreateSendEventArgs();
+        //    sendEventArgs.RemoteEndPoint = bindingEndPoint;
+        //}
+
+        public override void Start()
         {
-            base.CreateReceiveEventArgs();
-            receiveEventArgs.RemoteEndPoint = bindingEndPoint;
+            //onSocketEvent(id, SocketAsyncOperation.Connect, SocketError.Success);
         }
 
-        protected override void CreateSendEventArgs()
+        public override void Stop()
         {
-            base.CreateSendEventArgs();
-            sendEventArgs.RemoteEndPoint = bindingEndPoint;
+            //onSocketEvent(id, SocketAsyncOperation.Disconnect, SocketError.Success);
         }
 
-        public override void ConnectAsync()
+        public override void Process(IOEventArgs args)
         {
-            onSocketAoComplete(this, SocketAsyncOperation.Connect, SocketError.Success);
+            //switch (args.op)
+            //{
+            //    case SocketOperation.Receive:
+            //    {
+            //        OnReceiveComplete(null);
+            //        break;
+            //    }
+            //    case SocketOperation.Send:
+            //    {
+            //        OnSendComplete(null);
+            //        break;
+            //    }
+            //    default:
+            //    {
+            //        Logging.Error($"Invalid socket operation. Id: {id}, Operation: {args.op}", nameof(UdpSocket));
+            //        break;
+            //    }
+            //}
         }
 
-        public override void DisconnectAsync()
-        {
-            onSocketAoComplete(this, SocketAsyncOperation.Disconnect, SocketError.Success);
-        }
-
-        protected override void OnConnectAsyncComplete(object sender, SocketAsyncEventArgs evtArgs) { }
-
-        public override void ReceiveAsync()
+        public void ReceiveInternalAsync()
         {
             Logging.Info($"ReceiveAsync. Id: {id}", (int)LogChannel.Network);
-            receiveEventArgs.SetBuffer(0, receiveBufferSize);
-            ReceiveInternalAsync(sock, receiveEventArgs);
+            //recvEventArgs.SetBuffer(0, NetworkDefs.MAX_BUFFER_SIZE);
+            //ReceiveInternalAsync(socket, recvEventArgs);
         }
 
-        private void ReceiveInternalAsync(Socket connSocket, SocketAsyncEventArgs evtArgs)
+        private void ReceiveInternalAsync(Socket connSocket, SocketAsyncEventArgs args)
         {
             try
             {
-                if (!connSocket.ReceiveFromAsync(evtArgs))
+                if (!connSocket.ReceiveFromAsync(args))
                 {
-                    OnReceiveAsyncComplete(null, evtArgs);
+                    OnIOComplete(null, args);
                 }
             }
             catch (Exception e)
             {
                 Logging.Error($"ReceiveAsync failed. Id: {id}, Exception: {e.Message}", nameof(UdpSocket));
-                onSocketAoComplete(this, SocketAsyncOperation.Receive, evtArgs.SocketError);
+                //onSocketEvent(id, SocketAsyncOperation.Receive, args.SocketError);
             }
         }
 
-        protected override void OnReceiveAsyncComplete(object sender, SocketAsyncEventArgs evtArgs)
+        protected void OnReceiveComplete(SocketAsyncEventArgs evtArgs)
         {
             if (evtArgs.SocketError != SocketError.Success) // Abnormal shutdown.
             {
-                onSocketAoComplete(this, SocketAsyncOperation.Receive, evtArgs.SocketError);
+                //onSocketEvent(id, SocketAsyncOperation.Receive, evtArgs.SocketError);
                 return;
             }
 
             if (evtArgs.BytesTransferred == 0) // Normal shutdown.
             {
-                onSocketAoComplete(this, SocketAsyncOperation.Receive, SocketError.Disconnecting);
+                //onSocketEvent(id, SocketAsyncOperation.Receive, SocketError.Disconnecting);
                 return;
             }
 
             Logging.Trace($"[UdpSocket] Socket {id} received {evtArgs.BytesTransferred} bytes", (int)LogChannel.Network);
             try
             {
-                PacketReadState readState = evtArgs.UserToken as PacketReadState;
-                readState.packetBuf.offset = NetworkDefs.PACKET_SIZE_LENGTH;
-                pendingResponses.Enqueue(responseProducer.Produce(readState.packetBuf));
+                RecvContext readState = evtArgs.UserToken as RecvContext;
+                //readState.packetBuf.offset = NetworkDefs.PACKET_SIZE_LENGTH;
+                //pendingResponses.Enqueue(responsePool.Produce(readState.packetBuf));
             }
             catch (Exception e)
             {
                 Logging.Error($"Socket {id} create message failed. Exception: {e.Message}", nameof(UdpSocket));
-                onSocketAoComplete(this, SocketAsyncOperation.Receive, SocketError.TypeNotFound);
+                //onSocketEvent(id, SocketAsyncOperation.Receive, SocketError.TypeNotFound);
             }
 
-            evtArgs.SetBuffer(0, receiveBufferSize);
+            evtArgs.SetBuffer(0, NetworkDefs.MAX_BUFFER_SIZE);
             ReceiveInternalAsync(evtArgs.ConnectSocket, evtArgs);
         }
 
-        public override void SendAsync(IRequest request)
+        public override void Send(IRequest request)
         {
-            PacketSendState sendState = sendEventArgs.UserToken as PacketSendState;
-            lock (sendEventArgs)
-            {
-                if (sendState.isSending)
-                {
-                    int packetBytes = request.Pack(sendState.packetBuf);
-                    int pendingBytes = sendState.packetBuf.offset + packetBytes;
-                    if (packetBytes > maxPacketSize || pendingBytes > sendState.packetBuf.final.Length)
-                    {
-                        onSocketAoComplete(this, SocketAsyncOperation.Send, SocketError.NoBufferSpaceAvailable);
-                        return;
-                    }
+            //SendContext sendState = sendEventArgs.UserToken as SendContext;
+            //lock (sendEventArgs)
+            //{
+            //    if (sendState.isSending)
+            //    {
+            //        int packetBytes = request.Pack(sendState.packetBuf);
+            //        int pendingBytes = sendState.packetBuf.offset + packetBytes;
+            //        if (packetBytes > NetworkDefs.MAX_PACKET_SIZE || pendingBytes > sendState.packetBuf.final.Length)
+            //        {
+            //            onSocketAoComplete(id, SocketAsyncOperation.Send, SocketError.NoBufferSpaceAvailable);
+            //            return;
+            //        }
 
-                    sendState.packetBuf.offset = pendingBytes;
-                    Logging.Trace($"[UdpSocket] Socket {id} produce {pendingBytes} bytes.", (int)LogChannel.Network);
-                    return;
-                }
-            }
+            //        sendState.packetBuf.offset = pendingBytes;
+            //        Logging.Trace($"[UdpSocket] Socket {id} produce {pendingBytes} bytes.", (int)LogChannel.Network);
+            //        return;
+            //    }
+            //}
 
-            sendState.isSending = true;
-            sendState.pendingBytes = request.Pack(sendState.sendBuf);
-            sendState.processedBytes = 0;
-            if (sendState.pendingBytes > maxPacketSize)
-            {
-                onSocketAoComplete(this, SocketAsyncOperation.Send, SocketError.NoBufferSpaceAvailable);
-                return;
-            }
+            //sendState.isSending = true;
+            //sendState.pendingBytes = request.Pack(sendState.sendBuf);
+            //sendState.processedBytes = 0;
+            //if (sendState.pendingBytes > NetworkDefs.MAX_PACKET_SIZE)
+            //{
+            //    onSocketAoComplete(id, SocketAsyncOperation.Send, SocketError.NoBufferSpaceAvailable);
+            //    return;
+            //}
 
-            Logging.Trace($"[UdpSocket] Socket {id} send {sendState.pendingBytes} bytes.", (int)LogChannel.Network);
-            sendEventArgs.SetBuffer(0, sendState.pendingBytes);
-            SendInternalAsync(sock, sendEventArgs);
+            //Logging.Trace($"[UdpSocket] Socket {id} send {sendState.pendingBytes} bytes.", (int)LogChannel.Network);
+            //sendEventArgs.SetBuffer(0, sendState.pendingBytes);
+            //SendInternalAsync(socket, sendEventArgs);
         }
 
-        private void SendInternalAsync(Socket connSocket, SocketAsyncEventArgs evtArgs)
+        private void SendInternalAsync(Socket connSocket, SocketAsyncEventArgs args)
         {
             try
             {
-                if (!connSocket.SendToAsync(evtArgs))
+                if (!connSocket.SendToAsync(args))
                 {
-                    OnSendAsyncComplete(null, evtArgs);
+                    OnIOComplete(null, args);
                 }
             }
             catch (Exception e)
             {
                 Logging.Error($"SendAsync failed. Id: {id}, Exception: {e.Message}", nameof(UdpSocket));
-                onSocketAoComplete(this, SocketAsyncOperation.Send, SocketError.SocketError);
+                //onSocketEvent(id, SocketAsyncOperation.Send, SocketError.SocketError);
             }
         }
 
-        protected override void OnSendAsyncComplete(object sender, SocketAsyncEventArgs evtArgs)
+        protected void OnSendComplete(SocketAsyncEventArgs evtArgs)
         {
-            Logging.Trace($"[UdpSocket] Socket {id} sent {evtArgs.BytesTransferred} bytes.", (int)LogChannel.Network);
-            PacketSendState sendState = evtArgs.UserToken as PacketSendState;
-            if (evtArgs.SocketError != SocketError.Success)
-            {
-                onSocketAoComplete(this, SocketAsyncOperation.Send, evtArgs.SocketError);
-                return;
-            }
+            //Logging.Trace($"[UdpSocket] Socket {id} sent {evtArgs.BytesTransferred} bytes.", (int)LogChannel.Network);
+            //SendContext sendState = evtArgs.UserToken as SendContext;
+            //if (evtArgs.SocketError != SocketError.Success)
+            //{
+            //    onSocketAoComplete(id, SocketAsyncOperation.Send, evtArgs.SocketError);
+            //    return;
+            //}
 
-            sendState.pendingBytes -= evtArgs.BytesTransferred;
-            if (sendState.pendingBytes > 0)
-            {
-                sendState.processedBytes += evtArgs.BytesTransferred;
-                evtArgs.SetBuffer(sendState.processedBytes, sendState.pendingBytes);
-                SendInternalAsync(evtArgs.ConnectSocket, evtArgs);
-                return;
-            }
+            //sendState.pendingBytes -= evtArgs.BytesTransferred;
+            //if (sendState.pendingBytes > 0)
+            //{
+            //    sendState.processedBytes += evtArgs.BytesTransferred;
+            //    evtArgs.SetBuffer(sendState.processedBytes, sendState.pendingBytes);
+            //    SendInternalAsync(evtArgs.ConnectSocket, evtArgs);
+            //    return;
+            //}
 
-            lock (sendEventArgs)
-            {
-                if (sendState.packetBuf.offset == 0)
-                {
-                    sendState.isSending = false;
-                    return;
-                }
+            //lock (sendEventArgs)
+            //{
+            //    if (sendState.packetBuf.offset == 0)
+            //    {
+            //        sendState.isSending = false;
+            //        return;
+            //    }
 
-                Logging.Trace($"[UdpSocket] Socket {id} send {sendState.packetBuf.offset} produced bytes.", (int)LogChannel.Network);
-                evtArgs.SetBuffer(sendState.packetBuf.final, 0, sendState.packetBuf.offset);
-                sendState.pendingBytes = sendState.packetBuf.offset;
-                sendState.processedBytes = 0;
+            //    Logging.Trace($"[UdpSocket] Socket {id} send {sendState.packetBuf.offset} produced bytes.", (int)LogChannel.Network);
+            //    evtArgs.SetBuffer(sendState.packetBuf.final, 0, sendState.packetBuf.offset);
+            //    sendState.pendingBytes = sendState.packetBuf.offset;
+            //    sendState.processedBytes = 0;
 
-                byte[] sendBuf = sendState.sendBuf.final;
-                sendState.sendBuf.final = sendState.packetBuf.final;
-                sendState.packetBuf.offset = 0;
-                sendState.packetBuf.final = sendBuf;
-            }
-            SendInternalAsync(evtArgs.ConnectSocket, evtArgs);
+            //    byte[] sendBuf = sendState.sendBuf.final;
+            //    sendState.sendBuf.final = sendState.packetBuf.final;
+            //    sendState.packetBuf.offset = 0;
+            //    sendState.packetBuf.final = sendBuf;
+            //}
+            //SendInternalAsync(evtArgs.ConnectSocket, evtArgs);
         }
     }
 }
