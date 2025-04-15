@@ -106,7 +106,7 @@ namespace Blanketmen.Hypnos.Editor
 
                 try
                 {
-                    ReflectionUtils.GetTypesFromAssembly(soTypes, typeof(ScriptableObject), Assembly.Load(asmName));
+                    TypeUtils.GetTypesFromAssembly(soTypes, typeof(ScriptableObject), Assembly.Load(asmName));
                 }
                 catch
                 {
