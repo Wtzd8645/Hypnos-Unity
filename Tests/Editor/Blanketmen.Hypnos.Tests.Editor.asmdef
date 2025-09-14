@@ -14,6 +14,7 @@
     "allowUnsafeCode": true,
     "overrideReferences": true,
     "precompiledReferences": [
+        "Blanketmen.Hypnos.Core.dll",
         "nunit.framework.dll"
     ],
     "autoReferenced": true,

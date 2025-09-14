@@ -10,7 +10,7 @@
     "allowUnsafeCode": true,
     "overrideReferences": true,
     "precompiledReferences": [
-        "Blanketmen.Hypnos.Kernel.dll"
+        "Blanketmen.Hypnos.Core.dll"
     ],
     "autoReferenced": true,
     "defineConstraints": [],
